@@ -1,5 +1,5 @@
 <!-- v1.0 · 3 Oct 2026 -->
-# sudharsan1994.github.io
+# sudharsan454.github.io
 
 Portfolio of Sudharsan R, AI Product Manager. Static site served by GitHub Pages.
 

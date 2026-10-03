@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <!--
   Sudharsan R — Portfolio
-  Version: v1.1 · 3 Oct 2026
+  Version: v1.2 · 3 Oct 2026
   Author: Sudharsan R (built with Claude)
   Hosting: GitHub Pages (sudharsan454.github.io, account sudharsan454)
   Sources: Resume (Oct 2026); Helpdesk AI product document v4.0; field-agent baselines (UK FM group, Sep 2026);
@@ -15,6 +15,7 @@
   Changelog:
     v1.0  3 Oct 2026  First build. Hero, method, 5 case studies with live UI recreations,
                       platform & energy work, career timeline, contact.
+    v1.2  3 Oct 2026  Added: the discovery flip (80+ calls), when AI fits, beyond the PM title, writing (blog + LinkedIn post).
     v1.1  3 Oct 2026  Resume download added (phone number removed from the public copy). Published to GitHub Pages.
 -->
 <title>Sudharsan R Portfolio</title>
@@ -348,6 +349,48 @@ details.deep ul{padding-left:20px;margin:0 0 1em}
 .tl h4{font-size:19px;margin:2px 0 4px}
 .tl p{font-size:15.5px;color:var(--ink-2);margin:0}
 
+/* discovery flip */
+.flip{display:grid;grid-template-columns:1fr auto 1fr;gap:18px;align-items:stretch;margin-top:36px}
+.flip > div{min-width:0}
+.flip .card{background:var(--surface);border:1px solid var(--line);padding:18px 20px}
+.flip .card.new{border:1.5px solid var(--hivis)}
+.flip .card h5{margin:0 0 8px;font:600 12px var(--f-mono);letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
+.flip .card.new h5{color:var(--hivis)}
+.flip .card q{display:block;font-size:19px;font-weight:600;line-height:1.35;quotes:none;margin-bottom:8px}
+.flip .card p{font-size:15px;color:var(--ink-2);margin:0}
+.flip .mid{display:grid;place-items:center;font:800 32px var(--f-display);color:var(--hivis)}
+@media (max-width:760px){.flip{grid-template-columns:1fr}.flip .mid{transform:rotate(90deg)}}
+.day{margin-top:18px;border:1px solid var(--line);background:var(--surface);overflow-x:auto}
+.day table{border-collapse:collapse;width:100%;min-width:620px;font-size:14px}
+.day th,.day td{padding:9px 12px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top}
+.day th{font:600 11px var(--f-mono);letter-spacing:.08em;text-transform:uppercase;color:var(--muted);background:var(--surface-2)}
+.day td.t{font-family:var(--f-mono);font-size:12.5px;color:var(--muted);white-space:nowrap}
+.fit{display:inline-block;font:600 11px var(--f-mono);padding:2px 7px;border-radius:4px;white-space:nowrap}
+.fit.y{background:var(--ok-soft);color:var(--ok)}.fit.n{background:var(--surface-2);color:var(--muted)}.fit.m{background:var(--warn-soft);color:var(--warn)}
+.filter{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--line);border:1px solid var(--line);margin-top:28px}
+.filter > div{background:var(--surface);padding:16px;min-width:0}
+.filter b{display:block;font-size:16px;margin-bottom:4px}
+.filter span{font-size:14px;color:var(--ink-2)}
+@media (max-width:860px){.filter{grid-template-columns:1fr 1fr}}
+@media (max-width:480px){.filter{grid-template-columns:1fr}}
+/* on the ground */
+.ground{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+.ground > div{border-top:2px solid var(--ink);padding-top:12px;min-width:0}
+.ground .k{font:600 11px var(--f-mono);letter-spacing:.1em;text-transform:uppercase;color:var(--hivis)}
+.ground h4{font-size:19px;margin:4px 0 6px}
+.ground p{font-size:15.5px;color:var(--ink-2);margin:0}
+@media (max-width:860px){.ground{grid-template-columns:1fr 1fr}}
+@media (max-width:520px){.ground{grid-template-columns:1fr}}
+/* writing */
+.posts{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+.post{display:block;text-decoration:none;color:var(--ink);background:var(--surface);border:1px solid var(--line);padding:20px;box-shadow:var(--shadow);min-width:0}
+.post:hover{border-color:var(--hivis)}
+.post .src{font:600 11px var(--f-mono);letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
+.post h4{font-family:var(--f-display);text-transform:uppercase;font-weight:800;font-size:26px;line-height:1.02;margin:8px 0 10px}
+.post p{font-size:15px;color:var(--ink-2);margin:0 0 10px}
+.post .go{font-weight:600;color:var(--hivis);font-size:14px}
+@media (max-width:760px){.posts{grid-template-columns:1fr}}
+
 footer{border-top:2px solid var(--ink);padding-block:40px 56px}
 .contact{display:grid;grid-template-columns:1.2fr .8fr;gap:24px;align-items:end}
 .contact > *{min-width:0}
@@ -365,7 +408,8 @@ footer{border-top:2px solid var(--ink);padding-block:40px 56px}
     <ul>
       <li><a href="#method">How I work</a></li>
       <li><a href="#work">Work</a></li>
-      <li><a href="#platform">Platform</a></li>
+      <li><a href="#field-work">On the ground</a></li>
+      <li><a href="#writing">Writing</a></li>
       <li><a href="#path">Path</a></li>
       <li><a href="#contact">Contact</a></li>
     </ul>
@@ -427,6 +471,41 @@ footer{border-top:2px solid var(--ink);padding-block:40px 56px}
       <div><h5>Success means it sticks</h5><p>A launch is not the finish line. The test is whether the customer changes how they work and keeps paying for it.</p></div>
       <div><h5>Break it before customers do</h5><p>Every agent I ship faces 50+ real scenarios first: emergencies, mixed requests, junk input, people trying to pull data out. It ships with known failure modes, not surprises.</p></div>
       <div><h5>Humans keep what they should</h5><p>I design the handoff to people on day one, at the boundary the customer draws. AI does the repeat work. People make the calls that need judgement.</p></div>
+    </div>
+
+    <div class="sec-head" style="margin-top:clamp(56px,7vw,88px)">
+      <div><span class="eyebrow">80+ discovery calls</span><h2>The question I stopped asking</h2></div>
+      <p class="lede">When AI arrived, I changed one question in discovery. That one change is where Helpdesk AI and Payment Validator came from.</p>
+    </div>
+    <div class="flip">
+      <div class="card"><h5>Before</h5><q>"What do you do in your current software?"</q><p>You hear about features, screens and missing buttons. You end up building a slightly better version of the same tool.</p></div>
+      <div class="mid" aria-hidden="true">→</div>
+      <div class="card new"><h5>After</h5><q>"Walk me through your workday, morning to evening. What do you do, and in which apps?"</q><p>You hear about actions. Calls answered, emails read, invoices checked, people chased. I map those actions for each persona, and the repeated ones become candidates.</p></div>
+    </div>
+    <div class="day">
+      <table aria-label="Example workday map for a helpdesk coordinator">
+        <thead><tr><th>Time</th><th>Helpdesk coordinator does</th><th>Using</th><th>AI fit?</th></tr></thead>
+        <tbody>
+          <tr><td class="t">08:00</td><td>Reads overnight emails and voicemails, logs each as a request</td><td>Outlook, phone, CMMS</td><td><span class="fit y">Strong</span></td></tr>
+          <tr><td class="t">09:30</td><td>Calls tenants back for missing location or photos</td><td>Phone, WhatsApp</td><td><span class="fit y">Strong</span></td></tr>
+          <tr><td class="t">11:00</td><td>Picks a technician for each job and calls to confirm</td><td>CMMS, phone</td><td><span class="fit m">Partly</span></td></tr>
+          <tr><td class="t">14:00</td><td>Checks vendor invoices against work orders</td><td>PDF, spreadsheet, CMMS</td><td><span class="fit y">Strong</span></td></tr>
+          <tr><td class="t">16:00</td><td>Handles an angry client escalation</td><td>Phone</td><td><span class="fit n">Keep human</span></td></tr>
+          <tr><td class="t">17:30</td><td>Builds the weekly report for the client</td><td>Excel, email</td><td><span class="fit m">Partly</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="caption">An illustrative map. The real ones are built per persona from the calls.</p>
+
+    <div class="sec-head" style="margin-top:clamp(40px,5vw,64px);margin-bottom:0">
+      <div><span class="eyebrow">Not every problem is an AI problem</span><h3>The pain is the same with or without AI</h3></div>
+      <p>Choosing AI is a decision I make per problem, not a default. A use case has to pass a filter first, for the user and for the business. Most don't, and that's fine.</p>
+    </div>
+    <div class="filter">
+      <div><b>Repeats every day</b><span>High volume, same shape. A one-off doesn't pay for a model.</span></div>
+      <div><b>Can be automated</b><span>The steps are known and a system can act on them, not just suggest.</span></div>
+      <div><b>Messy input</b><span>Calls, emails, PDFs, photos. Unstructured data is where AI earns its place over rules.</span></div>
+      <div><b>Worth it to both sides</b><span>The user gets time back and the business gets something it can price and measure.</span></div>
     </div>
   </div>
 </section>
@@ -736,6 +815,24 @@ footer{border-top:2px solid var(--ink);padding-block:40px 56px}
   </div>
 </section>
 
+<!-- ============ ON THE GROUND ============ -->
+<section id="field-work">
+  <div class="wrap">
+    <div class="sec-head">
+      <div><span class="eyebrow">More than the PM title</span><h2>I've done the job on the ground</h2></div>
+      <p class="lede">I don't hand a spec over the wall. I've implemented, sold, demoed and tested the products myself, and sat with customers, designers and engineers through all of it.</p>
+    </div>
+    <div class="ground">
+      <div><span class="k">Implementation</span><h4>Start to finish, on site</h4><p>I've run customer implementations end to end myself, from discovery and configuration to go-live, on UK and Middle East accounts.</p></div>
+      <div><span class="k">Big pursuits</span><h4>Led teams on $1M demos</h4><p>For months at a time I've led small teams building large, high-stakes demos. I've won a few, lost more, and learned the most from the losses.</p></div>
+      <div><span class="k">Sales</span><h4>Cold calls as a BDR</h4><p>When AI made it possible, I picked up cold calling and outbound myself, so I'd hear objections first-hand rather than second-hand.</p></div>
+      <div><span class="k">Pre-sales</span><h4>Demos of what I built</h4><p>I've demoed Field Service and connected-building features to buyers, and reviewed SOWs, BRDs and RFPs as the product voice in the deal.</p></div>
+      <div><span class="k">Build</span><h4>Close to design and engineering</h4><p>I work through the screens with design and the trade-offs with engineering: model choice, fallbacks, and what lives in the prompt versus the pipeline.</p></div>
+      <div><span class="k">Strongest suit</span><h4>Evals before production</h4><p>Every agent I've built ships with a strong eval suite. It's tested against real scenarios and real records well before a customer sees it.</p></div>
+    </div>
+  </div>
+</section>
+
 <!-- ============ PLATFORM ============ -->
 <section id="platform" style="background:var(--surface-2)">
   <div class="wrap">
@@ -752,6 +849,30 @@ footer{border-top:2px solid var(--ink);padding-block:40px 56px}
       <div><span class="k">Energy &amp; IoT</span><h4>Control actions</h4><p>Send commands to building equipment from the platform, like changing a set point.</p></div>
       <div><span class="k">Energy &amp; IoT</span><h4>Utility meters</h4><p>Utility meter management and clean-up of utility consumption data.</p></div>
       <div><span class="k">Growth</span><h4>Adoption &amp; retention</h4><p>Grew multi-module adoption ~10% in 12 months: ~$50K upsell and two accounts worth $330K ARR kept.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ WRITING ============ -->
+<section id="writing" style="padding-top:clamp(56px,8vw,96px)">
+  <div class="wrap">
+    <div class="sec-head">
+      <div><span class="eyebrow">Writing</span><h2>What I've written</h2></div>
+      <p class="lede">I write about what I learn from running AI inside real facilities operations.</p>
+    </div>
+    <div class="posts">
+      <a class="post" href="https://facilio.com/blog/why-cafm-dashboards-dont-work/" target="_blank" rel="noopener">
+        <span class="src">Facilio blog · Feb 2026</span>
+        <h4>Dashboards didn't save facilities management. They just made firefighting prettier.</h4>
+        <p>Seeing the fire on a dashboard doesn't put it out. Teams stall between visibility and action, and the real losses sit in three choke points: service intake, invoice approval and decisions. That's where agents that act, not charts, make the difference.</p>
+        <span class="go">Read the article ↗</span>
+      </a>
+      <a class="post" href="https://www.linkedin.com/posts/sudharsan454_the-first-time-our-voice-agent-handled-a-ugcPost-7446851475542114304-Qgbo/" target="_blank" rel="noopener">
+        <span class="src">LinkedIn post</span>
+        <h4>The first time our voice agent handled an after-hours call on its own</h4>
+        <p>The tenant never knew they weren't talking to a person. Fourteen months of building AI agents inside real FM operations taught me the hard part was never the technology. It was knowing which workflows to hand over, and having the confidence to let go.</p>
+        <span class="go">Read the post ↗</span>
+      </a>
     </div>
   </div>
 </section>
@@ -788,7 +909,7 @@ footer{border-top:2px solid var(--ink);padding-block:40px 56px}
         <span class="copied" id="copiedMsg2" aria-live="polite"></span>
       </div>
     </div>
-    <p class="small">Customer names are left out on purpose. All product screens are recreations with made-up data. Figures are labelled with where they come from.<br>v1.1 · October 2026</p>
+    <p class="small">Customer names are left out on purpose. All product screens are recreations with made-up data. Figures are labelled with where they come from.<br>v1.2 · October 2026</p>
   </div>
 </footer>
 

@@ -1,0 +1,1082 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<!--
+  Sudharsan R — Portfolio
+  Version: v1.2 · 3 Oct 2026
+  Author: Sudharsan R (built with Claude)
+  Hosting: GitHub Pages (sudharsan454.github.io, account sudharsan454)
+  Sources: Resume (Oct 2026); Helpdesk AI product document v4.0; field-agent baselines (UK FM group, Sep 2026);
+           Saudi supervisor-agent summary (Jul 2026); invoice validation dashboard (1–3 Oct 2026);
+           Frontline judging document (Aug 2026).
+  Privacy: customer names removed; all UI recreations use made-up names, IDs and amounts. No phone number.
+  Changelog:
+    v1.0  3 Oct 2026  First build. Hero, method, 5 case studies with live UI recreations,
+                      platform & energy work, career timeline, contact.
+    v1.2  3 Oct 2026  Added: the discovery flip (80+ calls), when AI fits, beyond the PM title, writing (blog + LinkedIn post).
+    v1.1  3 Oct 2026  Resume download added (phone number removed from the public copy). Published to GitHub Pages.
+-->
+<title>Sudharsan R Portfolio</title>
+<meta name="description" content="Sudharsan R, AI Product Manager. I find the one workflow worth fixing in field operations, and make the fix stick.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@600;800;900&family=Public+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&family=JetBrains+Mono:wght@400;500;600&display=swap">
+<style>
+/* Layout concept: the page reads like an operations board. Each piece of work is a job ticket
+   with its own meta strip, and every product is shown working, not described. Hi-vis orange is the
+   one loud colour, borrowed from the safety vests of the people these products serve. */
+:root{
+  --bg:#f3f5f2;
+  --surface:#ffffff;
+  --surface-2:#e9ede8;
+  --ink:#0f1d1a;
+  --ink-2:#3a4844;
+  --muted:#66736f;
+  --line:#d6ddd8;
+  --line-2:#bcc7c1;
+  --hivis:#e8590c;
+  --hivis-soft:#fde4d3;
+  --teal:#0f6e65;
+  --teal-soft:#d7ece8;
+  --ok:#2f8a3e; --ok-soft:#ddf0df;
+  --bad:#c0392b; --bad-soft:#f8dcd8;
+  --warn:#b7791f; --warn-soft:#f7ead2;
+  --info:#2563c9; --info-soft:#dce7fa;
+  --violet:#6b4fd0; --violet-soft:#e6e0fa;
+  --pink:#c2457d; --pink-soft:#f8dde9;
+  --map-land:#e4e9e3; --map-road:#ffffff; --map-water:#cfe2ea; --map-park:#d3e6d0;
+  --shadow:0 1px 2px rgba(15,29,26,.06),0 8px 24px -12px rgba(15,29,26,.18);
+  --f-display:"Big Shoulders Display","Arial Narrow",Impact,sans-serif;
+  --f-body:"Public Sans",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+  --f-mono:"JetBrains Mono",ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#0c1311; --surface:#141d1a; --surface-2:#1b2622; --ink:#e7ede9; --ink-2:#c3cdc8; --muted:#8c9893;
+    --line:#26332e; --line-2:#34443e; --hivis:#ff7a2e; --hivis-soft:#3a1f0f; --teal:#4fc2b3; --teal-soft:#123430;
+    --ok:#5cc46d; --ok-soft:#14301a; --bad:#ef6f62; --bad-soft:#3a1714; --warn:#e3a94f; --warn-soft:#352711;
+    --info:#6ea1f5; --info-soft:#142744; --violet:#a891f5; --violet-soft:#241c44; --pink:#ec7fae; --pink-soft:#3b1828;
+    --map-land:#18221f; --map-road:#25332e; --map-water:#13303a; --map-park:#173022;
+    --shadow:0 1px 2px rgba(0,0,0,.4),0 10px 28px -14px rgba(0,0,0,.7); color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#0c1311; --surface:#141d1a; --surface-2:#1b2622; --ink:#e7ede9; --ink-2:#c3cdc8; --muted:#8c9893;
+  --line:#26332e; --line-2:#34443e; --hivis:#ff7a2e; --hivis-soft:#3a1f0f; --teal:#4fc2b3; --teal-soft:#123430;
+  --ok:#5cc46d; --ok-soft:#14301a; --bad:#ef6f62; --bad-soft:#3a1714; --warn:#e3a94f; --warn-soft:#352711;
+  --info:#6ea1f5; --info-soft:#142744; --violet:#a891f5; --violet-soft:#241c44; --pink:#ec7fae; --pink-soft:#3b1828;
+  --map-land:#18221f; --map-road:#25332e; --map-water:#13303a; --map-park:#173022;
+  --shadow:0 1px 2px rgba(0,0,0,.4),0 10px 28px -14px rgba(0,0,0,.7); color-scheme:dark;
+}
+
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:17px;line-height:1.6;-webkit-font-smoothing:antialiased}
+.wrap{max-width:1160px;margin:0 auto;padding-inline:clamp(16px,4vw,40px)}
+a{color:var(--teal);text-underline-offset:3px}
+a:focus-visible,button:focus-visible,summary:focus-visible{outline:3px solid var(--hivis);outline-offset:3px;border-radius:4px}
+p{margin:0 0 1em;max-width:66ch}
+h1,h2,h3{font-family:var(--f-display);font-weight:800;letter-spacing:.005em;line-height:.98;margin:0;text-wrap:balance;text-transform:uppercase}
+h2{font-size:clamp(36px,5.4vw,60px)}
+h3{font-size:clamp(24px,3vw,32px)}
+.mono{font-family:var(--f-mono)}
+.eyebrow{font-family:var(--f-mono);font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
+.lede{font-size:clamp(18px,2vw,21px);color:var(--ink-2)}
+
+/* nav */
+.nav{position:sticky;top:env(safe-area-inset-top,0px);z-index:20;background:color-mix(in srgb,var(--bg) 88%,transparent);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+.nav .wrap{display:flex;align-items:center;gap:20px;min-height:58px}
+.brand{font-family:var(--f-display);font-weight:900;font-size:24px;text-transform:uppercase;letter-spacing:.02em;color:var(--ink);text-decoration:none;display:flex;align-items:center;gap:10px}
+.brand i{width:12px;height:12px;background:var(--hivis);display:inline-block;transform:rotate(45deg)}
+.nav ul{display:flex;gap:22px;list-style:none;margin:0 0 0 auto;padding:0}
+.nav ul a{color:var(--ink-2);text-decoration:none;font-size:15px;font-weight:500}
+.nav ul a:hover{color:var(--hivis)}
+.theme{border:1px solid var(--line-2);background:var(--surface);color:var(--ink);border-radius:999px;font:500 13px var(--f-mono);padding:6px 12px;cursor:pointer}
+@media (max-width:760px){.nav ul{display:none}.theme{margin-left:auto}}
+
+/* hero */
+.hero{padding-block:clamp(48px,8vw,96px) clamp(36px,5vw,56px);border-bottom:2px solid var(--ink)}
+.hero h1{font-size:clamp(52px,9.4vw,124px);letter-spacing:-.005em}
+.hero h1 em{font-style:normal;color:var(--hivis)}
+.hero-grid{display:grid;grid-template-columns:1.25fr .75fr;gap:clamp(24px,4vw,56px);align-items:end;margin-top:28px}
+.hero-grid > *{min-width:0}
+@media (max-width:860px){.hero-grid{grid-template-columns:1fr}}
+.idcard{background:var(--surface);border:1px solid var(--line);box-shadow:var(--shadow);padding:18px 20px;display:grid;gap:10px;font-size:15px}
+.idcard .row{display:flex;justify-content:space-between;gap:12px;border-bottom:1px dashed var(--line);padding-bottom:8px}
+.idcard .row:last-child{border:0;padding:0}
+.idcard .k{font:500 12px var(--f-mono);letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.idcard .v{text-align:right;font-weight:600}
+.cta{display:flex;flex-wrap:wrap;gap:10px;margin-top:22px}
+.btn{display:inline-flex;align-items:center;gap:8px;padding:11px 18px;border-radius:6px;font-weight:600;font-size:15px;text-decoration:none;border:1.5px solid var(--ink);color:var(--ink);background:transparent;cursor:pointer}
+.btn.primary{background:var(--ink);color:var(--bg)}
+.btn:hover{border-color:var(--hivis);color:var(--hivis)}
+.btn.primary:hover{background:var(--hivis);color:#fff}
+.copied{font:500 12px var(--f-mono);color:var(--teal);align-self:center}
+
+.proof{display:grid;grid-template-columns:repeat(4,1fr);border:1px solid var(--line);background:var(--line);gap:1px;margin-top:clamp(32px,5vw,48px)}
+.proof div{background:var(--surface);padding:18px 18px 16px}
+.proof b{display:block;font-family:var(--f-display);font-weight:900;font-size:clamp(40px,5vw,58px);line-height:1;color:var(--ink);font-variant-numeric:tabular-nums}
+.proof span{display:block;font-size:14px;color:var(--ink-2);margin-top:6px;line-height:1.4}
+@media (max-width:860px){.proof{grid-template-columns:repeat(2,1fr)}}
+
+/* sections */
+section{padding-block:clamp(56px,8vw,96px)}
+.sec-head{display:grid;grid-template-columns:1fr 1fr;gap:24px;align-items:end;margin-bottom:36px}
+.sec-head > *{min-width:0}
+@media (max-width:860px){.sec-head{grid-template-columns:1fr}}
+
+/* method */
+.method{display:grid;grid-template-columns:repeat(6,1fr);gap:0;border:1.5px solid var(--ink);background:var(--surface)}
+.step{padding:18px 16px 20px;border-right:1px solid var(--line);position:relative;min-width:0}
+.step:last-child{border-right:0}
+.step .n{font:600 12px var(--f-mono);color:var(--hivis);letter-spacing:.1em}
+.step h4{font-family:var(--f-display);font-weight:800;text-transform:uppercase;font-size:22px;margin:6px 0 8px;line-height:1}
+.step p{font-size:14.5px;color:var(--ink-2);margin:0}
+@media (max-width:980px){.method{grid-template-columns:repeat(3,1fr)}.step:nth-child(3){border-right:0}.step:nth-child(-n+3){border-bottom:1px solid var(--line)}}
+@media (max-width:560px){.method{grid-template-columns:1fr}.step{border-right:0;border-bottom:1px solid var(--line)}.step:last-child{border-bottom:0}}
+.beliefs{display:grid;grid-template-columns:repeat(2,1fr);gap:18px;margin-top:28px}
+.beliefs > div{border-top:2px solid var(--ink);padding-top:12px}
+.beliefs h5{font-size:17px;margin:0 0 6px}
+.beliefs p{font-size:15.5px;color:var(--ink-2);margin:0}
+@media (max-width:700px){.beliefs{grid-template-columns:1fr}}
+
+/* tickets */
+.ticket{border-top:2px solid var(--ink);padding-top:22px;margin-top:clamp(56px,7vw,88px)}
+.ticket:first-of-type{margin-top:0}
+.meta{display:flex;flex-wrap:wrap;gap:8px 10px;margin-bottom:16px}
+.chip{display:inline-flex;align-items:center;gap:6px;font:500 12px var(--f-mono);letter-spacing:.04em;padding:4px 9px;border-radius:999px;background:var(--surface-2);color:var(--ink-2);border:1px solid var(--line)}
+.chip.id{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+.chip.live{background:var(--ok-soft);color:var(--ok);border-color:transparent}
+.chip.soon{background:var(--hivis-soft);color:var(--hivis);border-color:transparent}
+.chip .dot{width:7px;height:7px;border-radius:50%;background:currentColor}
+.t-grid{display:grid;grid-template-columns:.9fr 1.1fr;gap:clamp(24px,4vw,52px);align-items:start;margin-top:22px}
+.t-grid > *{min-width:0}
+@media (max-width:940px){.t-grid{grid-template-columns:1fr}}
+.tldr{background:var(--surface);border:1px solid var(--line);padding:16px 18px;margin:18px 0;display:grid;grid-template-columns:auto 1fr;gap:6px 16px;font-size:15px}
+.tldr dt{font:500 12px var(--f-mono);letter-spacing:.08em;text-transform:uppercase;color:var(--muted);padding-top:3px}
+.tldr dd{margin:0;font-weight:500}
+.kpis{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--line);border:1px solid var(--line);margin:18px 0}
+.kpis div{background:var(--surface);padding:14px}
+.kpis b{display:block;font-family:var(--f-display);font-weight:900;font-size:38px;line-height:1;font-variant-numeric:tabular-nums}
+.kpis b.hi{color:var(--hivis)}
+.kpis span{display:block;font-size:13px;color:var(--ink-2);line-height:1.35;margin-top:4px}
+.basis{font:500 11px var(--f-mono);letter-spacing:.06em;color:var(--muted);text-transform:uppercase}
+details.deep{border:1px solid var(--line);background:var(--surface);margin-top:18px}
+details.deep summary{cursor:pointer;list-style:none;padding:14px 18px;font-weight:600;display:flex;justify-content:space-between;gap:12px}
+details.deep summary::-webkit-details-marker{display:none}
+details.deep summary::after{content:"+";font:600 20px var(--f-mono);color:var(--hivis);line-height:1}
+details.deep[open] summary::after{content:"–"}
+details.deep .body{padding:0 18px 18px;border-top:1px solid var(--line)}
+details.deep h5{font-size:15px;margin:18px 0 6px;text-transform:uppercase;letter-spacing:.06em;font-family:var(--f-mono);font-weight:600;color:var(--ink-2)}
+details.deep p,details.deep li{font-size:15.5px}
+details.deep ul{padding-left:20px;margin:0 0 1em}
+.quote{border-left:3px solid var(--hivis);padding:4px 0 4px 14px;font-size:16px;color:var(--ink-2);margin:16px 0}
+
+/* stage: shared frame for UI recreations */
+.stage{background:var(--surface);border:1px solid var(--line-2);box-shadow:var(--shadow);border-radius:10px;overflow:hidden}
+.stage-bar{display:flex;align-items:center;gap:10px;padding:10px 14px;border-bottom:1px solid var(--line);background:var(--surface-2);font-size:13px}
+.stage-bar .dots{display:flex;gap:6px}.stage-bar .dots i{width:9px;height:9px;border-radius:50%;background:var(--line-2)}
+.stage-bar .ttl{font-weight:600}
+.stage-bar .tag{margin-left:auto;font:500 11px var(--f-mono);color:var(--muted);letter-spacing:.06em;text-transform:uppercase}
+.caption{font-size:13px;color:var(--muted);margin-top:10px}
+.tabs{display:inline-flex;border:1px solid var(--line-2);border-radius:6px;overflow:hidden}
+.tabs button{border:0;background:var(--surface);color:var(--ink-2);font:500 12.5px var(--f-body);padding:5px 11px;cursor:pointer}
+.tabs button[aria-pressed="true"]{background:var(--ink);color:var(--bg)}
+
+/* helpdesk lifecycle */
+.flow{display:grid;gap:10px;padding:16px}
+.lane{display:grid;grid-template-columns:96px 1fr;gap:10px;align-items:stretch}
+.lane > .lbl{font:600 11px var(--f-mono);letter-spacing:.1em;text-transform:uppercase;color:var(--muted);display:flex;align-items:center;border-right:2px solid var(--line);padding-right:8px}
+.agents{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.agent{border:1.5px solid var(--line-2);border-radius:8px;padding:8px 10px;background:var(--bg);min-width:0;flex:1 1 140px;position:relative}
+.agent b{display:block;font-size:14px}
+.agent span{display:block;font-size:12px;color:var(--muted);line-height:1.35}
+.agent.on{border-color:var(--hivis);background:var(--hivis-soft)}
+.arrow{color:var(--line-2);font:600 14px var(--f-mono)}
+@media (max-width:520px){.lane{grid-template-columns:1fr}.lane > .lbl{border-right:0;border-bottom:2px solid var(--line);padding-bottom:4px}.arrow{display:none}}
+.signal{display:grid;gap:6px;padding:16px}
+.sig{display:grid;grid-template-columns:150px 1fr 34px;gap:10px;align-items:center;font-size:13.5px}
+.sig .bar{height:12px;background:var(--surface-2);border-radius:3px;overflow:hidden}
+.sig .bar i{display:block;height:100%;background:var(--hivis)}
+.sig .bar i.m{background:var(--warn)}
+.sig b{font:600 13px var(--f-mono);text-align:right}
+@media (max-width:520px){.sig{grid-template-columns:1fr 34px}.sig .bar{grid-column:1/-1;order:3}}
+
+/* phone */
+.phones{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+@media (max-width:620px){.phones{grid-template-columns:1fr}}
+.phone{background:#141a18;border:1px solid var(--line-2);border-radius:30px;padding:10px;max-width:330px;width:100%;margin:0 auto;box-shadow:var(--shadow)}
+.screen{border-radius:22px;overflow:hidden;background:var(--chat-bg,#efe7de);display:flex;flex-direction:column;height:520px}
+:root{--chat-bg:#ece5dd;--chat-in:#ffffff;--chat-out:#d9fdd3;--chat-ink:#111b21;--chat-head:#0b5e54}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){--chat-bg:#0b141a;--chat-in:#1f2c34;--chat-out:#005c4b;--chat-ink:#e9edef;--chat-head:#1f2c34}}
+:root[data-theme="dark"]{--chat-bg:#0b141a;--chat-in:#1f2c34;--chat-out:#005c4b;--chat-ink:#e9edef;--chat-head:#1f2c34}
+.chead{background:var(--chat-head);color:#fff;padding:12px 14px;display:flex;align-items:center;gap:10px}
+.chead .av{width:32px;height:32px;border-radius:50%;background:var(--hivis);display:grid;place-items:center;font:700 13px var(--f-body)}
+.chead b{display:block;font-size:14px}.chead span{display:block;font-size:11px;opacity:.8}
+.msgs{flex:1;overflow:hidden;padding:12px 10px;display:flex;flex-direction:column;gap:6px;justify-content:flex-end}
+.m{max-width:84%;padding:7px 10px 6px;border-radius:9px;font-size:13px;line-height:1.38;color:var(--chat-ink);background:var(--chat-in);box-shadow:0 1px 1px rgba(0,0,0,.08);white-space:pre-line;transition:opacity .35s,transform .35s}
+.m.me{align-self:flex-end;background:var(--chat-out)}
+.m.photo{padding:4px}
+.m.photo .ph{width:170px;height:96px;border-radius:6px;background:linear-gradient(135deg,#7f9aa8,#4e6672);position:relative;overflow:hidden}
+.m.photo .ph::before{content:"";position:absolute;inset:auto 0 0 0;height:40%;background:#3b4f59}
+.m.photo .ph::after{content:"";position:absolute;left:28%;top:18%;width:44%;height:44%;border-radius:50%;background:radial-gradient(circle,#9cc6d8 0 40%,transparent 41%)}
+.m .opt{display:block;margin-top:4px;padding:5px 8px;border-radius:6px;border:1px solid rgba(0,0,0,.12);font-weight:600;color:#027eb5;text-align:center}
+.m.hide{opacity:0;transform:translateY(6px)}
+.replay{display:block;margin:10px auto 0}
+
+/* invoice */
+.inv{display:grid;grid-template-columns:1.15fr .85fr}
+.inv > *{min-width:0}
+@media (max-width:620px){.inv{grid-template-columns:1fr}.pdf{display:none}}
+.inv-l{padding:14px;border-right:1px solid var(--line)}
+.banner{border-radius:8px;padding:12px 14px;display:grid;grid-template-columns:auto 1fr auto;gap:10px;align-items:start;font-size:13.5px}
+.banner.bad{background:var(--bad-soft);border:1px solid color-mix(in srgb,var(--bad) 35%,transparent)}
+.banner.ok{background:var(--ok-soft);border:1px solid color-mix(in srgb,var(--ok) 35%,transparent)}
+.banner .ic{width:22px;height:22px;border-radius:50%;display:grid;place-items:center;font-weight:700;color:#fff;font-size:13px}
+.banner.bad .ic{background:var(--bad)}.banner.ok .ic{background:var(--ok)}
+.banner b{display:block;font-size:14.5px}
+.banner small{display:block;color:var(--ink-2)}
+.banner .score{font:600 12px var(--f-mono);white-space:nowrap}
+.banner.bad .score{color:var(--bad)}.banner.ok .score{color:var(--ok)}
+.vt{width:100%;border-collapse:collapse;font-size:12.5px;margin-top:12px}
+.vt th{font:600 10.5px var(--f-mono);letter-spacing:.08em;text-transform:uppercase;color:var(--muted);text-align:left;padding:7px 6px;border-bottom:1px solid var(--line);background:var(--surface-2)}
+.vt td{padding:8px 6px;border-bottom:1px solid var(--line);vertical-align:top}
+.vt td.v{font-family:var(--f-mono);font-size:12px}
+.vt tr.miss td{background:var(--bad-soft)}
+.vt tr.miss td.v:first-of-type{color:var(--bad)}
+.res{font-weight:600;white-space:nowrap}
+.res.ok{color:var(--ok)}.res.bad{color:var(--bad)}
+.res small{display:block;font:500 10px var(--f-mono);letter-spacing:.06em;color:var(--muted)}
+.vt tr{transition:opacity .3s}
+.vt tr.pending td{opacity:.35}
+.pdf{padding:14px;background:var(--surface-2)}
+.paper{background:#fff;color:#1d2321;padding:14px;font-size:10.5px;line-height:1.45;border:1px solid #d9dedb;min-height:100%}
+.paper .lg{font:800 16px var(--f-display);letter-spacing:.04em;color:#1d6b4f;border:2px solid #1d6b4f;display:inline-block;padding:2px 6px}
+.paper .tx{font-weight:700;font-size:12px;margin:12px 0 6px}
+.paper .hl{background:#fde2dd;outline:1px solid #e6a49a}
+.paper table{width:100%;border-collapse:collapse;margin-top:8px}
+.paper td{padding:3px 0;border-bottom:1px solid #eceeed}
+
+/* dispatch */
+.disp-tools{display:flex;flex-wrap:wrap;gap:10px;align-items:center;padding:10px 14px;border-bottom:1px solid var(--line)}
+.disp-tools .clock{font:600 13px var(--f-mono);margin-left:auto;color:var(--ink-2)}
+.disp{display:grid;grid-template-columns:200px 1fr;max-height:460px;overflow:hidden}
+.queue{border-right:1px solid var(--line);padding:10px;display:grid;gap:8px;align-content:start;overflow:hidden}
+.qcard{border:1px solid var(--line);border-radius:7px;padding:8px 9px;background:var(--bg);font-size:12px}
+.qcard .id{font:500 10.5px var(--f-mono);color:var(--muted);display:flex;justify-content:space-between}
+.qcard b{display:block;font-size:13px;margin:2px 0}
+.qcard .site{color:var(--muted);font-size:11.5px}
+.pill{display:inline-block;font:600 9.5px var(--f-mono);letter-spacing:.06em;padding:2px 6px;border-radius:4px;margin-top:5px;margin-right:4px}
+.pill.high{background:var(--bad-soft);color:var(--bad)}.pill.med{background:var(--warn-soft);color:var(--warn)}.pill.low{background:var(--info-soft);color:var(--info)}
+.pill.breach{background:var(--bad);color:#fff}
+.pill.new{background:var(--info);color:#fff}
+.board{overflow-x:auto;min-width:0}
+.grid{min-width:640px;position:relative}
+.hrs{display:grid;grid-template-columns:150px repeat(9,1fr);border-bottom:1px solid var(--line);font:500 10.5px var(--f-mono);color:var(--muted)}
+.hrs div{padding:7px 4px;border-left:1px solid var(--line)}
+.hrs div:first-child{border-left:0}
+.trow{display:grid;grid-template-columns:150px 1fr;border-bottom:1px solid var(--line);height:44px}
+.tech{display:flex;align-items:center;gap:8px;padding:0 8px;font-size:12px;min-width:0}
+.tech .av{width:26px;height:26px;border-radius:50%;display:grid;place-items:center;font:700 10px var(--f-body);color:#fff;flex:none;position:relative}
+.tech .av::after{content:"";position:absolute;right:-1px;bottom:-1px;width:8px;height:8px;border-radius:50%;background:var(--ok);border:2px solid var(--surface)}
+.tech .av.off::after{background:var(--bad)}
+.tech b{display:block;font-size:12px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.tech span{display:block;font-size:10.5px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.tech .st{margin-left:auto;font-size:13px}
+.lanebox{position:relative;background-image:linear-gradient(to right,var(--line) 1px,transparent 1px);background-size:calc(100%/9) 100%}
+.appt{position:absolute;top:8px;height:28px;border-radius:5px;font-size:10.5px;padding:0 7px;display:flex;align-items:center;gap:5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;border-left:3px solid;font-weight:500;transition:background-color .6s,border-color .6s,color .6s;cursor:default}
+.appt .ic{font-size:11px}
+.off-block{position:absolute;top:4px;bottom:4px;border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:600;opacity:.9}
+.now{position:absolute;top:0;bottom:0;width:2px;background:var(--hivis);z-index:3;pointer-events:none}
+.now::before{content:"";position:absolute;top:-4px;left:-4px;width:10px;height:10px;border-radius:50%;background:var(--hivis)}
+.s-scheduled{background:var(--surface-2);border-color:var(--ink-2);color:var(--ink)}
+.s-dispatched{background:var(--violet-soft);border-color:var(--violet);color:var(--ink)}
+.s-enroute{background:var(--warn-soft);border-color:var(--warn);color:var(--ink)}
+.s-inprogress{background:var(--info-soft);border-color:var(--info);color:var(--ink)}
+.s-completed{background:var(--ok-soft);border-color:var(--ok);color:var(--ink)}
+.s-cancelled{background:var(--bad-soft);border-color:var(--bad);color:var(--ink);text-decoration:line-through}
+.s-mismatch{background:var(--ok-soft);border-color:var(--warn);color:var(--ink)}
+.t-training{background:var(--hivis-soft);color:var(--hivis)}
+.t-truck{background:var(--bad-soft);color:var(--bad)}
+.t-vacation{background:var(--violet-soft);color:var(--violet)}
+.t-sick{background:var(--info-soft);color:var(--info)}
+.t-holiday{background:var(--pink-soft);color:var(--pink)}
+.t-standby{background:var(--warn-soft);color:var(--warn)}
+.legend{display:flex;flex-wrap:wrap;gap:6px 14px;padding:10px 14px;border-top:1px solid var(--line);font-size:11.5px;align-items:center}
+.legend .grp{font:600 10px var(--f-mono);letter-spacing:.1em;color:var(--muted);text-transform:uppercase;margin-right:2px}
+.legend button{border:1px solid var(--line);background:var(--surface);color:var(--ink-2);border-radius:5px;padding:3px 7px;font:500 11.5px var(--f-body);cursor:pointer;display:inline-flex;align-items:center;gap:5px}
+.legend button i{width:9px;height:9px;border-radius:2px;display:inline-block}
+.legend button[aria-pressed="true"]{border-color:var(--ink);box-shadow:inset 0 0 0 1px var(--ink)}
+.grid.filtering .appt:not(.match),.grid.filtering .off-block:not(.match){opacity:.18}
+@media (max-width:700px){.disp{grid-template-columns:1fr}.queue{display:none}}
+.mapwrap{position:relative}
+.mapwrap svg{display:block;width:100%;height:auto;max-height:460px}
+.maplist{position:absolute;left:12px;top:12px;background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:8px 10px;font-size:11.5px;box-shadow:var(--shadow);display:grid;gap:4px;max-width:210px}
+.maplist div{display:flex;align-items:center;gap:6px}
+.maplist i{width:9px;height:9px;border-radius:50%;display:inline-block;flex:none}
+@media (max-width:560px){.maplist{position:static;margin:10px;max-width:none}}
+
+/* frontline */
+.fl{display:grid;grid-template-columns:1fr;gap:0}
+.chain{display:flex;flex-wrap:wrap;gap:6px;padding:14px;align-items:center}
+.chain span{font:500 12px var(--f-mono);padding:5px 9px;border-radius:5px;background:var(--surface-2);border:1px solid var(--line)}
+.chain span.won{background:var(--hivis);color:#fff;border-color:var(--hivis);font-weight:700}
+.chain em{font-style:normal;color:var(--muted);font-size:12px}
+.walk{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;padding:0 14px 14px}
+.room{border:1px solid var(--line);border-radius:8px;padding:10px;background:var(--bg);font-size:12.5px;min-width:0}
+.room b{display:block;font-size:13px}
+.room .cs{display:inline-block;margin-top:6px;font:600 10.5px var(--f-mono);padding:2px 6px;border-radius:4px}
+.room.add{display:grid;place-items:center;border-style:dashed;color:var(--hivis);font-weight:600}
+@media (max-width:620px){.walk{grid-template-columns:1fr 1fr}}
+
+/* platform */
+.pgrid{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--line);border:1px solid var(--line)}
+.pgrid > div{background:var(--surface);padding:18px;min-width:0}
+.pgrid .k{font:600 11px var(--f-mono);letter-spacing:.1em;text-transform:uppercase;color:var(--hivis)}
+.pgrid h4{font-size:18px;margin:6px 0 6px}
+.pgrid p{font-size:14.5px;color:var(--ink-2);margin:0}
+@media (max-width:980px){.pgrid{grid-template-columns:repeat(2,1fr)}}
+@media (max-width:520px){.pgrid{grid-template-columns:1fr}}
+
+/* timeline */
+.tl{display:grid;gap:0;border-left:2px solid var(--ink);margin-left:6px}
+.tl > div{position:relative;padding:0 0 26px 26px}
+.tl > div::before{content:"";position:absolute;left:-8px;top:6px;width:14px;height:14px;background:var(--bg);border:2px solid var(--ink);transform:rotate(45deg)}
+.tl > div.cur::before{background:var(--hivis);border-color:var(--hivis)}
+.tl .when{font:500 12.5px var(--f-mono);color:var(--muted)}
+.tl h4{font-size:19px;margin:2px 0 4px}
+.tl p{font-size:15.5px;color:var(--ink-2);margin:0}
+
+/* discovery flip */
+.flip{display:grid;grid-template-columns:1fr auto 1fr;gap:18px;align-items:stretch;margin-top:36px}
+.flip > div{min-width:0}
+.flip .card{background:var(--surface);border:1px solid var(--line);padding:18px 20px}
+.flip .card.new{border:1.5px solid var(--hivis)}
+.flip .card h5{margin:0 0 8px;font:600 12px var(--f-mono);letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
+.flip .card.new h5{color:var(--hivis)}
+.flip .card q{display:block;font-size:19px;font-weight:600;line-height:1.35;quotes:none;margin-bottom:8px}
+.flip .card p{font-size:15px;color:var(--ink-2);margin:0}
+.flip .mid{display:grid;place-items:center;font:800 32px var(--f-display);color:var(--hivis)}
+@media (max-width:760px){.flip{grid-template-columns:1fr}.flip .mid{transform:rotate(90deg)}}
+.day{margin-top:18px;border:1px solid var(--line);background:var(--surface);overflow-x:auto}
+.day table{border-collapse:collapse;width:100%;min-width:620px;font-size:14px}
+.day th,.day td{padding:9px 12px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top}
+.day th{font:600 11px var(--f-mono);letter-spacing:.08em;text-transform:uppercase;color:var(--muted);background:var(--surface-2)}
+.day td.t{font-family:var(--f-mono);font-size:12.5px;color:var(--muted);white-space:nowrap}
+.fit{display:inline-block;font:600 11px var(--f-mono);padding:2px 7px;border-radius:4px;white-space:nowrap}
+.fit.y{background:var(--ok-soft);color:var(--ok)}.fit.n{background:var(--surface-2);color:var(--muted)}.fit.m{background:var(--warn-soft);color:var(--warn)}
+.filter{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--line);border:1px solid var(--line);margin-top:28px}
+.filter > div{background:var(--surface);padding:16px;min-width:0}
+.filter b{display:block;font-size:16px;margin-bottom:4px}
+.filter span{font-size:14px;color:var(--ink-2)}
+@media (max-width:860px){.filter{grid-template-columns:1fr 1fr}}
+@media (max-width:480px){.filter{grid-template-columns:1fr}}
+/* on the ground */
+.ground{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+.ground > div{border-top:2px solid var(--ink);padding-top:12px;min-width:0}
+.ground .k{font:600 11px var(--f-mono);letter-spacing:.1em;text-transform:uppercase;color:var(--hivis)}
+.ground h4{font-size:19px;margin:4px 0 6px}
+.ground p{font-size:15.5px;color:var(--ink-2);margin:0}
+@media (max-width:860px){.ground{grid-template-columns:1fr 1fr}}
+@media (max-width:520px){.ground{grid-template-columns:1fr}}
+/* writing */
+.posts{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+.post{display:block;text-decoration:none;color:var(--ink);background:var(--surface);border:1px solid var(--line);padding:20px;box-shadow:var(--shadow);min-width:0}
+.post:hover{border-color:var(--hivis)}
+.post .src{font:600 11px var(--f-mono);letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
+.post h4{font-family:var(--f-display);text-transform:uppercase;font-weight:800;font-size:26px;line-height:1.02;margin:8px 0 10px}
+.post p{font-size:15px;color:var(--ink-2);margin:0 0 10px}
+.post .go{font-weight:600;color:var(--hivis);font-size:14px}
+@media (max-width:760px){.posts{grid-template-columns:1fr}}
+
+footer{border-top:2px solid var(--ink);padding-block:40px 56px}
+.contact{display:grid;grid-template-columns:1.2fr .8fr;gap:24px;align-items:end}
+.contact > *{min-width:0}
+@media (max-width:760px){.contact{grid-template-columns:1fr}}
+.small{font-size:13px;color:var(--muted)}
+
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important;scroll-behavior:auto!important}}
+</style>
+</head>
+<body>
+
+<nav class="nav" aria-label="Main">
+  <div class="wrap">
+    <a class="brand" href="#top"><i aria-hidden="true"></i>Sudharsan R</a>
+    <ul>
+      <li><a href="#method">How I work</a></li>
+      <li><a href="#work">Work</a></li>
+      <li><a href="#field-work">On the ground</a></li>
+      <li><a href="#writing">Writing</a></li>
+      <li><a href="#path">Path</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+    <button class="theme" id="themeBtn" type="button" aria-label="Switch colour theme">Theme: auto</button>
+  </div>
+</nav>
+
+<header class="hero" id="top">
+  <div class="wrap">
+    <span class="eyebrow">AI Product Manager · Chennai, India · 9 years in B2B SaaS</span>
+    <h1>I find the one workflow worth fixing. Then I make the fix <em>stick.</em></h1>
+    <div class="hero-grid">
+      <div>
+        <p class="lede">I build AI products for the people who keep buildings running: helpdesk teams, dispatchers, technicians, facility managers. I sit inside their operations, find the job they repeat every day, prove the fix in a small pilot, and only then scale it. I care whether the problem is real and repeating. I don't care whether the answer is AI.</p>
+        <div class="cta">
+          <a class="btn primary" href="#work">See the work</a>
+          <a class="btn" href="Sudharsan-R-Resume.pdf" target="_blank" rel="noopener">Resume (PDF)</a>
+          <a class="btn" href="https://www.linkedin.com/in/sudharsan454" target="_blank" rel="noopener">LinkedIn</a>
+          <button class="btn" type="button" id="copyMail">sudharsan454@gmail.com</button>
+          <span class="copied" id="copiedMsg" aria-live="polite"></span>
+        </div>
+      </div>
+      <dl class="idcard" aria-label="Quick facts">
+        <div class="row"><dt class="k">Now</dt><dd class="v">AI Product Manager, Facilio</dd></div>
+        <div class="row"><dt class="k">Owns</dt><dd class="v">Helpdesk AI · Payment Validator</dd></div>
+        <div class="row"><dt class="k">Reports to</dt><dd class="v">CEO</dd></div>
+        <div class="row"><dt class="k">Markets</dt><dd class="v">UK · Middle East · ANZ · US</dd></div>
+        <div class="row"><dt class="k">Builds with</dt><dd class="v">Claude · Cursor · MCP</dd></div>
+      </dl>
+    </div>
+    <div class="proof">
+      <div><b>~80%</b><span>of helpdesk requests resolved end to end by AI at a flagship deployment, 24/7</span></div>
+      <div><b>$200K</b><span>ARR for the AI product line in its first 12 months, across 5 paying customers</span></div>
+      <div><b>5 mo</b><span>to take a new Field Service vertical from zero to live, with a team of 15</span></div>
+      <div><b>$4.5M+</b><span>ARR portfolio owned across maintenance, field service and retail</span></div>
+    </div>
+  </div>
+</header>
+
+<main>
+
+<!-- ============ METHOD ============ -->
+<section id="method">
+  <div class="wrap">
+    <div class="sec-head">
+      <div><span class="eyebrow">How I work</span><h2>Same method, every product</h2></div>
+      <p class="lede">I start every product on a whiteboard with the person, not the feature. These six steps are how Helpdesk AI, Payment Validator and Frontline all began.</p>
+    </div>
+    <div class="method" role="list">
+      <div class="step" role="listitem"><span class="n">STEP 1</span><h4>Persona</h4><p>Who does the work today, on which shift, with which tools. A helpdesk agent at 2 AM. A technician on a roof.</p></div>
+      <div class="step" role="listitem"><span class="n">STEP 2</span><h4>Problem</h4><p>The job they repeat every day, in their own words. Not the feature they asked for.</p></div>
+      <div class="step" role="listitem"><span class="n">STEP 3</span><h4>Services</h4><p>Map the service lines it touches: reactive jobs, planned maintenance, invoices, surveys.</p></div>
+      <div class="step" role="listitem"><span class="n">STEP 4</span><h4>Supply vs demand</h4><p>Split the pain. Demand side is the tenant or client asking. Supply side is the team and vendors doing.</p></div>
+      <div class="step" role="listitem"><span class="n">STEP 5</span><h4>Measure first</h4><p>Read the customer's own records for a baseline before building. What they say and what the data shows often differ.</p></div>
+      <div class="step" role="listitem"><span class="n">STEP 6</span><h4>Pilot, gate, scale</h4><p>One use case, one site, hard success criteria. Evaluation is the release gate. Then expand.</p></div>
+    </div>
+    <div class="beliefs">
+      <div><h5>Good problems repeat</h5><p>If it doesn't happen every day, it won't pay for itself. I pick problems that are already known, repeat daily, and help the customer and the business at the same time.</p></div>
+      <div><h5>Success means it sticks</h5><p>A launch is not the finish line. The test is whether the customer changes how they work and keeps paying for it.</p></div>
+      <div><h5>Break it before customers do</h5><p>Every agent I ship faces 50+ real scenarios first: emergencies, mixed requests, junk input, people trying to pull data out. It ships with known failure modes, not surprises.</p></div>
+      <div><h5>Humans keep what they should</h5><p>I design the handoff to people on day one, at the boundary the customer draws. AI does the repeat work. People make the calls that need judgement.</p></div>
+    </div>
+
+    <div class="sec-head" style="margin-top:clamp(56px,7vw,88px)">
+      <div><span class="eyebrow">80+ discovery calls</span><h2>The question I stopped asking</h2></div>
+      <p class="lede">When AI arrived, I changed one question in discovery. That one change is where Helpdesk AI and Payment Validator came from.</p>
+    </div>
+    <div class="flip">
+      <div class="card"><h5>Before</h5><q>"What do you do in your current software?"</q><p>You hear about features, screens and missing buttons. You end up building a slightly better version of the same tool.</p></div>
+      <div class="mid" aria-hidden="true">→</div>
+      <div class="card new"><h5>After</h5><q>"Walk me through your workday, morning to evening. What do you do, and in which apps?"</q><p>You hear about actions. Calls answered, emails read, invoices checked, people chased. I map those actions for each persona, and the repeated ones become candidates.</p></div>
+    </div>
+    <div class="day">
+      <table aria-label="Example workday map for a helpdesk coordinator">
+        <thead><tr><th>Time</th><th>Helpdesk coordinator does</th><th>Using</th><th>AI fit?</th></tr></thead>
+        <tbody>
+          <tr><td class="t">08:00</td><td>Reads overnight emails and voicemails, logs each as a request</td><td>Outlook, phone, CMMS</td><td><span class="fit y">Strong</span></td></tr>
+          <tr><td class="t">09:30</td><td>Calls tenants back for missing location or photos</td><td>Phone, WhatsApp</td><td><span class="fit y">Strong</span></td></tr>
+          <tr><td class="t">11:00</td><td>Picks a technician for each job and calls to confirm</td><td>CMMS, phone</td><td><span class="fit m">Partly</span></td></tr>
+          <tr><td class="t">14:00</td><td>Checks vendor invoices against work orders</td><td>PDF, spreadsheet, CMMS</td><td><span class="fit y">Strong</span></td></tr>
+          <tr><td class="t">16:00</td><td>Handles an angry client escalation</td><td>Phone</td><td><span class="fit n">Keep human</span></td></tr>
+          <tr><td class="t">17:30</td><td>Builds the weekly report for the client</td><td>Excel, email</td><td><span class="fit m">Partly</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="caption">An illustrative map. The real ones are built per persona from the calls.</p>
+
+    <div class="sec-head" style="margin-top:clamp(40px,5vw,64px);margin-bottom:0">
+      <div><span class="eyebrow">Not every problem is an AI problem</span><h3>The pain is the same with or without AI</h3></div>
+      <p>Choosing AI is a decision I make per problem, not a default. A use case has to pass a filter first, for the user and for the business. Most don't, and that's fine.</p>
+    </div>
+    <div class="filter">
+      <div><b>Repeats every day</b><span>High volume, same shape. A one-off doesn't pay for a model.</span></div>
+      <div><b>Can be automated</b><span>The steps are known and a system can act on them, not just suggest.</span></div>
+      <div><b>Messy input</b><span>Calls, emails, PDFs, photos. Unstructured data is where AI earns its place over rules.</span></div>
+      <div><b>Worth it to both sides</b><span>The user gets time back and the business gets something it can price and measure.</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ WORK ============ -->
+<section id="work" style="padding-top:0">
+  <div class="wrap">
+    <div class="sec-head">
+      <div><span class="eyebrow">Selected work</span><h2>Five products, shown working</h2></div>
+      <p class="lede">Each screen below is a recreation with made-up names and numbers, so customer data stays private. The flows and the logic are real.</p>
+    </div>
+
+    <!-- 1 HELPDESK AI -->
+    <article class="ticket" id="helpdesk">
+      <div class="meta"><span class="chip id">Helpdesk AI</span><span class="chip live"><span class="dot"></span>Live in UK, Middle East, ANZ</span><span class="chip">Owner, end to end</span><span class="chip">Voice · WhatsApp · Email · Web</span></div>
+      <h3>An AI helpdesk that never closes</h3>
+      <div class="t-grid">
+        <div>
+          <p>In facilities management, every repair starts with someone reporting a problem. Across my discovery calls the same picture kept coming back: after-hours requests go nowhere, and the whole intake desk often depends on one person.</p>
+          <p>I designed Helpdesk AI as a set of agents, each doing one job a helpdesk operator does today: take the request, try a quick fix, route it, pick the technician, confirm the visit, chase the follow-ups, and ask the customer how it went.</p>
+          <div class="kpis">
+            <div><b class="hi">~80%</b><span>requests resolved end to end at the flagship site</span></div>
+            <div><b>24/7</b><span>AI as first responder, people on handoff</span></div>
+            <div><b>4</b><span>languages: English, Arabic, Hindi, Malayalam</span></div>
+          </div>
+          <dl class="tldr">
+            <dt>Role</dt><dd>Product owner. Strategy, roadmap, pricing, evaluation, GTM</dd>
+            <dt>Start</dt><dd>80 discovery calls in 4 months</dd>
+            <dt>Pricing</dt><dd>Moved from per seat to per conversation and per voice minute</dd>
+          </dl>
+          <details class="deep">
+            <summary>Read the full story</summary>
+            <div class="body">
+              <h5>What I heard</h5>
+              <p>Out of 80 discovery calls in four months, two choke points showed up everywhere: getting a request into the system, and getting an invoice approved. That set the roadmap. Helpdesk AI first, Payment Validator next.</p>
+              <h5>What one night looks like</h5>
+              <div class="quote">2:17 AM. A tenant calls about a water leak. The agent answers, takes the issue and location, and mid-call sends a WhatsApp asking for a photo. It reads the photo, marks it urgent plumbing, creates the request and sends the reference number back. About 90 seconds. Nobody had to wake up.</div>
+              <h5>Calls I had to make</h5>
+              <ul>
+                <li><b>Speed vs thinking time, per channel.</b> A tenant on a phone call won't wait. An email agent can take longer and reason more.</li>
+                <li><b>Where the human stays.</b> Emergencies and categories the customer names go straight to a person. That path was designed in from day one.</li>
+                <li><b>Prompt vs pipeline.</b> If a rule needs memory the model doesn't have, like "stop replying to auto-replies", it lives in the pipeline, not the prompt.</li>
+                <li><b>Pricing.</b> We tried per seat and prepaid credits, dropped both, and landed on paying per action. Outcome pricing per dispatched job where the outcome is measurable.</li>
+              </ul>
+              <h5>Learning from the market</h5>
+              <p>Before designing setup, I walked through five AI support products end to end and noted how each one handles onboarding, knowledge sources, human handoff, testing and analytics. That shaped a self-serve setup where a facility team answers a few plain questions (what you manage, what to do with requests you don't handle, what counts as an emergency, what every caller must give) and gets a working agent.</p>
+              <h5>What counts as a failure</h5>
+              <p>I keep a fixed list of what goes wrong in AI conversations: no reply, slow replies, made-up facts, repeating itself, missing frustration, a bad greeting or goodbye, a broken handoff, not collecting enough detail, wrong tone, interrupting, and the big one, not actually doing the job.</p>
+              <h5>How I test before customers touch it</h5>
+              <p>50+ real scenarios per agent, scored against the actual records in the system, not the reply text. Every prompt change is versioned and re-tested, and old chat sessions are cleared for every contact before anyone tests again.</p>
+            </div>
+          </details>
+        </div>
+        <div>
+          <div class="stage">
+            <div class="stage-bar"><span class="dots"><i></i><i></i><i></i></span><span class="ttl">Discovery signal</span><span class="tag">16 enterprise accounts</span></div>
+            <div class="signal" aria-label="How many of 16 accounts had each problem">
+              <div class="sig"><span>No 24/7 helpdesk cover</span><div class="bar"><i style="width:68.75%"></i></div><b>11</b></div>
+              <div class="sig"><span>Intake is one person</span><div class="bar"><i style="width:50%"></i></div><b>8</b></div>
+              <div class="sig"><span>CSAT manual or missing</span><div class="bar"><i class="m" style="width:31.25%"></i></div><b>5</b></div>
+              <div class="sig"><span>Vendor chasing by phone</span><div class="bar"><i class="m" style="width:25%"></i></div><b>4</b></div>
+              <div class="sig"><span>Manual routing to teams</span><div class="bar"><i class="m" style="width:25%"></i></div><b>4</b></div>
+              <div class="sig"><span>Accent and language gaps</span><div class="bar"><i class="m" style="width:18.75%"></i></div><b>3</b></div>
+            </div>
+          </div>
+          <div class="stage" style="margin-top:16px">
+            <div class="stage-bar"><span class="dots"><i></i><i></i><i></i></span><span class="ttl">The agent suite, across one request's life</span><span class="tag">7 agents</span></div>
+            <div class="flow" id="agentFlow">
+              <div class="lane"><span class="lbl">Inbound</span><div class="agents"><div class="agent"><b>Intake</b><span>Takes the request on any channel, reads photos</span></div><span class="arrow">→</span><div class="agent"><b>Troubleshoot</b><span>Offers a quick self-fix first</span></div></div></div>
+              <div class="lane"><span class="lbl">Routing</span><div class="agents"><div class="agent"><b>Triage</b><span>Learns how this account routes requests</span></div><span class="arrow">→</span><div class="agent"><b>Dispatch</b><span>Scores technicians on skill, distance, load</span></div></div></div>
+              <div class="lane"><span class="lbl">Outbound</span><div class="agents"><div class="agent"><b>Confirm</b><span>Locks the visit with both sides</span></div><span class="arrow">→</span><div class="agent"><b>Coordinate</b><span>Chases SLAs, approvals, vendors</span></div><span class="arrow">→</span><div class="agent"><b>Pulse</b><span>Asks for a rating after every job</span></div></div></div>
+            </div>
+          </div>
+          <p class="caption">Discovery counts are how many of the 16 accounts raised each problem. The flow highlights each agent in turn.</p>
+        </div>
+      </div>
+    </article>
+
+    <!-- 2 FIELD AGENTS -->
+    <article class="ticket" id="field">
+      <div class="meta"><span class="chip id">Field agents on WhatsApp</span><span class="chip live"><span class="dot"></span>Live</span><span class="chip">UK FM group · Saudi FM provider</span><span class="chip">Product lead</span></div>
+      <h3>Putting the person who did the job back on the record</h3>
+      <div class="t-grid">
+        <div>
+          <p>Technicians and site supervisors don't log into a portal. They live on WhatsApp. So the record of a visit, the attendance, the checklist, the photos, the certificate, gets typed in later by someone in the office who wasn't there.</p>
+          <p>Before building anything for a UK facilities group, I read a year of their own records to see how big the gap really was.</p>
+          <div class="kpis">
+            <div><b class="hi">1.2%</b><span>of job updates were made by the people who did the work</span></div>
+            <div><b>60%</b><span>of jobs still being edited a week after the work ended</span></div>
+            <div><b>210</b><span>jobs raised from WhatsApp in one month at a Saudi provider</span></div>
+          </div>
+          <p class="basis">Measured from customer records, Sep–Oct 2026</p>
+          <details class="deep">
+            <summary>Read the full story</summary>
+            <div class="body">
+              <h5>What the records showed</h5>
+              <ul>
+                <li>The role for site operatives existed in the system, with nobody assigned to it.</li>
+                <li>Only about a quarter of jobs were closed off on the day. A third were still changing a month later.</li>
+                <li>62% of on-demand jobs had no request behind them, because phone and email requests never became records.</li>
+              </ul>
+              <p>That gave us a baseline to measure against, set before the agent went live. Targets were left for the customer to set.</p>
+              <h5>What the agents do</h5>
+              <p>The technician agent walks the job as the technician lives it: accept or reject, attendance, insurance and water-risk questions, checklist and meter readings, further works, the compliance date, the service certificate filed straight from a WhatsApp photo, then resolve.</p>
+              <p>The supervisor agent lets supervisors raise a work order from the field and attach after-photos as proof of completion.</p>
+              <h5>A rule I hold to</h5>
+              <p>The state rules live in the platform, not the prompt. Seven functions check the record before every move and refuse illegal ones. A job can't be resolved without its checklist, insurance answers and, on planned work, its compliance date.</p>
+            </div>
+          </details>
+        </div>
+        <div>
+          <div class="phones">
+            <div>
+              <div class="phone"><div class="screen">
+                <div class="chead"><div class="av" aria-hidden="true">FA</div><div><b>Field Assistant</b><span>WhatsApp · Supervisor</span></div></div>
+                <div class="msgs" id="chatA" aria-label="Example supervisor conversation">
+                  <div class="m me">Hi</div>
+                  <div class="m">Hi Omar. What do you need?<span class="opt">Raise a work order</span><span class="opt">Add after-photos</span></div>
+                  <div class="m me">Raise a work order</div>
+                  <div class="m">Which site and what's the issue?</div>
+                  <div class="m me">Terminal 2, gate B12. AC not cooling</div>
+                  <div class="m me photo"><div class="ph" aria-label="Photo of an air-conditioning unit"></div></div>
+                  <div class="m">Got it. Created WO-48213, HVAC, high priority, Terminal 2 / Gate B12. Photo attached.</div>
+                </div>
+              </div></div>
+            </div>
+            <div>
+              <div class="phone"><div class="screen">
+                <div class="chead"><div class="av" aria-hidden="true">JA</div><div><b>Job Assistant</b><span>WhatsApp · Technician</span></div></div>
+                <div class="msgs" id="chatB" aria-label="Example technician conversation">
+                  <div class="m">New job WO-31877: boiler service, Riverside House. Accept?<span class="opt">Accept</span><span class="opt">Reject</span></div>
+                  <div class="m me">Accept</div>
+                  <div class="m">Thanks. Tell me when you're on site.</div>
+                  <div class="m me">On site</div>
+                  <div class="m">Attendance logged 09:42. 3 checklist items left. Gas pressure reading?</div>
+                  <div class="m me">21 mbar</div>
+                  <div class="m">Saved. Please send the service certificate.</div>
+                  <div class="m me photo"><div class="ph" aria-label="Photo of a certificate"></div></div>
+                  <div class="m">Certificate filed. Job resolved.</div>
+                </div>
+              </div></div>
+            </div>
+          </div>
+          <button class="btn replay" type="button" id="replayChats">Replay conversations</button>
+        </div>
+      </div>
+    </article>
+
+    <!-- 3 PAYMENT VALIDATOR -->
+    <article class="ticket" id="payments">
+      <div class="meta"><span class="chip id">Payment Validator</span><span class="chip live"><span class="dot"></span>Live in Australia</span><span class="chip">Owner, end to end</span><span class="chip">Australian property group</span></div>
+      <h3>Every invoice checked before anyone approves it</h3>
+      <div class="t-grid">
+        <div>
+          <p>Invoice approval was the second choke point from discovery. Facility managers were opening every vendor invoice and checking it by hand against the work order and the purchase order: is the business number right, does the invoice number match, does the amount match, is it addressed to us, is it a proper tax invoice.</p>
+          <p>Payment Validator reads the PDF, compares it with the record and shows the result side by side. Hard failures are rejected automatically and the vendor is emailed. Clean invoices are marked safe to approve. The manager only looks at what needs a human.</p>
+          <div class="kpis">
+            <div><b>626</b><span>invoices checked in the first 3 days of October</span></div>
+            <div><b class="hi">30</b><span>stopped at a hard check before payment</span></div>
+            <div><b>5</b><span>rules per invoice: 3 hard, 2 soft</span></div>
+          </div>
+          <p class="basis">Measured from the live dashboard, 1–3 Oct 2026</p>
+          <details class="deep">
+            <summary>Read the full story</summary>
+            <div class="body">
+              <h5>Two kinds of checks</h5>
+              <p><b>Hard checks</b> compare a field on the PDF with the same field in the system: business number, invoice number, amount before tax. A mismatch stops the invoice. <b>Soft checks</b> read the document itself, like who it's addressed to and whether it says "Tax Invoice". A soft failure is flagged for the manager to decide.</p>
+              <h5>Two models must agree</h5>
+              <p>One model reading a PDF can be confidently wrong. So two models read every invoice in parallel. If they agree, the values are checked against the record. If they disagree, a third model breaks the tie. If there is still no agreement, nothing is guessed: an internal record is raised and the team is notified. Every disagreement is logged by model, which tells us which model to trust for which kind of document. The design went through three versions on the whiteboard before it shipped.</p>
+              <h5>Building for trust</h5>
+              <p>Finance teams won't hand money decisions to a black box. So the reviewer always sees the PDF next to the result, every check names its rule, and the dashboard tracks people checking the AI: manual reviews, mistakes found, and AI errors by rule. Resubmitted invoices are tracked separately from first attempts.</p>
+              <h5>Pricing</h5>
+              <p>Charged per validated invoice, so cost follows the work the customer actually sends through.</p>
+            </div>
+          </details>
+        </div>
+        <div>
+          <div class="stage">
+            <div class="stage-bar"><span class="dots"><i></i><i></i><i></i></span><span class="ttl">Validation details</span><span class="tabs" role="group" aria-label="Example invoice"><button type="button" aria-pressed="true" data-inv="bad">Caught</button><button type="button" aria-pressed="false" data-inv="ok">Passed</button></span></div>
+            <div class="inv">
+              <div class="inv-l">
+                <div class="banner bad" id="invBanner"><span class="ic" id="invIc">×</span><div><b id="invHead">1 critical mismatch. Invoice auto-rejected</b><small id="invSub">Invoice number on the PDF doesn't match the record. Vendor has been emailed.</small></div><span class="score" id="invScore">4/5 rules pass</span></div>
+                <table class="vt" aria-label="Field comparison">
+                  <thead><tr><th>Field</th><th>From PDF</th><th>In record</th><th>Result</th></tr></thead>
+                  <tbody id="invRows"></tbody>
+                </table>
+              </div>
+              <div class="pdf" aria-hidden="true"><div class="paper" id="paper"></div></div>
+            </div>
+          </div>
+          <p class="caption">Recreated screen. Vendor, numbers and amounts are made up.</p>
+          <div class="stage" style="margin-top:16px">
+            <div class="stage-bar"><span class="dots"><i></i><i></i><i></i></span><span class="ttl">How a value is trusted</span><span class="tag">Consensus check</span></div>
+            <div class="chain" aria-label="Consensus flow">
+              <span>Invoice PDF</span><em>→</em><span>Model A reads</span><em>+</em><span>Model B reads</span><em>→</em><span>Agree?</span><em>yes →</em><span class="won">Check against record</span>
+            </div>
+            <div class="chain" style="padding-top:0" aria-label="When models disagree">
+              <em>no →</em><span>Model C breaks the tie</span><em>still no →</em><span>Raise internal record, notify team</span><em>always →</em><span>Log which model was wrong</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </article>
+
+    <!-- 4 FSM -->
+    <article class="ticket" id="fsm">
+      <div class="meta"><span class="chip id">Field Service Management</span><span class="chip live"><span class="dot"></span>Live</span><span class="chip">0→1 in 5 months</span><span class="chip">Team of 15</span><span class="chip">Retail chains · FM companies</span></div>
+      <h3>From zero to a live dispatch board in five months</h3>
+      <div class="t-grid">
+        <div>
+          <p>Retail chains and service companies needed to send the right technician to the right store at the right time, and see the whole day on one screen. I led the Field Service vertical from nothing to live with a cross-functional team of 15.</p>
+          <p>The heart of it is the dispatch console: every technician, every appointment, live status, time off, and SLA risk in one view, with a map for where everyone is right now.</p>
+          <div class="kpis">
+            <div><b class="hi">$1M</b><span>TCV potential unlocked in year one</span></div>
+            <div><b>$400K</b><span>proof of concept rescued on site with the customer's US leadership</span></div>
+            <div><b>4</b><span>APMs mentored on the next bets</span></div>
+          </div>
+          <details class="deep">
+            <summary>Read the full story</summary>
+            <div class="body">
+              <h5>Who it serves</h5>
+              <ul>
+                <li><b>Dispatcher</b>: plans the day, reacts when a truck breaks down or a job overruns.</li>
+                <li><b>Technician</b>: sees the next job, goes en route, works on site, completes.</li>
+                <li><b>Service manager</b>: watches SLAs, overdue jobs and mismatches.</li>
+                <li><b>Customer</b>: wants the visit confirmed and the job done the first time.</li>
+              </ul>
+              <h5>Design choices</h5>
+              <ul>
+                <li>One legend for everything: appointment status, technician status and time off types all read at a glance.</li>
+                <li>Time off is first class (training, sick, vacation, truck breakdown, stand-by), because a dispatcher plans around people, not slots.</li>
+                <li>Unassigned work sits on the left with priority and SLA breach badges, so the urgent job is the first thing you see.</li>
+                <li>Pricing set separately for each segment, because a retail chain and an FM company count value differently.</li>
+              </ul>
+              <h5>The $400K rescue</h5>
+              <p>A large proof of concept was slipping. I flew out, whiteboarded the workflow with the customer's US leadership on site, and we iterated fast until it matched how their teams actually worked.</p>
+            </div>
+          </details>
+        </div>
+        <div>
+          <div class="stage" id="dispatchStage">
+            <div class="stage-bar"><span class="dots"><i></i><i></i><i></i></span><span class="ttl">Dispatch Console</span><span class="tabs" role="group" aria-label="View"><button type="button" aria-pressed="true" data-view="board">Board</button><button type="button" aria-pressed="false" data-view="map">Map</button></span></div>
+            <div class="disp-tools"><span class="tabs" role="group" aria-label="Range"><button type="button" aria-pressed="true">Day</button><button type="button" aria-pressed="false" disabled>Week</button><button type="button" aria-pressed="false" disabled>Month</button></span><span class="chip">Territory: North</span><span class="clock" id="clock">10:00</span></div>
+            <div id="boardView">
+              <div class="disp">
+                <div class="queue" id="queue" aria-label="Unassigned appointments"></div>
+                <div class="board"><div class="grid" id="grid"></div></div>
+              </div>
+            </div>
+            <div id="mapView" hidden><div class="mapwrap"><svg id="map" viewBox="0 0 760 440" role="img" aria-label="Map of technicians moving to stores"></svg><div class="maplist" id="maplist"></div></div></div>
+            <div class="legend" id="legend" aria-label="Legend. Click to highlight."></div>
+          </div>
+          <p class="caption">Live recreation. Click a legend item to highlight it. Names, stores and times are made up.</p>
+        </div>
+      </div>
+    </article>
+
+    <!-- 5 FRONTLINE -->
+    <article class="ticket" id="frontline">
+      <div class="meta"><span class="chip id">Frontline</span><span class="chip soon"><span class="dot"></span>Going to production this year</span><span class="chip">2nd prize, company hackathon</span><span class="chip">Mobile PWA</span></div>
+      <h3>Everything that happens before a work order exists</h3>
+      <div class="t-grid">
+        <div>
+          <p>Cleaning and FM contractors win work through site surveys and proposals. Today that's a person with a phone, a spreadsheet, and an RFP team retyping it all. I read one customer's own site-walk tool line by line: one HTML file on one device, seven fields, one number for "rooms to clean" across a whole building, no photos, no price.</p>
+          <p>Frontline carries the enquiry through the site walk, the priced proposal and the win, then creates the site, spaces and contract in the operations system in one step. I did the discovery, then built it with two teammates in a hackathon.</p>
+          <div class="kpis">
+            <div><b class="hi">582</b><span>of 1,243 quotes were revised within 60 days</span></div>
+            <div><b>8</b><span>paying customers with critical tickets asking for one "Revise" button</span></div>
+            <div><b>1</b><span>write to the operations system, only when a deal is won</span></div>
+          </div>
+          <p class="basis">From customer records and support tickets, Aug 2026</p>
+          <details class="deep">
+            <summary>Read the full story</summary>
+            <div class="body">
+              <h5>How an FM bid is really priced</h5>
+              <p>Area becomes an asset count, the asset count becomes a workforce, and the workforce becomes a price. Frontline structures that chain instead of leaving it in a spreadsheet.</p>
+              <h5>Decisions I'm proud of</h5>
+              <ul>
+                <li>The site walk has no pre-filled grid. The surveyor taps "Add another room" and records each real room with its condition and access notes.</li>
+                <li>A "no show" visit is its own outcome and never counts as surveyed.</li>
+                <li>AI suggests. It never touches a quantity, a rate, a total or a status. Those are plain functions.</li>
+                <li>We published a list of what we chose not to build, and every claim was checked against call transcripts. One popular number didn't survive the check, so we dropped it.</li>
+              </ul>
+            </div>
+          </details>
+        </div>
+        <div>
+          <div class="stage">
+            <div class="stage-bar"><span class="dots"><i></i><i></i><i></i></span><span class="ttl">Frontline · commercial chain</span><span class="tag">PWA</span></div>
+            <div class="chain" aria-label="Lifecycle">
+              <span>Enquiry</span><em>→</em><span>Qualify</span><em>→</em><span>Portfolio</span><em>→</em><span>Survey</span><em>→</em><span>Walk</span><em>→</em><span>Price</span><em>→</em><span>Approve</span><em>→</em><span>Send</span><em>→</em><span class="won">Won</span><em>⇒</em><span>Site + contract created</span>
+            </div>
+            <div style="padding:0 14px 8px" class="eyebrow">Site walk · Level 2, North Tower</div>
+            <div class="walk" id="walk">
+              <div class="room"><b>Reception</b>Hard floor · 140 m²<br><span class="cs" style="background:var(--ok-soft);color:var(--ok)">4 · Good</span></div>
+              <div class="room"><b>Open office A</b>Carpet · 620 m²<br><span class="cs" style="background:var(--warn-soft);color:var(--warn)">3 · Fair</span></div>
+              <div class="room"><b>Washrooms</b>Tiled · 6 cubicles<br><span class="cs" style="background:var(--bad-soft);color:var(--bad)">2 · Poor</span></div>
+              <div class="room"><b>Pantry</b>Vinyl · 45 m²<br><span class="cs" style="background:var(--ok-soft);color:var(--ok)">4 · Good</span></div>
+              <div class="room"><b>Server room</b>Access by escort only<br><span class="cs" style="background:var(--info-soft);color:var(--info)">Restricted</span></div>
+              <div class="room add">+ Add another room</div>
+            </div>
+          </div>
+          <p class="caption">A condition score always shows with its word, so it can't be read backwards.</p>
+        </div>
+      </div>
+    </article>
+  </div>
+</section>
+
+<!-- ============ ON THE GROUND ============ -->
+<section id="field-work">
+  <div class="wrap">
+    <div class="sec-head">
+      <div><span class="eyebrow">More than the PM title</span><h2>I've done the job on the ground</h2></div>
+      <p class="lede">I don't hand a spec over the wall. I've implemented, sold, demoed and tested the products myself, and sat with customers, designers and engineers through all of it.</p>
+    </div>
+    <div class="ground">
+      <div><span class="k">Implementation</span><h4>Start to finish, on site</h4><p>I've run customer implementations end to end myself, from discovery and configuration to go-live, on UK and Middle East accounts.</p></div>
+      <div><span class="k">Big pursuits</span><h4>Led teams on $1M demos</h4><p>For months at a time I've led small teams building large, high-stakes demos. I've won a few, lost more, and learned the most from the losses.</p></div>
+      <div><span class="k">Sales</span><h4>Cold calls as a BDR</h4><p>When AI made it possible, I picked up cold calling and outbound myself, so I'd hear objections first-hand rather than second-hand.</p></div>
+      <div><span class="k">Pre-sales</span><h4>Demos of what I built</h4><p>I've demoed Field Service and connected-building features to buyers, and reviewed SOWs, BRDs and RFPs as the product voice in the deal.</p></div>
+      <div><span class="k">Build</span><h4>Close to design and engineering</h4><p>I work through the screens with design and the trade-offs with engineering: model choice, fallbacks, and what lives in the prompt versus the pipeline.</p></div>
+      <div><span class="k">Strongest suit</span><h4>Evals before production</h4><p>Every agent I've built ships with a strong eval suite. It's tested against real scenarios and real records well before a customer sees it.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ PLATFORM ============ -->
+<section id="platform" style="background:var(--surface-2)">
+  <div class="wrap">
+    <div class="sec-head">
+      <div><span class="eyebrow">Also shipped</span><h2>Platform, data and energy</h2></div>
+      <p class="lede">Before AI, I owned the core maintenance platform: about $4.5M ARR across 25+ enterprise customers. The unglamorous pieces that make everything else possible.</p>
+    </div>
+    <div class="pgrid">
+      <div><span class="k">Platform</span><h4>Data Loader</h4><p>A self-service desktop app for bulk data loads. Adopted by every customer and cut onboarding friction.</p></div>
+      <div><span class="k">Platform</span><h4>Data management</h4><p>Tools to clean, fix and govern large site and asset datasets without engineering help.</p></div>
+      <div><span class="k">Platform</span><h4>Delegation</h4><p>Hand your approvals and tasks to a colleague while you're away, so work doesn't stall.</p></div>
+      <div><span class="k">Platform</span><h4>Impersonation</h4><p>Support and admins can see the product exactly as a user does, with every action audited.</p></div>
+      <div><span class="k">Energy &amp; IoT</span><h4>M&amp;V</h4><p>Measurement and verification of energy savings against a baseline, so savings can be proven.</p></div>
+      <div><span class="k">Energy &amp; IoT</span><h4>Control actions</h4><p>Send commands to building equipment from the platform, like changing a set point.</p></div>
+      <div><span class="k">Energy &amp; IoT</span><h4>Utility meters</h4><p>Utility meter management and clean-up of utility consumption data.</p></div>
+      <div><span class="k">Growth</span><h4>Adoption &amp; retention</h4><p>Grew multi-module adoption ~10% in 12 months: ~$50K upsell and two accounts worth $330K ARR kept.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ WRITING ============ -->
+<section id="writing" style="padding-top:clamp(56px,8vw,96px)">
+  <div class="wrap">
+    <div class="sec-head">
+      <div><span class="eyebrow">Writing</span><h2>What I've written</h2></div>
+      <p class="lede">I write about what I learn from running AI inside real facilities operations.</p>
+    </div>
+    <div class="posts">
+      <a class="post" href="https://facilio.com/blog/why-cafm-dashboards-dont-work/" target="_blank" rel="noopener">
+        <span class="src">Facilio blog · Feb 2026</span>
+        <h4>Dashboards didn't save facilities management. They just made firefighting prettier.</h4>
+        <p>Seeing the fire on a dashboard doesn't put it out. Teams stall between visibility and action, and the real losses sit in three choke points: service intake, invoice approval and decisions. That's where agents that act, not charts, make the difference.</p>
+        <span class="go">Read the article ↗</span>
+      </a>
+      <a class="post" href="https://www.linkedin.com/posts/sudharsan454_the-first-time-our-voice-agent-handled-a-ugcPost-7446851475542114304-Qgbo/" target="_blank" rel="noopener">
+        <span class="src">LinkedIn post</span>
+        <h4>The first time our voice agent handled an after-hours call on its own</h4>
+        <p>The tenant never knew they weren't talking to a person. Fourteen months of building AI agents inside real FM operations taught me the hard part was never the technology. It was knowing which workflows to hand over, and having the confidence to let go.</p>
+        <span class="go">Read the post ↗</span>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ============ PATH ============ -->
+<section id="path">
+  <div class="wrap">
+    <div class="sec-head">
+      <div><span class="eyebrow">Path</span><h2>From test engineer to AI products</h2></div>
+      <p class="lede">I started by breaking software for a living. I still do it, just to my own products, before customers get the chance.</p>
+    </div>
+    <div class="tl">
+      <div class="cur"><span class="when">Nov 2025 – now</span><h4>AI Product Manager, Facilio</h4><p>Own Helpdesk AI and Payment Validator, reporting to the CEO. AI line from launch to ~$200K ARR in 12 months.</p></div>
+      <div><span class="when">Jan – Oct 2025</span><h4>Lead Product Manager, Facilio</h4><p>Field Service vertical 0→1 in 5 months. Rescued a ~$400K POC. Mentored 4 APMs.</p></div>
+      <div><span class="when">Oct 2021 – Dec 2024</span><h4>Product Manager, Facilio</h4><p>Core maintenance product, ~$4.5M ARR. Cut bugs 30% in a critical module. 20+ SOWs, 15 BRDs, 40+ RFPs for pre-sales.</p></div>
+      <div><span class="when">Aug 2019 – Sep 2021</span><h4>Product Manager, TCS</h4><p>Blockchain platform for digital bank guarantees, 15+ issuers and 5+ government bodies. Cut issuer workload by 5 FTEs.</p></div>
+      <div><span class="when">2017 – 2019</span><h4>MBA, University of Madras</h4><p>After a B.E. in Mechanical Engineering (2015).</p></div>
+      <div><span class="when">Jun 2015 – Aug 2017</span><h4>Test Engineering Analyst, Accenture</h4><p>QA for a bank's liquidity risk system. Rebuilt the regression suite and found 15% more defects.</p></div>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<footer id="contact">
+  <div class="wrap contact">
+    <div>
+      <span class="eyebrow">Contact</span>
+      <h2>Let's talk about a problem worth fixing</h2>
+      <div class="cta">
+        <button class="btn primary" type="button" id="copyMail2">Copy email: sudharsan454@gmail.com</button>
+        <a class="btn" href="Sudharsan-R-Resume.pdf" target="_blank" rel="noopener">Resume (PDF)</a>
+        <a class="btn" href="https://www.linkedin.com/in/sudharsan454" target="_blank" rel="noopener">LinkedIn</a>
+        <span class="copied" id="copiedMsg2" aria-live="polite"></span>
+      </div>
+    </div>
+    <p class="small">Customer names are left out on purpose. All product screens are recreations with made-up data. Figures are labelled with where they come from.<br>v1.2 · October 2026</p>
+  </div>
+</footer>
+
+<script>
+/* v1.0 */
+(function(){
+  var reduce = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  /* theme */
+  var root=document.documentElement, tb=document.getElementById('themeBtn'), modes=['auto','light','dark'], cur='auto';
+  try{cur=localStorage.getItem('sr-theme')||'auto'}catch(e){}
+  function applyTheme(m){cur=m;if(m==='auto')root.removeAttribute('data-theme');else root.setAttribute('data-theme',m);tb.textContent='Theme: '+m;try{localStorage.setItem('sr-theme',m)}catch(e){}}
+  applyTheme(cur);
+  tb.addEventListener('click',function(){applyTheme(modes[(modes.indexOf(cur)+1)%3])});
+
+  /* copy email */
+  function copier(btnId,msgId){
+    var b=document.getElementById(btnId),msg=document.getElementById(msgId);
+    b.addEventListener('click',function(){
+      var t='sudharsan454@gmail.com';
+      function ok(){msg.textContent='Copied'; setTimeout(function(){msg.textContent=''},2000)}
+      if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(t).then(ok,function(){msg.textContent=t})}else{msg.textContent=t}
+    });
+  }
+  copier('copyMail','copiedMsg');copier('copyMail2','copiedMsg2');
+
+  /* agent flow highlight */
+  var agents=[].slice.call(document.querySelectorAll('#agentFlow .agent')),ai=0;
+  if(!reduce&&agents.length){agents[0].classList.add('on');setInterval(function(){agents[ai].classList.remove('on');ai=(ai+1)%agents.length;agents[ai].classList.add('on')},1400)}
+
+  /* chat replay */
+  function replay(id){
+    var ms=[].slice.call(document.querySelectorAll('#'+id+' .m'));
+    if(reduce)return;
+    ms.forEach(function(m){m.classList.add('hide');m.hidden=true});
+    ms.forEach(function(m,i){setTimeout(function(){m.hidden=false;requestAnimationFrame(function(){m.classList.remove('hide')})},200+i*550)});
+  }
+  document.getElementById('replayChats').addEventListener('click',function(){replay('chatA');replay('chatB')});
+  if('IntersectionObserver' in window&&!reduce){
+    var seen=false,io=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting&&!seen){seen=true;replay('chatA');replay('chatB');io.disconnect()}})},{threshold:.4});
+    io.observe(document.getElementById('chatA'));
+  }
+
+  /* invoice */
+  var inv={
+    bad:{cls:'bad',ic:'×',head:'1 critical mismatch. Invoice auto-rejected',sub:"Invoice number on the PDF doesn't match the record. Vendor has been emailed.",score:'4/5 rules pass',
+      rows:[['ABN','62 418 903 551','62 418 903 551','ok','HARD'],['Invoice no.','40017722 - NO. 1','40017722','bad','HARD'],['Amount excl. GST','218.40 AUD','218.40 AUD','ok','HARD'],['Addressed to owner','Yes','','ok','SOFT'],['Marked "Tax Invoice"','Yes','','ok','SOFT']],
+      vendor:'NORTHLINE',vname:'Northline Services Pty Ltd',no:'TAX INVOICE NO. 40017722 - NO. 1',amt:'240.24',ex:'218.40',desc:'Handyman materials, September'},
+    ok:{cls:'ok',ic:'✓',head:'All checks passed. Safe to approve',sub:'PDF and record match on all 3 fields. All 5 rules passed.',score:'5/5 rules pass',
+      rows:[['ABN','17 305 662 840','17 305 662 840','ok','HARD'],['Invoice no.','10288','10288','ok','HARD'],['Amount excl. GST','2,960.00 AUD','2,960.00 AUD','ok','HARD'],['Addressed to owner','Yes','','ok','SOFT'],['Marked "Tax Invoice"','Yes','','ok','SOFT']],
+      vendor:'KESTREL',vname:'Kestrel Facility Works Pty Ltd',no:'TAX INVOICE 10288',amt:'3,256.00',ex:'2,960.00',desc:'Bi-annual louvre service, September'}
+  };
+  function renderInv(k,anim){
+    var d=inv[k],b=document.getElementById('invBanner');
+    b.className='banner '+d.cls;document.getElementById('invIc').textContent=d.ic;
+    document.getElementById('invHead').textContent=d.head;document.getElementById('invSub').textContent=d.sub;document.getElementById('invScore').textContent=d.score;
+    var tb=document.getElementById('invRows');tb.innerHTML='';
+    d.rows.forEach(function(r,i){
+      var tr=document.createElement('tr');if(r[3]==='bad')tr.className='miss';
+      tr.innerHTML='<td>'+r[0]+'</td><td class="v">'+r[1]+'</td><td class="v">'+(r[2]||'<span style="color:var(--muted)">read from PDF</span>')+'</td><td><span class="res '+r[3]+'">'+(r[3]==='ok'?'✓ Validated':'× Mismatch')+'<small>'+r[4]+' CHECK</small></span></td>';
+      if(anim&&!reduce){tr.classList.add('pending');setTimeout(function(){tr.classList.remove('pending')},250+i*260)}
+      tb.appendChild(tr);
+    });
+    var hl=k==='bad'?' class="hl"':'';
+    document.getElementById('paper').innerHTML='<span class="lg">'+d.vendor+'</span><div style="float:right;text-align:right">'+d.vname+'<br>Brisbane QLD</div><div style="clear:both;margin-top:14px">Bill to: Harbourline Property Group<br>Level 12, 1 Example Place, Sydney NSW</div><div class="tx"'+hl+'>'+d.no+'</div><div>Work order 330412 · Site: 14 Example St</div><table><tr><td>'+d.desc+'</td><td style="text-align:right">'+d.ex+'</td></tr><tr><td>GST</td><td style="text-align:right">'+(parseFloat(d.ex.replace(',',''))*0.1).toFixed(2)+'</td></tr><tr><td><b>Total</b></td><td style="text-align:right"><b>'+d.amt+'</b></td></tr></table>';
+  }
+  renderInv('bad',false);
+  [].forEach.call(document.querySelectorAll('[data-inv]'),function(btn){btn.addEventListener('click',function(){[].forEach.call(document.querySelectorAll('[data-inv]'),function(x){x.setAttribute('aria-pressed',x===btn)});renderInv(btn.dataset.inv,true)})});
+
+  /* dispatch console */
+  var COLORS=['#0f6e65','#6b4fd0','#c2457d','#2563c9','#b7791f','#2f8a3e','#e8590c','#4b5563'];
+  var STAGES=['scheduled','dispatched','enroute','inprogress','completed'];
+  var LABEL={scheduled:'Scheduled',dispatched:'Dispatched',enroute:'En route',inprogress:'In progress',completed:'Completed',cancelled:'Cancelled',mismatch:'Mismatch'};
+  var ICON={scheduled:'',dispatched:'',enroute:'🚚',inprogress:'🔧',completed:'✓',cancelled:'',mismatch:'⚠'};
+  var techs=[
+    {n:'Priya Nair',a:'Northgate',appts:[[0,1.6,'SA-07 · Store 025 · Panel upgrade',2],[3.4,1.8,'SA-03 · Store 117 · Appliance repair',0]]},
+    {n:'Marcus Webb',a:'Lakeside',appts:[[0.3,2.2,'SA-11 · Store 045 · Plumbing',3],[4.2,2.1,'SA-10 · Store 132 · Locksmith',1]]},
+    {n:'Aisha Karim',a:'Old Town',off:[0,9,'Training','training']},
+    {n:'Diego Alvarez',a:'Riverside',appts:[[1.0,2.4,'SA-12 · Store 148 · Janitorial',6],[5.1,2.4,'SA-19 · Store 066 · Network',0]]},
+    {n:'Hannah Lee',a:'Hill Park',appts:[[0,1.2,'SA-01 · Store 074 · Fire alarm test',4],[2.0,2.6,'SA-14 · Store 092 · Pool maintenance',2]]},
+    {n:'Tom Osei',a:'Docklands',off:[0,4,'Truck breakdown','truck'],appts:[[5,2.5,'SA-17 · Store 090 · General service',0]]},
+    {n:'Rina Patel',a:'Westfield',appts:[[0.6,2.8,'SA-15 · Store 063 · Security check',1],[4.6,2.0,'SA-21 · Store 019 · HVAC',5]]},
+    {n:'Sam Carter',a:'Eastbank',off:[6,3,'Stand by','standby'],appts:[[0.2,1.8,'SA-23 · Store 001 · Fuel dispenser',3],[2.6,2.4,'SA-06 · Store 014 · HVAC system',1]]}
+  ];
+  var grid=document.getElementById('grid');
+  var hrs='<div class="hrs"><div>Technician</div>'+['8 AM','9 AM','10 AM','11 AM','12 PM','1 PM','2 PM','3 PM','4 PM'].map(function(h){return '<div>'+h+'</div>'}).join('')+'</div>';
+  var rowsHtml='',apptEls=[];
+  techs.forEach(function(t,i){
+    var ini=t.n.split(' ').map(function(x){return x[0]}).join('');
+    var stIcon=t.off?(t.off[3]==='truck'?'🛠':''):'';
+    rowsHtml+='<div class="trow"><div class="tech"><span class="av'+(t.off&&t.off[0]===0&&t.off[1]===9?' off':'')+'" style="background:'+COLORS[i]+'">'+ini+'</span><div style="min-width:0"><b>'+t.n+'</b><span>📍 '+t.a+'</span></div><span class="st" data-tech="'+i+'"></span></div><div class="lanebox" data-lane="'+i+'"></div></div>';
+  });
+  grid.innerHTML=hrs+rowsHtml+'<div class="now" id="nowLine"></div>';
+  techs.forEach(function(t,i){
+    var lane=grid.querySelector('[data-lane="'+i+'"]');
+    if(t.off){var o=document.createElement('div');o.className='off-block t-'+t.off[3];o.dataset.k=t.off[3];o.style.left=(t.off[0]/9*100)+'%';o.style.width=(t.off[1]/9*100)+'%';o.textContent=t.off[2];lane.appendChild(o)}
+    (t.appts||[]).forEach(function(a){var el=document.createElement('div');el.className='appt';el.style.left=(a[0]/9*100)+'%';el.style.width='calc('+(a[1]/9*100)+'% - 4px)';el._stage=a[3];el._label=a[2];el._t=i;lane.appendChild(el);apptEls.push(el)});
+  });
+  function paint(el){var s=el._stage>=0&&el._stage<STAGES.length?STAGES[el._stage]:(el._stage===5?'cancelled':'mismatch');el.className='appt s-'+s;el.dataset.k=s;el.innerHTML='<span class="ic">'+ICON[s]+'</span>'+el._label;el.title=LABEL[s]+' · '+el._label}
+  apptEls[3]._stage=6; /* one mismatch to show the state */
+  apptEls[11]._stage=5; /* one cancelled */
+  apptEls.forEach(paint);
+
+  /* queue */
+  var q=[['SA-24','Fuel dispenser repair','Store 001','high',true,true],['SA-22','HVAC maintenance','Store 022','low',false,false],['SA-20','Electrical panel upgrade','Store 043','high',true,false],['SA-18','Roof inspection','Store 089','med',false,false],['SA-16','Plumbing fixture','Store 076','med',true,false]];
+  document.getElementById('queue').innerHTML=q.map(function(x){return '<div class="qcard"><div class="id"><span>'+x[0]+'</span><span>10:0'+Math.floor(Math.random()*9)+'</span></div><b>'+x[1]+'</b><span class="site">📍 '+x[2]+'</span><div>'+(x[5]?'<span class="pill new">NEW</span>':'')+'<span class="pill '+x[3]+'">'+(x[3]==='med'?'MEDIUM':x[3].toUpperCase())+'</span>'+(x[4]?'<span class="pill breach">BREACHED</span>':'')+'</div></div>'}).join('');
+
+  /* legend */
+  var leg=[['Appointment',[['scheduled','Scheduled','var(--ink-2)'],['dispatched','Dispatched','var(--violet)'],['enroute','En route','var(--warn)'],['inprogress','In progress','var(--info)'],['completed','Completed','var(--ok)'],['cancelled','Cancelled','var(--bad)'],['mismatch','Mismatch','var(--warn)']]],
+           ['Time off',[['training','Training','var(--hivis)'],['truck','Truck breakdown','var(--bad)'],['standby','Stand by','var(--warn)'],['vacation','Vacation','var(--violet)'],['sick','Sick','var(--info)'],['holiday','Holiday','var(--pink)']]]];
+  var lg=document.getElementById('legend');
+  lg.innerHTML=leg.map(function(g){return '<span class="grp">'+g[0]+'</span>'+g[1].map(function(x){return '<button type="button" aria-pressed="false" data-k="'+x[0]+'"><i style="background:'+x[2]+'"></i>'+x[1]+'</button>'}).join('')}).join('');
+  var active=null;
+  lg.addEventListener('click',function(e){var b=e.target.closest('button');if(!b)return;var k=b.dataset.k;active=active===k?null:k;
+    [].forEach.call(lg.querySelectorAll('button'),function(x){x.setAttribute('aria-pressed',x.dataset.k===active)});applyFilter()});
+  function applyFilter(){
+    grid.classList.toggle('filtering',!!active);
+    [].forEach.call(grid.querySelectorAll('.appt,.off-block'),function(el){el.classList.toggle('match',el.dataset.k===active)});
+  }
+
+  /* clock + progression */
+  var minutes=120,nowLine=document.getElementById('nowLine'),clock=document.getElementById('clock');
+  function setNow(){var frac=minutes/540;nowLine.style.left='calc(150px + (100% - 150px) * '+frac+')';var h=8+Math.floor(minutes/60),m=minutes%60;clock.textContent=(h>12?h-12:h)+':'+(m<10?'0':'')+m+(h>=12?' PM':' AM')}
+  setNow();
+  function tick(){
+    minutes+=6;if(minutes>520){minutes=60;apptEls.forEach(function(el,i){if(el._stage<5)el._stage=0;})}
+    apptEls.forEach(function(el){
+      if(el._stage>=5)return;
+      var left=parseFloat(el.style.left)/100*540;
+      var target=minutes<left-50?0:minutes<left-25?1:minutes<left?2:minutes<left+parseFloat(el.style.width.replace(/[^0-9.]/g,''))/100*540?3:4;
+      if(target!==el._stage){el._stage=target;paint(el)}
+    });
+    applyFilter();setNow();moveMap();
+  }
+  apptEls.forEach(function(el){if(el._stage<5){var left=parseFloat(el.style.left)/100*540;el._stage=minutes<left-50?0:minutes<left-25?1:minutes<left?2:3;paint(el)}});
+  if(!reduce)setInterval(tick,900);
+
+  /* map */
+  var svg=document.getElementById('map'),NS='http://www.w3.org/2000/svg';
+  function mk(tag,at,parent){var e=document.createElementNS(NS,tag);for(var k in at)e.setAttribute(k,at[k]);(parent||svg).appendChild(e);return e}
+  mk('rect',{x:0,y:0,width:760,height:440,fill:'var(--map-land)'});
+  mk('path',{d:'M0,300 C150,260 260,350 400,310 S640,240 760,280 L760,340 C640,300 520,380 400,365 S140,320 0,355 Z',fill:'var(--map-water)'});
+  mk('rect',{x:470,y:60,width:140,height:90,rx:12,fill:'var(--map-park)'});
+  mk('rect',{x:80,y:150,width:90,height:70,rx:10,fill:'var(--map-park)'});
+  [60,140,220,400].forEach(function(y){mk('line',{x1:0,y1:y,x2:760,y2:y,stroke:'var(--map-road)','stroke-width':y===220?9:5})});
+  [90,230,380,520,660].forEach(function(x){mk('line',{x1:x,y1:0,x2:x,y2:440,stroke:'var(--map-road)','stroke-width':x===380?9:5})});
+  mk('line',{x1:0,y1:20,x2:760,y2:420,stroke:'var(--map-road)','stroke-width':6,opacity:.8});
+  var stores=[[230,60,'Store 025'],[520,140,'Store 117'],[660,220,'Store 045'],[90,400,'Store 148'],[380,140,'Store 092'],[660,400,'Store 063'],[520,60,'Store 001']];
+  stores.forEach(function(s){var g=mk('g',{});mk('rect',{x:s[0]-9,y:s[1]-9,width:18,height:18,rx:4,fill:'var(--surface)',stroke:'var(--ink)','stroke-width':2},g);mk('text',{x:s[0]+13,y:s[1]+4,'font-size':11,fill:'var(--ink-2)','font-family':'Public Sans, sans-serif'},g).textContent=s[2]});
+  var mapTechs=[[0,90,140,0],[1,380,400,2],[3,230,220,3],[4,660,60,4],[6,90,60,5],[7,520,400,6]];
+  var dots=mapTechs.map(function(m){var t=techs[m[0]];var g=mk('g',{});var c=mk('circle',{r:13,fill:COLORS[m[0]],stroke:'var(--surface)','stroke-width':3},g);var tx=mk('text',{'text-anchor':'middle',dy:4,'font-size':10,'font-weight':700,fill:'#fff','font-family':'Public Sans, sans-serif'},g);tx.textContent=t.n.split(' ').map(function(x){return x[0]}).join('');var trail=mk('line',{stroke:COLORS[m[0]],'stroke-width':2,'stroke-dasharray':'4 4',opacity:.6});svg.insertBefore(trail,g);return {g:g,trail:trail,x:m[1],y:m[2],sx:m[1],sy:m[2],to:stores[m[3]],ti:m[0]}});
+  var ml=document.getElementById('maplist');
+  function moveMap(){
+    dots.forEach(function(d){
+      var tx=d.to[0],ty=d.to[1],dx=tx-d.x,dy=ty-d.y,dist=Math.hypot(dx,dy);
+      if(dist<4){d.x=d.sx;d.y=d.sy}else{var st=Math.min(9,dist);if(Math.abs(dx)>2){d.x+=Math.sign(dx)*Math.min(st,Math.abs(dx))}else{d.y+=Math.sign(dy)*Math.min(st,Math.abs(dy))}}
+      d.g.setAttribute('transform','translate('+d.x+','+d.y+')');d.trail.setAttribute('x1',d.x);d.trail.setAttribute('y1',d.y);d.trail.setAttribute('x2',tx);d.trail.setAttribute('y2',ty);
+    });
+    ml.innerHTML=dots.map(function(d){var near=Math.hypot(d.to[0]-d.x,d.to[1]-d.y)<30;return '<div><i style="background:'+COLORS[d.ti]+'"></i>'+techs[d.ti].n+' · '+(near?'On site, ':'En route to ')+d.to[2]+'</div>'}).join('');
+  }
+  moveMap();
+
+  [].forEach.call(document.querySelectorAll('[data-view]'),function(btn){btn.addEventListener('click',function(){
+    [].forEach.call(document.querySelectorAll('[data-view]'),function(x){x.setAttribute('aria-pressed',x===btn)});
+    var m=btn.dataset.view==='map';document.getElementById('boardView').hidden=m;document.getElementById('mapView').hidden=!m;
+  })});
+})();
+</script>
+</body>
+</html>

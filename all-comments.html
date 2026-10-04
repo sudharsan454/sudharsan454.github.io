@@ -1,0 +1,231 @@
+<!-- Facilio Run comment layer — COMMENT HUB. v2 · 29-Jul-2026
+     Reads the whole "comments" KV collection for this site: every thread on every
+     page, in one place. Page titles are read from each page's <title> at runtime,
+     so this file needs no per-site editing — copy it in as-is. -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<script src="/review-backend.js"></script>
+<meta name="robots" content="noindex">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Comment hub</title>
+<style>
+  :root{--ink:#1a1d24;--body:#33373f;--muted:#6b7077;--line:#e7e6e1;--bg:#f3f2ee;--card:#fff;--blue:#1864E6;--green:#15803D;--amber:#B45309;}
+  *{box-sizing:border-box;}
+  body{margin:0;background:var(--bg);color:var(--body);font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Arial,sans-serif;line-height:1.5;-webkit-font-smoothing:antialiased;}
+  .wrap{max-width:840px;margin:0 auto;padding:40px 18px 72px;}
+  .brand{font-weight:800;letter-spacing:.03em;font-size:17px;color:var(--ink);}
+  h1{font-family:Georgia,serif;font-size:28px;line-height:1.2;margin:10px 0 6px;color:var(--ink);}
+  .lead{color:var(--muted);font-size:15px;margin:0 0 24px;}
+  a.back{color:var(--blue);text-decoration:none;font-size:13px;font-weight:600;}
+  .stats{display:flex;gap:10px;flex-wrap:wrap;margin:0 0 20px;}
+  .stat{background:#fff;border:1px solid var(--line);border-radius:11px;padding:10px 14px;min-width:104px;}
+  .stat b{display:block;font-size:20px;color:var(--ink);line-height:1.25;}
+  .stat span{font-size:11px;letter-spacing:.05em;text-transform:uppercase;color:var(--muted);font-weight:700;}
+  .controls{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin:0 0 22px;}
+  select,input[type=search]{font:inherit;font-size:13.5px;color:var(--ink);background:var(--card);border:1.5px solid var(--line);border-radius:10px;padding:9px 12px;}
+  select{cursor:pointer;}
+  input[type=search]{min-width:180px;}
+  .seg{display:flex;gap:3px;background:#eceae4;border-radius:9px;padding:3px;}
+  .seg button{font:600 12.5px -apple-system,sans-serif;cursor:pointer;border:none;padding:7px 14px;border-radius:7px;background:transparent;color:#6b7077;}
+  .seg button.on{background:#fff;color:var(--ink);box-shadow:0 1px 2px rgba(0,0,0,.08);}
+  .summary{font-size:13px;color:var(--muted);margin-left:auto;}
+  .pagegroup{margin:0 0 26px;}
+  .pagehead{display:flex;align-items:center;gap:10px;margin:0 0 12px;padding-bottom:8px;border-bottom:2px solid var(--line);}
+  .pagehead .t{font-weight:800;font-size:15px;color:var(--ink);}
+  .pagehead .c{font-size:12px;color:var(--muted);background:#fff;border:1px solid var(--line);border-radius:100px;padding:2px 9px;white-space:nowrap;}
+  .pagehead a{margin-left:auto;font-size:12px;color:var(--blue);text-decoration:none;font-weight:600;white-space:nowrap;}
+  .thread{border:1px solid #ececec;border-radius:12px;margin-bottom:11px;overflow:hidden;background:#fff;}
+  .thread.resolved{background:#f5faf5;border-color:#dfe9df;}
+  .tbar{display:flex;justify-content:space-between;align-items:center;gap:8px;padding:7px 12px;border-bottom:1px solid #f3f2ee;background:#fafafa;font-size:11px;font-weight:700;letter-spacing:.04em;color:#9aa0aa;}
+  .thread.resolved .tbar{background:#eaf6ee;color:var(--green);}
+  .tbar .pin{color:var(--amber);}
+  .item{padding:10px 12px;}
+  .item+.item{border-top:1px dashed #f0efea;}
+  .ihead{display:flex;justify-content:space-between;align-items:baseline;gap:8px;margin-bottom:3px;}
+  .who{font-weight:700;font-size:13px;color:var(--ink);}
+  .when{font-size:11px;color:#9aa0aa;white-space:nowrap;}
+  .text{font-size:13.5px;line-height:1.5;color:var(--body);white-space:pre-wrap;}
+  .mention{color:var(--blue);font-weight:700;background:#eef4ff;border-radius:4px;padding:0 3px;}
+  .empty{color:#9aa0aa;font-size:14px;text-align:center;padding:50px 10px;}
+  .err{background:#fff4f4;border:1px solid #f3d6d6;color:#8a3a3a;border-radius:10px;padding:12px 14px;font-size:13px;margin-bottom:18px;}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <a class="back" href="/?review">← Back to the portfolio</a>
+  <div style="margin-top:14px;" class="brand">facilio</div>
+  <h1>Comment hub</h1>
+  <p class="lead">Every comment on every page of this site, in one place — live from the shared store, showing what everyone has added.</p>
+
+  <div id="errbox"></div>
+  <div class="stats" id="stats"></div>
+
+  <div class="controls">
+    <select id="pageFilter"><option value="__all__">All pages</option></select>
+    <div class="seg" id="statusSeg">
+      <button data-v="open">Open</button>
+      <button data-v="resolved">Resolved</button>
+      <button data-v="all" class="on">All</button>
+    </div>
+    <input type="search" id="q" placeholder="Search text or person…">
+    <span class="summary" id="summary"></span>
+  </div>
+
+  <div id="list"><div class="empty">Loading comments…</div></div>
+</div>
+
+<script>
+(function () {
+  "use strict";
+  var COLLECTION = "comments";
+  var statusFilter = "all";
+  var pageFilter = "__all__";
+  var query = "";
+  var records = [];
+  var titles = {};
+
+  function titleFor(p) { return titles[p] || p; }
+  function deriveName(email) {
+    if (!email) return "Someone";
+    var l = String(email).split("@")[0], f = l.split(/[._-]/)[0] || l;
+    return f.charAt(0).toUpperCase() + f.slice(1);
+  }
+  function fmtTime(iso) { try { return new Date(iso).toLocaleString(undefined, { month: "short", day: "numeric", hour: "numeric", minute: "2-digit" }); } catch (e) { return ""; } }
+  function esc(s) { return String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;"); }
+  function highlight(t) { return esc(t).replace(/@([A-Za-z][A-Za-z0-9._ ]{0,28})/g, function (m) { return '<span class="mention">' + m.trim() + '</span>'; }); }
+
+  function normalize(value) {
+    var v = (value && value.value !== undefined) ? value.value : value;
+    if (!v) return [];
+    if (Array.isArray(v.threads)) return v.threads;
+    if (Array.isArray(v)) {
+      return v.map(function (c) {
+        return { section: c.section || "general", sectionLabel: c.sectionLabel || "General",
+          resolved: !!c.resolved, items: [{ email: c.email, name: c.name, text: c.text,
+            at: c.at || new Date().toISOString(), mentions: c.mentions || [] }] };
+      });
+    }
+    return [];
+  }
+
+  /* Read each page's real <title> so the hub reads like a document index rather
+     than a list of filenames. Fails soft — falls back to the filename. */
+  function loadTitles() {
+    return Promise.all(records.map(function (r) {
+      return fetch("/" + r.page).then(function (res) { return res.ok ? res.text() : ""; })
+        .then(function (html) {
+          var m = html.match(/<title[^>]*>([\s\S]*?)<\/title>/i);
+          if (m && m[1]) titles[r.page] = m[1].trim().replace(/\s+/g, " ").slice(0, 80);
+        }).catch(function () {});
+    }));
+  }
+
+  function loadAll() {
+    return fetch("/api/db/" + COLLECTION)
+      .then(function (r) { if (!r.ok) throw new Error("HTTP " + r.status); return r.json(); })
+      .then(function (data) {
+        var items = (data && data.items) ? data.items : [];
+        records = items.map(function (it) {
+          /* keys are flattened ("__" for "/") because the KV store rejects slashes */
+          return { page: String(it.key || "").replace(/^page:/, "").replace(/__/g, "/"), threads: normalize(it.value) };
+        }).filter(function (r) { return r.page && r.threads.length; });
+        if (items.length && !records.length) {
+          document.getElementById("errbox").innerHTML =
+            '<div class="err"><b>Found ' + items.length + ' stored record(s) but couldn\'t parse them.</b>'
+            + '<pre style="white-space:pre-wrap;font-size:11px;max-height:200px;overflow:auto;background:#fff;padding:8px;border-radius:6px;margin-top:8px;">'
+            + (function(){ try { return esc(JSON.stringify(items[0], null, 2)); } catch(e){ return "(unserializable)"; } })()
+            + '</pre></div>';
+        }
+        return loadTitles();
+      })
+      .then(function () {
+        var pf = document.getElementById("pageFilter");
+        records.slice().sort(function (a, b) { return titleFor(a.page) < titleFor(b.page) ? -1 : 1; })
+          .forEach(function (r) {
+            var o = document.createElement("option");
+            o.value = r.page; o.textContent = titleFor(r.page);
+            pf.appendChild(o);
+          });
+      })
+      .catch(function (e) {
+        document.getElementById("errbox").innerHTML =
+          '<div class="err">Couldn\'t load the shared comment store (' + esc(e.message) + '). Open this page on the live site while signed in.</div>';
+      });
+  }
+
+  function passesStatus(t) {
+    if (statusFilter === "open") return !t.resolved;
+    if (statusFilter === "resolved") return !!t.resolved;
+    return true;
+  }
+  function passesQuery(t) {
+    if (!query) return true;
+    return (t.items || []).some(function (it) {
+      return ((it.text || "") + " " + (it.name || "") + " " + (it.email || "")).toLowerCase().indexOf(query) !== -1;
+    });
+  }
+
+  function renderStats() {
+    var open = 0, resolved = 0, comments = 0, pins = 0, people = {};
+    records.forEach(function (rec) {
+      rec.threads.forEach(function (t) {
+        t.resolved ? resolved++ : open++;
+        if (t.anchor) pins++;
+        (t.items || []).forEach(function (it) { comments++; if (it.email) people[it.email] = 1; });
+      });
+    });
+    document.getElementById("stats").innerHTML =
+      [[open, "Open"], [resolved, "Resolved"], [comments, "Comments"], [pins, "Pinned"],
+       [Object.keys(people).length, "Reviewers"], [records.length, "Pages"]]
+      .map(function (p) { return '<div class="stat"><b>' + p[0] + '</b><span>' + p[1] + '</span></div>'; }).join("");
+  }
+
+  function render() {
+    var list = document.getElementById("list");
+    Array.prototype.forEach.call(document.querySelectorAll("#statusSeg button"), function (b) {
+      b.className = b.getAttribute("data-v") === statusFilter ? "on" : "";
+    });
+    renderStats();
+    var recs = records.filter(function (r) { return pageFilter === "__all__" || r.page === pageFilter; });
+    var totalThreads = 0, totalComments = 0, html = "";
+    recs.forEach(function (rec) {
+      var threads = rec.threads.filter(function (t) { return passesStatus(t) && passesQuery(t); });
+      if (!threads.length) return;
+      threads.sort(function (a, b) { return new Date(b.items[0].at) - new Date(a.items[0].at); });
+      var cCount = threads.reduce(function (n, t) { return n + (t.items ? t.items.length : 0); }, 0);
+      totalThreads += threads.length; totalComments += cCount;
+      html += '<div class="pagegroup"><div class="pagehead"><span class="t">' + esc(titleFor(rec.page)) + '</span>'
+            + '<span class="c">' + threads.length + ' thread' + (threads.length > 1 ? 's' : '') + ' · ' + cCount + ' comment' + (cCount > 1 ? 's' : '') + '</span>'
+            + '<a href="/' + esc(rec.page) + '" target="_blank">Open page →</a></div>';
+      threads.forEach(function (t) {
+        html += '<div class="thread' + (t.resolved ? ' resolved' : '') + '">';
+        html += '<div class="tbar"><span>' + (t.resolved ? '✓ RESOLVED' : (t.anchor ? '<span class="pin">📍 PINNED TO A SPOT</span>' : 'THREAD')) + '</span>'
+              + '<span style="color:#9aa0aa;font-weight:600;">' + esc(t.sectionLabel || '') + '</span></div>';
+        (t.items || []).forEach(function (it) {
+          html += '<div class="item"><div class="ihead"><span class="who" title="' + esc(it.email || '') + '">' + esc(it.name || deriveName(it.email)) + '</span>'
+                + '<span class="when">' + fmtTime(it.at) + '</span></div><div class="text">' + highlight(it.text || '') + '</div></div>';
+        });
+        html += '</div>';
+      });
+      html += '</div>';
+    });
+    document.getElementById("summary").textContent = totalComments
+      ? (totalComments + " comment" + (totalComments > 1 ? "s" : "") + " · " + totalThreads + " thread" + (totalThreads > 1 ? "s" : ""))
+      : "";
+    list.innerHTML = html || '<div class="empty">No ' + (statusFilter === "all" ? "" : statusFilter + " ") + 'comments' + (pageFilter === "__all__" ? " anywhere yet." : " on this page.") + '</div>';
+  }
+
+  document.getElementById("statusSeg").addEventListener("click", function (e) {
+    var b = e.target.closest("button"); if (!b) return;
+    statusFilter = b.getAttribute("data-v"); render();
+  });
+  document.getElementById("pageFilter").addEventListener("change", function (e) { pageFilter = e.target.value; render(); });
+  document.getElementById("q").addEventListener("input", function (e) { query = e.target.value.trim().toLowerCase(); render(); });
+
+  loadAll().then(render);
+})();
+</script>
+</body>
+</html>

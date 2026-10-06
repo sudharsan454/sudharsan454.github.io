@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <!--
   Sudharsan R — Portfolio
-  Version: v2.1 · 6 Oct 2026
+  Version: v2.0 · 6 Oct 2026
   Author: Sudharsan R (built with Claude)
   Hosting: GitHub Pages (sudharsan454.github.io, account sudharsan454)
   Sources: Resume (Oct 2026); Helpdesk AI product document v4.0; field-agent baselines (UK FM group, Sep 2026);
@@ -13,7 +13,6 @@
            Frontline judging document (Aug 2026).
   Privacy: customer names removed; all UI recreations use made-up names, IDs and amounts. No phone number.
   Changelog:
-    v2.1  6 Oct 2026  US contractor case: screens now show what the product flags as missing (vendor onboarding gaps, draft proposal next step, contract '3 to fix before publishing', RFQ next step) from the 5 Oct upgrade mail; approvals moved from 3 places to 1; changes list updated.
     v2.0  6 Oct 2026  Restructure: work first, 3 lead cases (Helpdesk, Field agents, Payment Validator) + More work; 7 tag chips filter the work (?tag= link per tag); headshot; roles line; hero numbers 97% / $1.5M signed / $200K; English + Arabic only; Field agents: real WhatsApp screen recordings, CIT story (creation only -> full loop, 1.2% -> 7.9%), how I build agents; Validator: 627 / 30 from production, three models; Helpdesk eval gate (Berkeley V2 pack); FSM: what I said no to (auto-dispatch, multi-crew); US contractor framed plainly; PMOS bet swapped to the validator false-rejection ceiling; platform and on-the-ground folded into More work; personal line.
     v1.9  5 Oct 2026  Numbers re-traced to current sources (validation run 2): Helpdesk ~80% -> 97% resolved / 94% by AI alone (Al Najah, Q3 2026, with definition); CIT 210 in one month -> 189 real work orders in 9 weeks (test records removed); FSM $1M TCV potential -> $1.5M TCV signed. Added what broke and what I'd do differently to Helpdesk, Field agents, Payment Validator and FSM. Footer version fixed.
     v1.8  4 Oct 2026  Review mode for friends: on the private link ?review the page loads the comment layer (pins, panel, replies, resolve, hub at /all-comments.html), stored in Supabase. Normal visitors load nothing extra. ?review=off switches it off.
@@ -795,13 +794,13 @@ footer{border-top:2px solid var(--ink);padding-block:40px 56px}
           <p>A US cleaning contractor was live on our field service product and unhappy. The team had built everything the customer asked for, and the customer still wasn't happy: too many steps, too many clicks, cases missed, and no single place to see what needed action.</p>
           <p>The customer asked for me to join. I spent a month embedded with their team asking why each piece existed, who used it and what outcome they wanted, then cut what wasn't needed. The answer wasn't AI. It was standardising and simplifying what was already there.</p>
           <div class="kpis">
-            <div><b class="hi">3 → 1</b><span>places where approvals happen</span></div>
+            <div><b class="hi">1</b><span>summary tab, merged from several</span></div>
             <div><b>~250</b><span>billing test cases run through the full contract life</span></div>
             <div><b>7–8</b><span>real bugs found and fixed</span></div>
           </div>
           <dl class="tldr">
             <dt>Role</dt><dd>Product lead, embedded with the customer</dd>
-            <dt>Built</dt><dd>A Command Centre home page, and missing-field flags with steppers across vendors, proposals, RFQs and contracts</dd>
+            <dt>Built</dt><dd>A Command Centre home page, one proposal summary, a cleaner RFQ flow</dd>
             <dt>Why it matters</dt><dd>The customer asked for me by name after the complaints</dd>
           </dl>
           <details class="deep">
@@ -809,11 +808,9 @@ footer{border-top:2px solid var(--ink);padding-block:40px 56px}
             <div class="body">
               <h5>What I changed</h5>
               <ul>
-                <li><b>Every screen says what is missing and what to do next.</b> Empty required fields turn red, a blue bar names the button to click, and the Tab key jumps between the fields still to fill.</li>
-                <li><b>Steppers for every lifecycle.</b> Vendor onboarding, proposals, RFQs and contracts each show where the record is and what is blocking it.</li>
-                <li><b>Contracts can't go out half-done.</b> A contract created from a proposal lists what to fix before it can be published, like a missing billing cycle or credit note rule.</li>
-                <li><b>A home page that answers "what is waiting on us".</b> The Command Centre shows everything that needs action, and one click opens the record.</li>
-                <li><b>Approvals in one place.</b> They used to happen in three modules: invoices, credit notes and netted finance. Now only netted finance.</li>
+                <li><b>A home page that answers "what is waiting on us".</b> The Command Centre shows everything that needs action across proposals, RFQs, contracts, vendors, approvals and work orders. Every number is live, and one click opens the record.</li>
+                <li><b>One summary instead of several.</b> Every client proposal now has a single summary tab, so nobody reconciles numbers across tabs.</li>
+                <li><b>Standard steps for every proposal.</b> The proposal and each RFQ show the same stages every time, from pricing to contracts and from vendors added to awarded.</li>
               </ul>
               <h5>How I tested it</h5>
               <p>Contract changes in this business create invoices and credit notes, and mistakes cost real money. I ran about 250 test cases through the full life of each change and checked every record it created. Early runs flagged problems that weren't real, because the tests were missing context. Once that was fixed, they found 7 to 8 real bugs, and all of them were sorted.</p>
@@ -821,12 +818,10 @@ footer{border-top:2px solid var(--ink);padding-block:40px 56px}
           </details>
         </div>
         <div>
-          <div class="shot-tabs tabs" role="group" aria-label="Contractor screens"><button type="button" aria-pressed="true" data-gshot="imp:impVen">Vendor onboarding</button><button type="button" aria-pressed="false" data-gshot="imp:impCon">Contract</button><button type="button" aria-pressed="false" data-gshot="imp:impProp">Proposal</button><button type="button" aria-pressed="false" data-gshot="imp:impRfq">RFQ</button><button type="button" aria-pressed="false" data-gshot="imp:impCC">Command Centre</button></div>
-          <figure class="shot" id="impVen" data-g="imp"><a href="img/contractor-vendor-onboarding.jpg" target="_blank" rel="noopener" title="Open full size"><img src="img/contractor-vendor-onboarding.jpg" width="1600" height="900" loading="lazy" alt="Vendor onboarding summary: a banner says the vendor still has to send two insurance certificates and the W9, a stepper shows which onboarding steps are done and which are missing."></a><figcaption><span>A vendor in draft: what's still missing, in one line, and where onboarding is stuck.</span><span class="real">Real screen · vendor details blurred</span></figcaption></figure>
-          <figure class="shot" id="impCon" data-g="imp" hidden><a href="img/contractor-contract-fix.jpg" target="_blank" rel="noopener" title="Open full size"><img src="img/contractor-contract-fix.jpg" width="1600" height="900" loading="lazy" alt="Client contract created from a proposal: a red panel lists 3 things to fix before publishing, with Fix buttons, and the missing billing cycle and credit note fields are marked Not set."></a><figcaption><span>A new contract: 3 things to fix before it can be published, each with a Fix button.</span><span class="real">Real screen · test data</span></figcaption></figure>
-          <figure class="shot" id="impProp" data-g="imp" hidden><a href="img/contractor-proposal-draft.jpg" target="_blank" rel="noopener" title="Open full size"><img src="img/contractor-proposal-draft.jpg" width="1600" height="900" loading="lazy" alt="Draft client proposal: a stepper at Pricing, a blue bar telling the user to raise an RFQ or skip it for 2 services, and client rates still Pending in red."></a><figcaption><span>A draft proposal: the blue bar says exactly what to do next; unpriced lines are red.</span><span class="real">Real screen · test data</span></figcaption></figure>
-          <figure class="shot" id="impRfq" data-g="imp" hidden><a href="img/contractor-rfq-draft.jpg" target="_blank" rel="noopener" title="Open full size"><img src="img/contractor-rfq-draft.jpg" width="1600" height="900" loading="lazy" alt="RFQ tab: each RFQ with its stepper from vendors added to awarded, a next-step bar, and a warning that no not-to-exceed limit is set."></a><figcaption><span>RFQs: the stage, the next step, and a warning when a limit is missing.</span><span class="real">Real screen · client names blurred</span></figcaption></figure>
-          <figure class="shot" id="impCC" data-g="imp" hidden><a href="img/contractor-command-centre.jpg" target="_blank" rel="noopener" title="Open full size"><img src="img/contractor-command-centre.jpg" width="1600" height="1004" loading="lazy" alt="Command Centre home page: counts needing action for proposals, RFQs, client and vendor contracts, vendors, approvals and work orders."></a><figcaption><span>The Command Centre: everything waiting on the team, on one page.</span><span class="real">Real screen · details blurred</span></figcaption></figure>
+          <div class="shot-tabs tabs" role="group" aria-label="Contractor screens"><button type="button" aria-pressed="true" data-gshot="imp:impCC">Command Centre</button><button type="button" aria-pressed="false" data-gshot="imp:impSum">Proposal summary</button><button type="button" aria-pressed="false" data-gshot="imp:impRfq">RFQ</button></div>
+          <figure class="shot" id="impCC" data-g="imp"><a href="img/contractor-command-centre.jpg" target="_blank" rel="noopener" title="Open full size"><img src="img/contractor-command-centre.jpg" width="1600" height="1004" loading="lazy" alt="Command Centre home page: counts needing action for proposals, RFQs, client and vendor contracts, vendors, approvals and work orders, with a list of proposals missing rates."></a><figcaption><span>The Command Centre: everything waiting on the team, one click from the record.</span><span class="real">Real screen · details blurred</span></figcaption></figure>
+          <figure class="shot" id="impSum" data-g="imp" hidden><a href="img/contractor-proposal-summary.jpg" target="_blank" rel="noopener" title="Open full size"><img src="img/contractor-proposal-summary.jpg" width="1600" height="1004" loading="lazy" alt="Client proposal summary: a five-step progress bar from pricing to done, totals, linked contracts and line items with vendor rate, margin and client rate."></a><figcaption><span>One summary: progress from pricing to contracts, totals, contracts and every line with its rates.</span><span class="real">Real screen · details blurred</span></figcaption></figure>
+          <figure class="shot" id="impRfq" data-g="imp" hidden><a href="img/contractor-rfq.jpg" target="_blank" rel="noopener" title="Open full size"><img src="img/contractor-rfq.jpg" width="1600" height="1004" loading="lazy" alt="RFQ tab inside a client proposal: five stages from vendors added to awarded, vendor responses and per-service quotes."></a><figcaption><span>The RFQ tab: the same five stages every time, and what was taken off and why.</span><span class="real">Real screen · details blurred</span></figcaption></figure>
         </div>
       </div>
     </article>
@@ -1120,7 +1115,7 @@ footer{border-top:2px solid var(--ink);padding-block:40px 56px}
         <span class="copied" id="copiedMsg2" aria-live="polite"></span>
       </div>
     </div>
-    <p class="small">Product screens are real, with private details blurred. One customer is not named at their request. Figures are labelled with where they come from.<br>v2.1 · October 2026</p>
+    <p class="small">Product screens are real, with private details blurred. One customer is not named at their request. Figures are labelled with where they come from.<br>v2.0 · October 2026</p>
   </div>
 </footer>
 

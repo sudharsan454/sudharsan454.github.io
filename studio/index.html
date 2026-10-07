@@ -1,7 +1,7 @@
 <!doctype html>
-<!-- studio/index.html v1.1 · 7 Oct 2026 · hosted copy of AI Animation 2.0 plan v2.4 (plain-English rewrite for the CEO) with the review comment layer (pins, panel, replies, resolve; Supabase review_kv; hub /all-comments.html). Always on for this page. v1.0 hosted v2.2. -->
+<!-- studio/index.html v1.1 · 8 Oct 2026 · hosted copy of AI-Animation-2.0-Plan-v2.4 (replaces v2.2 as the live page; v2.2 kept at ai-animation-teardown-v2.2.html) with the review comment layer (Supabase review_kv; hub /all-comments.html). Always on. -->
 
-<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"></head><body style="margin:0;"><!-- AI Animation 2.0 — Teardown & Adoption Plan | v1.2 | 21 Sep 2026 | Author: Sudharsan R. | Changelog: v1.6 — removed the personal test-account email from the footer (kept out of every shared/final version); footer now says "personal free-trial account". v1.5 — section 7 stripped of all calendar language (days/weeks): now a sequence (track, baseline, test), per review comment. v1.4 — substitutes force expanded: AI assistants generating video-like interactive HTML (per review comment), with the honest limit that file-based channels still need real video. v1.3 — reframed "week-one cleanup" as "small engineering fixes, noticed along the way": ranked, not sized; sizing left to engineering (per review discussion). v1.2 — added "The reviews already told us this" alignment table (walkthrough findings vs G2 themes) and the ROI ranking note under the bridge, per review comment. v1.1 — full rewrite in plain English per review comment (short sentences, bullets, no jargon); split the two paywalls into separate points in the verdict. v1.0 — initial draft. -->
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"></head><body style="margin:0;"><!-- AI Animation 2.0 plan | v2.4 | 7 Oct 2026 | Author: Sudharsan R. | Changelog: v2.4: full plain-English rewrite for the CEO (every heading, label, table, caption and the chart), source tags renamed to plain labels, navigation fixed (section 2 added, labels match headings), wrong cross-reference fixed (section 6 to 7), footer changelog removed from view. v2.3: headings rewritten. Earlier history kept in v2.3 and prior files. -->
 <title>AI Animation 2.0</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;700;800&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&family=IBM+Plex+Mono:wght@400;500&display=swap">
 <style>
@@ -111,20 +111,6 @@ section{scroll-margin-top:70px;}
   .toc{position:fixed; top:110px; left:calc(50% - 430px - 205px); width:180px; flex-direction:column; gap:4px; overflow:visible; background:transparent; border-bottom:none; padding:0; margin:0;}
   .toc a{border:none; background:transparent; padding:4px 8px; border-left:2px solid var(--line); border-radius:0;}
   .toc a.hot{border-left-color:var(--fix);}
-}
-
-@media print {
-  .toc{position:static; flex-wrap:wrap; overflow:visible; border-bottom:1px solid var(--line);}
-  html{scroll-behavior:auto;}
-  body{font-size:13px;}
-  section{margin-top:28px;}
-  h2{break-after:avoid;}
-  .decision,.force,.stat,.shot,.def,.note,.quickpath,.stage,.quad{break-inside:avoid;}
-  .funnel{flex-wrap:wrap; overflow:visible;}
-  .stage::after{content:"";}
-  .tblwrap{overflow:visible;}
-  a{color:inherit;}
-  .src a{color:var(--fix);}
 }
 @media (max-width:520px){ ul.big{font-size:16px;} }
 </style>
@@ -412,6 +398,7 @@ section{scroll-margin-top:70px;}
 </footer>
 
 </div>
+
 <!-- Comment layer (v1.0): always on for this page -->
 <script>
 (function(){

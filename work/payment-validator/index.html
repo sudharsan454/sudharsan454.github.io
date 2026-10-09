@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<!--
+  Sudharsan R portfolio · work/payment-validator · v3.0 · 9 Oct 2026
+  Author: Sudharsan R (built with Claude). Hosting: GitHub Pages (sudharsan454).
+  v3.0: site split into a light home page and one page per case (review feedback, 7 Oct 2026).
+  
+-->
+<title>Every invoice checked before anyone approves it · Sudharsan R</title>
+<meta name="description" content="Payment Validator: every vendor invoice checked by two AI models before anyone approves it.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@800;900&family=Public+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap">
+<link rel="stylesheet" href="/assets/site-v3.0.css">
+</head>
+<body data-page="work/payment-validator">
+<nav class="nav" aria-label="Main">
+  <div class="wrap">
+    <a class="brand" href="/"><i aria-hidden="true"></i>Sudharsan R</a>
+    <button class="iconbtn menubtn" id="menuBtn" type="button" aria-label="Menu" aria-expanded="false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button>
+    <ul><li><a href="/#work" aria-current="true">Work</a></li><li><a href="/#method">How I work</a></li><li><a href="/#writing">Writing</a></li><li><a href="/#path">Path</a></li><li><a href="/#contact">Contact</a></li></ul>
+    <button class="iconbtn" id="themeBtn" type="button" aria-label="Change theme"></button>
+  </div>
+</nav>
+<main>
+<header class="case-hero">
+  <div class="wrap">
+    <a class="crumb" href="/#work">← All work</a>
+    <div class="meta"><span class="badge">Live in Australia</span><span>An Australian property group</span><span>Owner, end to end</span></div>
+    <h1>Every invoice checked before anyone approves it</h1>
+    <div class="case-top">
+      <div>
+        <p class="lede">Invoice approval was the second choke point from discovery. Facility managers opened every vendor invoice and checked it by hand against the work order and the purchase order: is the business number right, does the invoice number match, does the amount match, is it a proper tax invoice.</p>
+        <div class="stats"><div><b>627</b><span>invoices checked in the first 3 days of October</span></div><div><b class="hi">30</b><span>stopped at a hard check before payment</span></div><div><b>3</b><span>models: two read every invoice, a third breaks a tie</span></div></div><p class="note">Production data, 1–3 Oct 2026, Sydney time.</p>
+      </div>
+      <div><figure class="shot"><video src="/img/tour-validator.mp4" poster="/img/tour-validator-poster.jpg" width="1280" height="832" autoplay muted loop playsinline preload="metadata" aria-label="Guided tour of the live Payment Validator screen: the verdict, the field that failed, the document checks and the vendor PDF side by side."></video><figcaption><span>Live product, guided tour</span><span class="real">Real screen · details blurred</span></figcaption></figure></div>
+    </div>
+  </div>
+</header>
+<section class="story">
+  <div class="wrap narrow">
+
+    <h2>How it works</h2>
+    <p>Payment Validator reads the PDF, compares it with the record and shows the result side by side. Hard failures are rejected automatically and the vendor is emailed. Clean invoices are marked safe to approve. The manager only looks at what needs a human.</p>
+    <figure class="shot"><img src="/img/pv-validation.jpg" width="1600" height="971" loading="lazy" data-zoom="/img/pv-validation.jpg" alt="Payment Validator result screen: verdict, failed field, document checks and the vendor PDF side by side."><figcaption><span>Live product: an invoice stopped at a hard check, vendor emailed automatically.</span><span class="real">Real screen · details blurred</span></figcaption></figure>
+
+    <h2>Two kinds of checks</h2>
+    <p><b>Hard checks</b> compare a field on the PDF with the same field in the system: business number, invoice number, amount before tax. A mismatch stops the invoice. <b>Soft checks</b> read the document itself, like who it's addressed to and whether it says "Tax Invoice". A soft failure is flagged for the manager to decide.</p>
+
+    <h2>Two models must agree</h2>
+    <p>One model reading a PDF can be confidently wrong. So two models read every invoice in parallel. If they agree, the values are checked against the record. If they disagree, a third model breaks the tie. If there is still no agreement, nothing is guessed: an internal record is raised and the team is notified. Every disagreement is logged by model, which tells us which model to trust for which kind of document. The design went through three versions on the whiteboard before it shipped.</p>
+    <div class="panel">
+      <p class="panel-title">How a value is trusted</p>
+      <div class="chain"><span>Invoice PDF</span><em>→</em><span>Model A reads</span><em>+</em><span>Model B reads</span><em>→</em><span>Agree?</span><em>yes →</em><span class="won">Check against record</span></div>
+      <div class="chain" style="margin-top:10px"><em>no →</em><span>Model C breaks the tie</span><em>still no →</em><span>Raise internal record, notify team</span><em>always →</em><span>Log which model was wrong</span></div>
+    </div>
+
+    <h2>Building for trust</h2>
+    <p>Finance teams won't hand money decisions to a black box. So the reviewer always sees the PDF next to the result, every check names its rule, and the dashboard tracks people checking the AI: manual reviews, mistakes found, and AI errors by rule. Resubmitted invoices are tracked separately from first attempts.</p>
+
+    <h2>Pricing</h2>
+    <p>Charged per validated invoice, so cost follows the work the customer actually sends through.</p>
+
+    <h2>What the pilot showed</h2>
+    <p>In five weeks of watch-only mode (20 Mar – 27 Apr 2026, nothing auto-rejected) the checks ran on 2,541 invoices and flagged 210 at a hard check. Manual review found the AI wrong on about 1% of them. On 54 invoices that had already been approved or paid, the PDF and the system amount differed by AUD 17,366 in total.</p>
+
+    <h2>What I'd do differently</h2>
+    <p>Plan for two models failing at once. We hadn't, and for one day validation quietly didn't run on about 40 to 50 invoices with nobody told. Now a failed run alerts engineering and product.</p>
+
+    <div class="next"><a href="/#work"><span>Back</span>All work</a><a href="/work/field-service/" style="text-align:right"><span>Next case</span>Field Service Management →</a></div>
+  </div>
+</section>
+</main>
+<footer id="contact">
+  <div class="wrap contact">
+    <div>
+      <span class="eyebrow">Contact</span>
+      <h2>Let's talk about a problem worth fixing</h2>
+      <div class="cta">
+        <button class="btn primary" type="button" data-copy="sudharsan454@gmail.com" data-msg="copiedF">Copy email: sudharsan454@gmail.com</button>
+        <a class="btn" href="/Sudharsan-R-Resume.pdf" target="_blank" rel="noopener">Resume (PDF)</a>
+        <a class="btn" href="https://www.linkedin.com/in/sudharsan454" target="_blank" rel="noopener">LinkedIn</a>
+        <span class="copied" id="copiedF" aria-live="polite"></span>
+      </div>
+    </div>
+    <p class="note">Product screens are real, with private details blurred. One customer is not named at their request. Every figure says where it comes from.<br>v3.0 · October 2026</p>
+  </div>
+</footer>
+<script src="/assets/site-v3.0.js"></script>
+</body>
+</html>

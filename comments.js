@@ -1,4 +1,4 @@
-/* Facilio Run comment layer — REVIEW PANEL. v2 · 29-Jul-2026
+/* Facilio Run comment layer — REVIEW PANEL. v2.1 · 9-Oct-2026 (portfolio: hub link carries ?review) · based on v2 29-Jul-2026
    Drop-in:  <script src="comments.js" data-page="THIS_FILENAME.html"></script>
 
    Floating bottom-right panel. Two tabs (Comments / Add). Threads with replies,
@@ -463,7 +463,7 @@
     titlerow.appendChild(idline);
     header.appendChild(titlerow);
     var allLink = el("a", "display:block;font-size:11.5px;color:#1864E6;text-decoration:none;font-weight:600;padding:0 0 8px;");
-    allLink.href = "/all-comments.html"; allLink.textContent = "↗ Open the full comment hub";
+    allLink.href = "/all-comments.html?review"; allLink.textContent = "↗ Open the full comment hub";
     header.appendChild(allLink);
 
     var tabs = el("div", "display:flex;border-bottom:1px solid #f0efea;");

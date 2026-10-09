@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<!--
+  Sudharsan R portfolio · work/frontline · v3.0 · 9 Oct 2026
+  Author: Sudharsan R (built with Claude). Hosting: GitHub Pages (sudharsan454).
+  v3.0: site split into a light home page and one page per case (review feedback, 7 Oct 2026).
+  
+-->
+<title>Everything that happens before a work order exists · Sudharsan R</title>
+<meta name="description" content="Frontline: site walk to priced proposal to won contract, for cleaning and FM contractors.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@800;900&family=Public+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap">
+<link rel="stylesheet" href="/assets/site-v3.0.css">
+</head>
+<body data-page="work/frontline">
+<nav class="nav" aria-label="Main">
+  <div class="wrap">
+    <a class="brand" href="/"><i aria-hidden="true"></i>Sudharsan R</a>
+    <button class="iconbtn menubtn" id="menuBtn" type="button" aria-label="Menu" aria-expanded="false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button>
+    <ul><li><a href="/#work" aria-current="true">Work</a></li><li><a href="/#method">How I work</a></li><li><a href="/#writing">Writing</a></li><li><a href="/#path">Path</a></li><li><a href="/#contact">Contact</a></li></ul>
+    <button class="iconbtn" id="themeBtn" type="button" aria-label="Change theme"></button>
+  </div>
+</nav>
+<main>
+<header class="case-hero">
+  <div class="wrap">
+    <a class="crumb" href="/#work">← All work</a>
+    <div class="meta"><span class="badge soon">Going to production this year</span><span>2nd prize, company hackathon</span><span>Mobile web app</span></div>
+    <h1>Everything that happens before a work order exists</h1>
+    <div class="case-top">
+      <div>
+        <p class="lede">Cleaning and FM contractors win work through site surveys and proposals. Today that's a person with a phone, a spreadsheet, and an RFP team retyping it all. I read one customer's own site-walk tool line by line: one HTML file on one device, seven fields, one number for "rooms to clean" across a whole building, no photos, no price.</p>
+        <div class="stats"><div><b class="hi">582</b><span>of 1,243 quotes were revised within 60 days</span></div><div><b>8</b><span>paying customers asking for one "Revise" button</span></div><div><b>1</b><span>write to the operations system, only when a deal is won</span></div></div><p class="note">From customer records and support tickets, Aug 2026.</p>
+      </div>
+      <div><figure class="shot"><img src="/img/frontline-proposal.jpg" width="1385" height="868" loading="lazy" data-zoom="/img/frontline-proposal.jpg" alt="Frontline proposal screen: status trail, totals, the rate card used and why, approval threshold, and frozen pricing lines."><figcaption><span>A won proposal: status trail, totals, which rate card and why.</span><span class="real">Real screen · client blurred</span></figcaption></figure></div>
+    </div>
+  </div>
+</header>
+<section class="story">
+  <div class="wrap narrow">
+
+    <h2>What it does</h2>
+    <p>Frontline carries the enquiry through the site walk, the priced proposal and the win, then creates the site, spaces and contract in the operations system in one step. I did the discovery, then built it with two teammates in a hackathon.</p>
+    <div class="panel"><p class="panel-title">The commercial chain</p><div class="chain"><span>Enquiry</span><em>→</em><span>Qualify</span><em>→</em><span>Survey</span><em>→</em><span>Walk</span><em>→</em><span>Price</span><em>→</em><span>Approve</span><em>→</em><span>Send</span><em>→</em><span class="won">Won</span><em>→</em><span>Site + contract created</span></div></div>
+
+    <h2>How an FM bid is really priced</h2>
+    <p>Area becomes an asset count, the asset count becomes a workforce, and the workforce becomes a price. Frontline structures that chain instead of leaving it in a spreadsheet.</p>
+
+    <h2>Decisions I'm proud of</h2>
+    <ul>
+      <li>The site walk has no pre-filled grid. The surveyor taps "Add another room" and records each real room with its condition and access notes.</li>
+      <li>A "no show" visit is its own outcome and never counts as surveyed.</li>
+      <li>AI suggests. It never touches a quantity, a rate, a total or a status. Those are plain functions.</li>
+      <li>We published a list of what we chose not to build, and every claim was checked against call transcripts. One popular number didn't survive the check, so we dropped it.</li>
+    </ul>
+    <div class="phones">
+      <figure class="shot"><img src="/img/frontline-walk-1.jpg" width="362" height="784" loading="lazy" data-zoom="/img/frontline-walk-1.jpg" alt="Frontline mobile site walk: property overview questions with helper text."><figcaption><span>Site walk on a phone</span><span class="real">Real screen</span></figcaption></figure>
+      <figure class="shot"><img src="/img/frontline-walk-2.jpg" width="362" height="784" loading="lazy" data-zoom="/img/frontline-walk-2.jpg" alt="Frontline mobile site walk: per-area condition score from 1 Critical to 5 Excellent."><figcaption><span>Each area with its condition</span><span class="real">Real screen</span></figcaption></figure>
+    </div>
+    <p class="note" style="margin-top:var(--s2)">A condition score always shows with its word, so it can't be read backwards.</p>
+
+    <div class="next"><a href="/#work"><span>Back</span>All work</a><a href="/work/evals/" style="text-align:right"><span>Next case</span>How I decide an agent is ready →</a></div>
+  </div>
+</section>
+</main>
+<footer id="contact">
+  <div class="wrap contact">
+    <div>
+      <span class="eyebrow">Contact</span>
+      <h2>Let's talk about a problem worth fixing</h2>
+      <div class="cta">
+        <button class="btn primary" type="button" data-copy="sudharsan454@gmail.com" data-msg="copiedF">Copy email: sudharsan454@gmail.com</button>
+        <a class="btn" href="/Sudharsan-R-Resume.pdf" target="_blank" rel="noopener">Resume (PDF)</a>
+        <a class="btn" href="https://www.linkedin.com/in/sudharsan454" target="_blank" rel="noopener">LinkedIn</a>
+        <span class="copied" id="copiedF" aria-live="polite"></span>
+      </div>
+    </div>
+    <p class="note">Product screens are real, with private details blurred. One customer is not named at their request. Every figure says where it comes from.<br>v3.0 · October 2026</p>
+  </div>
+</footer>
+<script src="/assets/site-v3.0.js"></script>
+</body>
+</html>

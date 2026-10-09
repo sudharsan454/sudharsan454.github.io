@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<!--
+  Sudharsan R portfolio · work/field-service · v3.0 · 9 Oct 2026
+  Author: Sudharsan R (built with Claude). Hosting: GitHub Pages (sudharsan454).
+  v3.0: site split into a light home page and one page per case (review feedback, 7 Oct 2026).
+  
+-->
+<title>From zero to a live dispatch board in five months · Sudharsan R</title>
+<meta name="description" content="Field Service Management: zero to a live dispatch product in five months, $1.5M TCV signed.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@800;900&family=Public+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap">
+<link rel="stylesheet" href="/assets/site-v3.0.css">
+</head>
+<body data-page="work/field-service">
+<nav class="nav" aria-label="Main">
+  <div class="wrap">
+    <a class="brand" href="/"><i aria-hidden="true"></i>Sudharsan R</a>
+    <button class="iconbtn menubtn" id="menuBtn" type="button" aria-label="Menu" aria-expanded="false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button>
+    <ul><li><a href="/#work" aria-current="true">Work</a></li><li><a href="/#method">How I work</a></li><li><a href="/#writing">Writing</a></li><li><a href="/#path">Path</a></li><li><a href="/#contact">Contact</a></li></ul>
+    <button class="iconbtn" id="themeBtn" type="button" aria-label="Change theme"></button>
+  </div>
+</nav>
+<main>
+<header class="case-hero">
+  <div class="wrap">
+    <a class="crumb" href="/#work">← All work</a>
+    <div class="meta"><span class="badge">Live</span><span>Retail chains · FM companies</span><span>0→1 in 5 months · team of 15</span></div>
+    <h1>From zero to a live dispatch board in five months</h1>
+    <div class="case-top">
+      <div>
+        <p class="lede">Retail chains and service companies needed to send the right technician to the right store at the right time, and see the whole day on one screen. I travelled to the US, sat with our anchor customer's team in their operations, and built the Field Service product with them. Then I led it from nothing to live with a cross-functional team of 15.</p>
+        <div class="stats"><div><b class="hi">$1.5M</b><span>TCV signed across customers</span></div><div><b>$400K</b><span>proof of concept rescued on site</span></div><div><b>4</b><span>APMs mentored on the next bets</span></div></div>
+      </div>
+      <div><figure class="shot"><video src="/img/tour-dispatch.mp4" poster="/img/tour-dispatch-poster.jpg" width="1280" height="832" autoplay muted loop playsinline preload="metadata" aria-label="Guided tour of the live dispatch console month view."></video><figcaption><span>Live product, guided tour of the month view</span><span class="real">Real screen · demo data</span></figcaption></figure></div>
+    </div>
+  </div>
+</header>
+<section class="story">
+  <div class="wrap narrow">
+
+    <h2>The dispatch console</h2>
+    <p>The heart of it is the dispatch console: every technician, every appointment, live status, time off and SLA risk in one view, with a map for where everyone is right now.</p>
+    <div class="callout"><b>What I said no to.</b><p>A customer wanted the system to pick the right technician for every job. There was pressure to say yes. I said no: their own dispatcher and workload data showed the volume was small enough to manage, and our product wasn't ready to do it well. Nothing was promised. When AI made it much cheaper to build, we built a dispatcher agent, now in a pilot with Berkeley. We also skipped multi-crew jobs in v1, because our first customers sent one person per job.</p></div>
+
+    <h2>Who it serves</h2>
+    <ul>
+      <li><b>Dispatcher</b>: plans the day, reacts when a truck breaks down or a job overruns.</li>
+      <li><b>Technician</b>: sees the next job, goes en route, works on site, completes.</li>
+      <li><b>Service manager</b>: watches SLAs, overdue jobs and mismatches.</li>
+      <li><b>Customer</b>: wants the visit confirmed and the job done the first time.</li>
+    </ul>
+
+    <h2>Design choices</h2>
+    <ul>
+      <li>One legend for everything: appointment status, technician status and time off types all read at a glance.</li>
+      <li>Time off is first class (training, sick, vacation, truck breakdown, stand-by), because a dispatcher plans around people, not slots.</li>
+      <li>Unassigned work sits on the left with priority and SLA breach badges, so the urgent job is the first thing you see.</li>
+      <li>Pricing set separately for each segment, because a retail chain and an FM company count value differently.</li>
+    </ul>
+    <div class="gallery">
+      <figure class="shot"><img src="/img/dispatch-month.jpg" width="1600" height="971" loading="lazy" data-zoom="/img/dispatch-month.jpg" alt="Live dispatch console month view: unassigned jobs with priority flags, technicians with status and load, the legend, and mismatched jobs."><figcaption><span>Live product, month view.</span><span class="real">Real screen · demo data</span></figcaption></figure>
+      <figure class="shot"><img src="/img/dispatch-day.jpg" width="1630" height="1048" loading="lazy" data-zoom="/img/dispatch-day.jpg" alt="Dispatch day view design: breached SLAs on top, each technician's day on one line, live status icons."><figcaption><span>Final design for the day view: SLA breaches up front.</span><span class="real">Real design file</span></figcaption></figure>
+    </div>
+
+    <h2>Built next to the customer</h2>
+    <p>I flew to the US and sat with the anchor customer's dispatchers and managers to see how a day really runs. The product was shaped there, around their day, not around our modules.</p>
+
+    <h2>The $400K rescue</h2>
+    <p>A large proof of concept was slipping. I flew out, whiteboarded the workflow with the customer's US leadership on site, and we iterated fast until it matched how their teams actually worked.</p>
+
+    <h2>What I'd do differently</h2>
+    <p>Launch it properly. We never ran outbound or a real launch, so the pipeline was inbound only. Good product, quiet market.</p>
+
+    <div class="next"><a href="/#work"><span>Back</span>All work</a><a href="/work/contractor/" style="text-align:right"><span>Next case</span>A simpler product, not an agent →</a></div>
+  </div>
+</section>
+</main>
+<footer id="contact">
+  <div class="wrap contact">
+    <div>
+      <span class="eyebrow">Contact</span>
+      <h2>Let's talk about a problem worth fixing</h2>
+      <div class="cta">
+        <button class="btn primary" type="button" data-copy="sudharsan454@gmail.com" data-msg="copiedF">Copy email: sudharsan454@gmail.com</button>
+        <a class="btn" href="/Sudharsan-R-Resume.pdf" target="_blank" rel="noopener">Resume (PDF)</a>
+        <a class="btn" href="https://www.linkedin.com/in/sudharsan454" target="_blank" rel="noopener">LinkedIn</a>
+        <span class="copied" id="copiedF" aria-live="polite"></span>
+      </div>
+    </div>
+    <p class="note">Product screens are real, with private details blurred. One customer is not named at their request. Every figure says where it comes from.<br>v3.0 · October 2026</p>
+  </div>
+</footer>
+<script src="/assets/site-v3.0.js"></script>
+</body>
+</html>

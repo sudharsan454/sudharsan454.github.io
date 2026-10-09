@@ -1,4 +1,4 @@
-<!-- Portfolio review hub · v1.1 · 4 Oct 2026 · adapted from the comment layer hub; backed by review-backend.js -->
+<!-- Portfolio review hub · v1.2 · 9 Oct 2026 · v1.2: opens only with ?review (otherwise sends visitors to the home page); page links keep review mode. v1.1 4 Oct 2026 · adapted from the comment layer hub; backed by review-backend.js -->
 <!-- Facilio Run comment layer — COMMENT HUB. v2 · 29-Jul-2026
      Reads the whole "comments" KV collection for this site: every thread on every
      page, in one place. Page titles are read from each page's <title> at runtime,
@@ -6,6 +6,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+<script>if(!/[?&]review(=|&|$)/.test(location.search)){location.replace("/");}</script>
 <script src="/review-backend.js"></script>
 <meta name="robots" content="noindex">
 <meta charset="utf-8">
@@ -199,7 +200,7 @@
       totalThreads += threads.length; totalComments += cCount;
       html += '<div class="pagegroup"><div class="pagehead"><span class="t">' + esc(titleFor(rec.page)) + '</span>'
             + '<span class="c">' + threads.length + ' thread' + (threads.length > 1 ? 's' : '') + ' · ' + cCount + ' comment' + (cCount > 1 ? 's' : '') + '</span>'
-            + '<a href="/' + esc(rec.page) + '" target="_blank">Open page →</a></div>';
+            + '<a href="/' + esc(rec.page) + '?review" target="_blank">Open page →</a></div>';
       threads.forEach(function (t) {
         html += '<div class="thread' + (t.resolved ? ' resolved' : '') + '">';
         html += '<div class="tbar"><span>' + (t.resolved ? '✓ RESOLVED' : (t.anchor ? '<span class="pin">📍 PINNED TO A SPOT</span>' : 'THREAD')) + '</span>'

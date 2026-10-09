@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<!--
+  Sudharsan R portfolio · work/system · v3.0 · 9 Oct 2026
+  Author: Sudharsan R (built with Claude). Hosting: GitHub Pages (sudharsan454).
+  v3.0: site split into a light home page and one page per case (review feedback, 7 Oct 2026).
+  
+-->
+<title>The system behind the work · Sudharsan R</title>
+<meta name="description" content="The system behind Sudharsan's work: find, build, prove, keep it working, and how he runs his own week.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@800;900&family=Public+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap">
+<link rel="stylesheet" href="/assets/site-v3.0.css">
+</head>
+<body data-page="work/system">
+<nav class="nav" aria-label="Main">
+  <div class="wrap">
+    <a class="brand" href="/"><i aria-hidden="true"></i>Sudharsan R</a>
+    <button class="iconbtn menubtn" id="menuBtn" type="button" aria-label="Menu" aria-expanded="false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button>
+    <ul><li><a href="/#work" aria-current="true">Work</a></li><li><a href="/#method">How I work</a></li><li><a href="/#writing">Writing</a></li><li><a href="/#path">Path</a></li><li><a href="/#contact">Contact</a></li></ul>
+    <button class="iconbtn" id="themeBtn" type="button" aria-label="Change theme"></button>
+  </div>
+</nav>
+<main>
+<header class="case-hero">
+  <div class="wrap">
+    <a class="crumb" href="/#work">← All work</a>
+    <div class="meta"><span>How I work</span></div>
+    <h1>The system behind the work</h1>
+    <div class="case-top">
+      <div>
+        <p class="lede">I solve problems. AI is one of the ways. Every piece of work on this site went through the same four steps, and I turned each step into a reusable skill, so the loop runs faster and my team can run it without me.</p>
+        
+      </div>
+      <div><div class="principles" style="grid-template-columns:1fr 1fr;gap:var(--s3)">
+      <div><h4>1. Find the problem worth solving</h4><p><b>Discovery Impact Triage.</b> Turns call notes into one clearly stated problem. For a customer already live, it checks what people said against their real records and settings first.</p></div>
+      <div><h4>2. Build the fix</h4><p><b>Agent and workflow builder.</b> Takes a customer's workflow and produces the rules, the prompt, every scenario the agent must handle, and the test run. When the fix isn't AI, it stops at the workflow.</p></div>
+      <div><h4>3. Prove it works</h4><p><b>Eval builder and verdict.</b> Scores each test round against the actual records in the system, not the reply text. One answer at the end: ready for customers or not, and why.</p></div>
+      <div><h4>4. Keep it working</h4><p><b>Report checker.</b> Checks each customer performance report against the raw data before it goes out. The numbers can be right while the report is still wrong.</p></div>
+    </div></div>
+    </div>
+  </div>
+</header>
+<section class="story">
+  <div class="wrap narrow">
+
+    <h2>When AI fits</h2>
+    <p>Choosing AI is a decision I make per problem, not a default. A use case has to pass four checks. Most don't, and that's fine.</p>
+    <ul>
+      <li><b>Repeats every day.</b> High volume, same shape. A one-off doesn't pay for a model.</li>
+      <li><b>Can be automated.</b> The steps are known and a system can act on them, not just suggest.</li>
+      <li><b>Messy input.</b> Calls, emails, PDFs, photos. Unstructured data is where AI earns its place over rules.</li>
+      <li><b>Worth it to both sides.</b> The user gets time back and the business gets something it can price and measure.</li>
+    </ul>
+    <p>And humans keep what they should. I design the handoff to people on day one, at the boundary the customer draws. AI does the repeat work; people make the calls that need judgement.</p>
+
+    <h2>What the first step looks like</h2>
+    <p>A real discovery output for a hospital FM prospect. Every problem we heard is grouped, given an owner, and either taken into the pilot or deliberately held back, with the reason in plain words. The top pick was the problem two people raised on their own, in two different situations, with the same root cause.</p>
+    <figure class="shot"><img src="/img/dit-disposition.jpg" width="1288" height="947" loading="lazy" data-zoom="/img/dit-disposition.jpg" alt="Discovery output: problem clusters with owner, whether each is in the pilot, why, and where it lands in the full rollout."><figcaption><span>What the pilot takes, and why the rest waits. Names replaced with roles.</span><span class="real">Real output · anonymised</span></figcaption></figure>
+
+    <h2>How I run my own week</h2>
+    <p>PMOS is the operating system I built for myself. Every request lands as a task, every call I make is logged as a decision with its why, and anything meant to change a customer's behaviour is tracked as a bet, with a before number and an after number.</p>
+    <p>The bets keep me honest. Before Payment Validator is allowed to reject invoices on its own, the customer and I agree the highest false-rejection rate we'll accept. In watch-only mode the AI was wrong on about 1% of invoices. If live rejections go above the agreed line, the system drops back to watch-only. The line is set before the switch, not after.</p>
+    <dl class="facts-list"><dt>Tasks</dt><dd>500+ logged since May 2026</dd><dt>Decisions</dt><dd>Each with why, outcome and who was in the room</dd><dt>Bets</dt><dd>One customer behaviour change each, measured before and after</dd></dl>
+    <div class="gallery">
+      <figure class="shot"><img src="/img/pmos-decisions.jpg" width="1600" height="1422" loading="lazy" data-zoom="/img/pmos-decisions.jpg" alt="PMOS Decisions tab: a decision log with status, workstream, customer, date, participants, why and outcome."><figcaption><span>Decisions: what was decided, why, and what happens next.</span><span class="real">Real app · anonymised</span></figcaption></figure>
+      <figure class="shot"><img src="/img/pmos-today.jpg" width="1600" height="1797" loading="lazy" data-zoom="/img/pmos-today.jpg" alt="PMOS Today tab: today's focus and the open task list with priority, action type, customer, workstream and source."><figcaption><span>Today: deep work first, every task tagged by what it needs.</span><span class="real">Real app · anonymised</span></figcaption></figure>
+    </div>
+    <p class="note" style="margin-top:var(--s2)">Customers appear as letters and people as initials. Commercial terms are left out.</p>
+
+    <div class="next"><a href="/#work"><span>Back</span>All work</a><a href="/work/helpdesk/" style="text-align:right"><span>Next case</span>Helpdesk AI →</a></div>
+  </div>
+</section>
+</main>
+<footer id="contact">
+  <div class="wrap contact">
+    <div>
+      <span class="eyebrow">Contact</span>
+      <h2>Let's talk about a problem worth fixing</h2>
+      <div class="cta">
+        <button class="btn primary" type="button" data-copy="sudharsan454@gmail.com" data-msg="copiedF">Copy email: sudharsan454@gmail.com</button>
+        <a class="btn" href="/Sudharsan-R-Resume.pdf" target="_blank" rel="noopener">Resume (PDF)</a>
+        <a class="btn" href="https://www.linkedin.com/in/sudharsan454" target="_blank" rel="noopener">LinkedIn</a>
+        <span class="copied" id="copiedF" aria-live="polite"></span>
+      </div>
+    </div>
+    <p class="note">Product screens are real, with private details blurred. One customer is not named at their request. Every figure says where it comes from.<br>v3.0 · October 2026</p>
+  </div>
+</footer>
+<script src="/assets/site-v3.0.js"></script>
+</body>
+</html>

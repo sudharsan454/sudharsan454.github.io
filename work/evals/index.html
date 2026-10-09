@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<!--
+  Sudharsan R portfolio · work/evals · v3.0 · 9 Oct 2026
+  Author: Sudharsan R (built with Claude). Hosting: GitHub Pages (sudharsan454).
+  v3.0: site split into a light home page and one page per case (review feedback, 7 Oct 2026).
+  
+-->
+<title>How I decide an agent is ready · Sudharsan R</title>
+<meta name="description" content="How Sudharsan decides an AI agent is ready: scenarios scored against real records, every prompt change re-tested.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@800;900&family=Public+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap">
+<link rel="stylesheet" href="/assets/site-v3.0.css">
+</head>
+<body data-page="work/evals">
+<nav class="nav" aria-label="Main">
+  <div class="wrap">
+    <a class="brand" href="/"><i aria-hidden="true"></i>Sudharsan R</a>
+    <button class="iconbtn menubtn" id="menuBtn" type="button" aria-label="Menu" aria-expanded="false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button>
+    <ul><li><a href="/#work" aria-current="true">Work</a></li><li><a href="/#method">How I work</a></li><li><a href="/#writing">Writing</a></li><li><a href="/#path">Path</a></li><li><a href="/#contact">Contact</a></li></ul>
+    <button class="iconbtn" id="themeBtn" type="button" aria-label="Change theme"></button>
+  </div>
+</nav>
+<main>
+<header class="case-hero">
+  <div class="wrap">
+    <a class="crumb" href="/#work">← All work</a>
+    <div class="meta"><span class="badge">Release gate for every agent</span><span>Q3 Services · Berkeley Services UAE</span><span>Built and run by me</span></div>
+    <h1>How I decide an agent is ready</h1>
+    <div class="case-top">
+      <div>
+        <p class="lede">An agent that sounds right can still write the wrong thing into the system. So no agent of mine reaches a customer until it has passed a written set of real scenarios, and every result is checked against the record it created, not the reply text.</p>
+        <div class="stats"><div><b class="hi">97</b><span>scenarios for Bruce, Q3's technician agent</span></div><div><b>19</b><span>prompt versions, each re-tested before release</span></div><div><b>55</b><span>voice scenarios for Berkeley across 25 scripted calls</span></div></div><p class="note">From the Bruce eval suite v10 and the Berkeley V2 eval pack, 2026. Berkeley also runs 13 checks on every call.</p>
+      </div>
+      <div><figure class="shot"><img src="/img/eval-berkeley.jpg" width="1600" height="695" loading="lazy" data-zoom="/img/eval-berkeley.jpg" alt="Berkeley V2 eval pack: new call scripts with their results and the coverage map of scenarios added after the prompt change."><figcaption><span>Berkeley's eval pack after a prompt change: only what changed is added.</span><span class="real">Real eval sheet</span></figcaption></figure></div>
+    </div>
+  </div>
+</header>
+<section class="story">
+  <div class="wrap narrow">
+
+    <h2>How it works</h2>
+    <p>Each agent has a rule registry, a scenario list, and a run log of every round. When a round finds a defect, the defect becomes a new rule and a new scenario, so it can't come back quietly.</p>
+    <div class="panel">
+      <p class="panel-title">Bruce: checks passed per round</p>
+      <svg viewBox="0 0 560 240" role="img" aria-label="Bruce eval rounds. R11: 7 of 8 passed. R12: 60 of 63. R13: 17 of 17. R14: 24 of 24. R16: 3 of 7, four defects found and turned into rules. R17: 7 of 7." style="display:block;width:100%;height:auto;font-family:var(--f-body)">
+        <line x1="50" y1="200" x2="540" y2="200" stroke="var(--line-2)"/>
+        <line x1="50" y1="40" x2="540" y2="40" stroke="var(--line)" stroke-dasharray="3 4"/>
+        <text x="44" y="45" text-anchor="end" font-size="13" fill="var(--muted)">100%</text><text x="44" y="205" text-anchor="end" font-size="13" fill="var(--muted)">0%</text>
+        <g id="roundBars"></g>
+      </svg>
+      <p class="note" style="margin:var(--s1) 0 0">Red bars are rounds under 90%. R16 found four defects; each became a rule, and R17 passed all seven.</p>
+    </div>
+
+    <h2>Three lessons the evals taught me</h2>
+    <p><b>You can't score a tool call from the chat.</b> Once, the agent told a technician his signed sheet was filed. It wasn't. The step that should have filed it had never run. Now every round reads the record back from the system before anything is marked as passed.</p>
+    <p><b>A fix from one incident must say what it doesn't cover.</b> A rule written to stop one false claim on closed jobs ended up blocking technicians from sending photos too. The fix was to split the rule clearly into what is accepted and what is refused.</p>
+    <p><b>"No" and "later" are different.</b> The agent once answered a refusal with "No problem" as if the person had only postponed. Declining and deferring now have their own replies, and both are tested.</p>
+
+    <div class="next"><a href="/#work"><span>Back</span>All work</a><a href="/work/system/" style="text-align:right"><span>Next case</span>The system behind the work →</a></div>
+  </div>
+</section>
+</main>
+<footer id="contact">
+  <div class="wrap contact">
+    <div>
+      <span class="eyebrow">Contact</span>
+      <h2>Let's talk about a problem worth fixing</h2>
+      <div class="cta">
+        <button class="btn primary" type="button" data-copy="sudharsan454@gmail.com" data-msg="copiedF">Copy email: sudharsan454@gmail.com</button>
+        <a class="btn" href="/Sudharsan-R-Resume.pdf" target="_blank" rel="noopener">Resume (PDF)</a>
+        <a class="btn" href="https://www.linkedin.com/in/sudharsan454" target="_blank" rel="noopener">LinkedIn</a>
+        <span class="copied" id="copiedF" aria-live="polite"></span>
+      </div>
+    </div>
+    <p class="note">Product screens are real, with private details blurred. One customer is not named at their request. Every figure says where it comes from.<br>v3.0 · October 2026</p>
+  </div>
+</footer>
+<script src="/assets/site-v3.0.js"></script>
+</body>
+</html>

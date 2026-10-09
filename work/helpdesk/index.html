@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<!--
+  Sudharsan R portfolio · work/helpdesk · v3.0 · 9 Oct 2026
+  Author: Sudharsan R (built with Claude). Hosting: GitHub Pages (sudharsan454).
+  v3.0: site split into a light home page and one page per case (review feedback, 7 Oct 2026).
+  
+-->
+<title>An AI helpdesk that never closes · Sudharsan R</title>
+<meta name="description" content="Helpdesk AI: how an AI helpdesk at Berkeley Services UAE came to handle 94% of requests on its own.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@800;900&family=Public+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap">
+<link rel="stylesheet" href="/assets/site-v3.0.css">
+</head>
+<body data-page="work/helpdesk">
+<nav class="nav" aria-label="Main">
+  <div class="wrap">
+    <a class="brand" href="/"><i aria-hidden="true"></i>Sudharsan R</a>
+    <button class="iconbtn menubtn" id="menuBtn" type="button" aria-label="Menu" aria-expanded="false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button>
+    <ul><li><a href="/#work" aria-current="true">Work</a></li><li><a href="/#method">How I work</a></li><li><a href="/#writing">Writing</a></li><li><a href="/#path">Path</a></li><li><a href="/#contact">Contact</a></li></ul>
+    <button class="iconbtn" id="themeBtn" type="button" aria-label="Change theme"></button>
+  </div>
+</nav>
+<main>
+<header class="case-hero">
+  <div class="wrap">
+    <a class="crumb" href="/#work">← All work</a>
+    <div class="meta"><span class="badge">Live in UK, Middle East, ANZ</span><span>Berkeley Services UAE · Q3 Services UK</span><span>Voice, WhatsApp, email, web</span></div>
+    <h1>An AI helpdesk that never closes</h1>
+    <div class="case-top">
+      <div>
+        <p class="lede">In facilities management, every repair starts with someone reporting a problem. Across my discovery calls the same picture kept coming back: after-hours requests go nowhere, and the whole intake desk often depends on one person.</p>
+        <div class="stats"><div><b class="hi">94%</b><span>of requests handled by the AI alone, no person involved</span></div><div><b>24/7</b><span>AI as first responder, people on handoff</span></div><div><b>~80 h</b><span>of work-order typing freed each quarter</span></div></div><p class="note">Al Najah dashboard, 1 Jul – 30 Sep 2026: 1,629 requests, about 540 a month, 70% by voice. 94% means the AI raised the service request on its own (1,629 of 1,726 conversations). Handoffs to a person are not counted. ~80 h = 1,629 requests × about 3 minutes of typing each.</p>
+      </div>
+      <div><div class="panel" id="agentFlow">
+  <p class="panel-title">The agent suite, across one request's life</p>
+  <div class="lanes">
+    <div class="lane"><span class="lbl">Inbound</span><div class="agents"><div class="agent"><b>Intake</b><span>Takes the request on any channel, reads photos</span></div><div class="agent"><b>Troubleshoot</b><span>Offers a quick self-fix first</span></div></div></div>
+    <div class="lane"><span class="lbl">Routing</span><div class="agents"><div class="agent"><b>Triage</b><span>Learns how this account routes requests</span></div><div class="agent"><b>Dispatch</b><span>Scores technicians on skill, distance, load</span></div></div></div>
+    <div class="lane"><span class="lbl">Outbound</span><div class="agents"><div class="agent"><b>Confirm</b><span>Locks the visit with both sides</span></div><div class="agent"><b>Coordinate</b><span>Chases SLAs, approvals, vendors</span></div><div class="agent"><b>Pulse</b><span>Asks for a rating after every job</span></div></div></div>
+  </div>
+</div></div>
+    </div>
+  </div>
+</header>
+<section class="story">
+  <div class="wrap narrow">
+
+    <h2>Where it runs</h2>
+    <p>At Berkeley Services in the UAE it runs as <b>Al Najah</b>: email, WhatsApp and calls around the clock, with urgent issues escalated straight away. At Q3 Services in the UK it runs as <b>Bernard</b>, taking requests by voice, email and WhatsApp.</p>
+    <p>I designed it as a set of agents, each doing one job a helpdesk operator does today: take the request, try a quick fix, route it, pick the technician, confirm the visit, chase the follow-ups, and ask the customer how it went.</p>
+    <dl class="facts-list"><dt>Role</dt><dd>Product owner. Strategy, roadmap, pricing, evaluation, go-to-market</dd><dt>Start</dt><dd>80 discovery calls in 4 months</dd><dt>Pricing</dt><dd>Moved from per seat to per conversation and per voice minute</dd><dt>Languages</dt><dd>English and Arabic</dd></dl>
+
+    <h2>What I heard</h2>
+    <p>Out of 80 discovery calls in four months, two choke points showed up everywhere: getting a request into the system, and getting an invoice approved. That set the roadmap. Helpdesk AI first, Payment Validator next.</p>
+    <div class="panel">
+      <p class="panel-title">How many of 16 enterprise accounts raised each problem</p>
+      <div class="bars">
+        <div class="bar-row"><span>No 24/7 helpdesk cover</span><div class="bar"><i style="width:68.75%"></i></div><b>11</b></div>
+        <div class="bar-row"><span>Intake is one person</span><div class="bar"><i style="width:50%"></i></div><b>8</b></div>
+        <div class="bar-row"><span>CSAT manual or missing</span><div class="bar"><i style="width:31.25%"></i></div><b>5</b></div>
+        <div class="bar-row"><span>Vendor chasing by phone</span><div class="bar"><i style="width:25%"></i></div><b>4</b></div>
+        <div class="bar-row"><span>Manual routing to teams</span><div class="bar"><i style="width:25%"></i></div><b>4</b></div>
+        <div class="bar-row"><span>Accent and language gaps</span><div class="bar"><i style="width:18.75%"></i></div><b>3</b></div>
+      </div>
+    </div>
+    <p style="margin-top:var(--s3)">At Berkeley the case for intake was in their own numbers: 88% of contacts were new jobs, 10% technician follow-ups and 1% status checks. Each new job took an agent about 3 minutes to type. That is roughly 80 staff hours a quarter now spent on site work instead.</p>
+
+    <h2>What one night looks like</h2>
+    <p class="quote">2:17 AM. A tenant calls about a water leak. The agent answers, takes the issue and location, and mid-call sends a WhatsApp asking for a photo. It reads the photo, marks it urgent plumbing, creates the request and sends the reference number back. About 90 seconds. Nobody had to wake up.</p>
+
+    <h2>The release gate</h2>
+    <p>Berkeley's voice agent is tested against 55 scenarios across 25 scripted calls, plus 13 checks on every call. When the prompt changed, I didn't rerun the old suite and hope. I added only what the change touched, and logged failures as they came: calling to escalate the same ticket twice failed, and that became the next fix.</p>
+    <figure class="shot"><img src="/img/eval-berkeley.jpg" width="1600" height="695" loading="lazy" data-zoom="/img/eval-berkeley.jpg" alt="Berkeley V2 eval pack: new call scripts with their results, one failed and one partly passed, and the coverage map of scenarios added after the prompt change."><figcaption><span>Berkeley's eval pack after a prompt change. Call 23 failed and became the next fix.</span><span class="real">Real eval sheet</span></figcaption></figure>
+
+    <h2>What broke after go-live</h2>
+    <ul>
+      <li><b>Names.</b> Speech-to-text heard "Al Furjan" as "Alpha John", so requests landed on the wrong site. We gave the speech engine all 144 Berkeley site names as words to listen for, and checked each result against the full site list.</li>
+      <li><b>Noise.</b> The agent asked "What is your name?", a child in the background said "Hey Mom", and "Mom" became the caller's name. Every detail is now read back to the caller before the request is raised.</li>
+      <li><b>Voice manners.</b> Cutting people off, not waiting, not following the script. Many nights of testing went into this, and some of it still shows up in production.</li>
+    </ul>
+
+    <h2>What I'd do differently</h2>
+    <p>Start with a voice that sounds local. A Saudi accent is not a UAE accent, and you can't sound American in the UK. We learned it in production; Berkeley moved to a female voice that speaks both Arabic and English.</p>
+
+    <h2>Calls I had to make</h2>
+    <ul>
+      <li><b>Speed vs thinking time, per channel.</b> A tenant on a phone call won't wait. An email agent can take longer and reason more.</li>
+      <li><b>Where the human stays.</b> Emergencies and categories the customer names go straight to a person. That path was designed in from day one.</li>
+      <li><b>Prompt vs pipeline.</b> If a rule needs memory the model doesn't have, like "stop replying to auto-replies", it lives in the pipeline, not the prompt.</li>
+      <li><b>Pricing.</b> We tried per seat and prepaid credits, dropped both, and landed on paying per action.</li>
+    </ul>
+
+    <h2>Learning from the market</h2>
+    <p>Before designing setup, I walked through five AI support products end to end and noted how each handles onboarding, knowledge sources, human handoff, testing and analytics. That shaped a self-serve setup where a facility team answers a few plain questions (what you manage, what to do with requests you don't handle, what counts as an emergency, what every caller must give) and gets a working agent.</p>
+
+    <h2>What counts as a failure</h2>
+    <p>I keep a fixed list of what goes wrong in AI conversations: no reply, slow replies, made-up facts, repeating itself, missing frustration, a bad greeting or goodbye, a broken handoff, not collecting enough detail, wrong tone, interrupting, and the big one, not actually doing the job.</p>
+
+    <h2>How I test before customers touch it</h2>
+    <p>Misheard words get their own test: if the agent isn't sure what it heard ("panel" or "fan"), it says back what it heard so the caller can correct it, and never logs a guess. 50+ real scenarios per agent, scored against the actual records in the system, not the reply text. Every prompt change is versioned and re-tested, and old chat sessions are cleared for every contact before anyone tests again.</p>
+
+    <div class="next"><a href="/#work"><span>Back</span>All work</a><a href="/work/field-agents/" style="text-align:right"><span>Next case</span>Field agents on WhatsApp →</a></div>
+  </div>
+</section>
+</main>
+<footer id="contact">
+  <div class="wrap contact">
+    <div>
+      <span class="eyebrow">Contact</span>
+      <h2>Let's talk about a problem worth fixing</h2>
+      <div class="cta">
+        <button class="btn primary" type="button" data-copy="sudharsan454@gmail.com" data-msg="copiedF">Copy email: sudharsan454@gmail.com</button>
+        <a class="btn" href="/Sudharsan-R-Resume.pdf" target="_blank" rel="noopener">Resume (PDF)</a>
+        <a class="btn" href="https://www.linkedin.com/in/sudharsan454" target="_blank" rel="noopener">LinkedIn</a>
+        <span class="copied" id="copiedF" aria-live="polite"></span>
+      </div>
+    </div>
+    <p class="note">Product screens are real, with private details blurred. One customer is not named at their request. Every figure says where it comes from.<br>v3.0 · October 2026</p>
+  </div>
+</footer>
+<script src="/assets/site-v3.0.js"></script>
+</body>
+</html>

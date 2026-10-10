@@ -1,0 +1,218 @@
+<!doctype html>
+<!-- Baby Travel Map · app · v1.0 · 10 Oct 2026 · Claude for Sudharsan R · first build: magic-link sign-in, capture (trip + entries + covers + firsts), MapLibre map with globe story, timeline, year story (6 scenes), family share link, settings. Supabase Project Zero, schema memories. Changelog in CHANGELOG.md. -->
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#101418">
+<title>Baby Travel Map</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='14' fill='%23f2b544'/%3E%3Ccircle cx='16' cy='13' r='5' fill='%23101418'/%3E%3Cpath d='M16 18 L16 29' stroke='%23101418' stroke-width='3' stroke-linecap='round'/%3E%3C/svg%3E">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,700&family=Atkinson+Hyperlegible:wght@400;700&display=swap">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/maplibre-gl@5/dist/maplibre-gl.css">
+<link rel="stylesheet" href="app-v1.0.css">
+</head>
+<body>
+<div id="app">
+  <!-- Sign-in -->
+  <section id="view-auth" class="view" hidden>
+    <div class="auth-card">
+      <div class="eyebrow">Baby Travel Map</div>
+      <h1>Everywhere he has been.</h1>
+      <p>Sign in with the Gmail that owns this map. A one-tap link is sent to that address; nothing else can open it.</p>
+      <form id="auth-form">
+        <label for="auth-email">Email</label>
+        <input id="auth-email" type="email" autocomplete="email" placeholder="you@gmail.com" required>
+        <button class="btn primary" type="submit">Send sign-in link</button>
+      </form>
+      <p id="auth-msg" class="muted"></p>
+    </div>
+  </section>
+
+  <!-- First run: child -->
+  <section id="view-setup" class="view" hidden>
+    <div class="auth-card">
+      <div class="eyebrow">First run</div>
+      <h1>Who is this map about?</h1>
+      <form id="setup-form">
+        <label for="setup-name">His name</label>
+        <input id="setup-name" type="text" required placeholder="Name">
+        <label for="setup-dob">Date of birth</label>
+        <input id="setup-dob" type="date" required>
+        <label for="setup-home">Home (type a locality, pick from the list)</label>
+        <input id="setup-home" type="search" placeholder="Triplicane, Chennai" autocomplete="off">
+        <div id="setup-home-results" class="results"></div>
+        <input type="hidden" id="setup-home-json">
+        <button class="btn primary" type="submit">Start the map</button>
+      </form>
+    </div>
+  </section>
+
+  <!-- Main shell -->
+  <header id="topbar" hidden>
+    <div class="brand"><span class="dot"></span><span id="brand-name">Baby Travel Map</span></div>
+    <div id="year-chips" class="chips"></div>
+  </header>
+
+  <main id="main" hidden>
+    <section id="view-map" class="view">
+      <div id="map"></div>
+      <div id="map-empty" class="empty" hidden>
+        <h2>No trips yet.</h2>
+        <p>Tap <strong>+ Trip</strong> and log the first one. Three fields, under two minutes.</p>
+      </div>
+    </section>
+
+    <section id="view-timeline" class="view" hidden>
+      <div class="pad">
+        <h2 class="h">Timeline</h2>
+        <div id="timeline-list"></div>
+      </div>
+    </section>
+
+    <section id="view-story" class="view" hidden>
+      <div class="pad">
+        <h2 class="h">The year as a story</h2>
+        <p class="muted">Pick a year. Six scenes, swipe or tap to move on.</p>
+        <div id="story-years" class="chips big"></div>
+        <div id="story-years-empty" class="muted" hidden>Log a trip first; the story reads from them.</div>
+      </div>
+    </section>
+
+    <section id="view-settings" class="view" hidden>
+      <div class="pad">
+        <h2 class="h">Settings</h2>
+        <form id="child-form" class="card">
+          <h3>Child</h3>
+          <label for="child-name">Name</label><input id="child-name" type="text" required>
+          <label for="child-dob">Date of birth</label><input id="child-dob" type="date" required>
+          <label for="child-home">Home</label>
+          <input id="child-home" type="search" autocomplete="off" placeholder="Type a locality">
+          <div id="child-home-results" class="results"></div>
+          <input type="hidden" id="child-home-json">
+          <div id="child-home-current" class="muted"></div>
+          <button class="btn" type="submit">Save</button>
+        </form>
+        <div class="card">
+          <h3>Storage</h3>
+          <p id="storage-used" class="muted">Calculating…</p>
+          <div class="meter"><div id="storage-bar"></div></div>
+        </div>
+        <div class="card">
+          <h3>Family links</h3>
+          <p class="muted">Anyone with a link can watch the story for that year, read-only. Revoke any time.</p>
+          <div id="share-list"></div>
+        </div>
+        <div class="card">
+          <h3>Account</h3>
+          <p id="account-email" class="muted"></p>
+          <button id="btn-signout" class="btn" type="button">Sign out</button>
+        </div>
+        <p class="muted small">Baby Travel Map v1.0 · data in Supabase (Project Zero, schema memories) · photos: covers only, originals stay in Google Photos.</p>
+      </div>
+    </section>
+  </main>
+
+  <nav id="bottomnav" hidden>
+    <button data-view="map" class="active" type="button">Map</button>
+    <button data-view="timeline" type="button">Timeline</button>
+    <button data-view="story" type="button">Story</button>
+    <button data-view="settings" type="button">Settings</button>
+  </nav>
+  <button id="fab" class="fab" type="button" hidden>+ Trip</button>
+
+  <!-- Bottom sheet (place visits / trip detail) -->
+  <div id="sheet" class="sheet" hidden>
+    <div class="sheet-handle"></div>
+    <div id="sheet-body"></div>
+  </div>
+  <div id="scrim" class="scrim" hidden></div>
+
+  <!-- Trip / entry editor -->
+  <div id="editor" class="editor" hidden>
+    <div class="editor-bar">
+      <button id="editor-close" class="btn ghost" type="button">Close</button>
+      <div id="editor-title" class="editor-title">New trip</div>
+      <button id="editor-save" class="btn primary" type="button">Save</button>
+    </div>
+    <form id="editor-form" class="editor-body">
+      <fieldset id="fs-trip">
+        <legend>The trip</legend>
+        <label for="t-title">Title</label>
+        <input id="t-title" type="text" placeholder="Mylapore weekend" required>
+        <div class="row">
+          <div><label for="t-start">From</label><input id="t-start" type="date" required></div>
+          <div><label for="t-end">To</label><input id="t-end" type="date" required></div>
+        </div>
+        <label for="t-purpose">Why</label>
+        <select id="t-purpose">
+          <option value="holiday">Holiday</option><option value="family">Family visit</option><option value="temple">Temple</option>
+          <option value="wedding">Wedding</option><option value="function">Function</option><option value="other">Other</option>
+        </select>
+        <label for="t-album">Google Photos album link (optional)</label>
+        <input id="t-album" type="url" placeholder="https://photos.app.goo.gl/…">
+        <label for="t-summary">One line about the trip (optional)</label>
+        <input id="t-summary" type="text" placeholder="His first long train ride">
+      </fieldset>
+
+      <fieldset id="fs-entry">
+        <legend id="entry-legend">Entry 1</legend>
+        <label for="e-place">Where (type a locality, pick from the list)</label>
+        <input id="e-place" type="search" autocomplete="off" placeholder="Mylapore, Chennai" required>
+        <div id="e-place-results" class="results"></div>
+        <input type="hidden" id="e-place-json">
+        <div id="e-place-picked" class="picked"></div>
+        <div class="row">
+          <div><label for="e-arrived">Arrived</label><input id="e-arrived" type="date"></div>
+          <div><label for="e-left">Left</label><input id="e-left" type="date"></div>
+        </div>
+        <div class="row">
+          <div><label for="e-mode">How you got there</label>
+            <select id="e-mode"><option value="car">Car</option><option value="train">Train</option><option value="flight">Flight</option><option value="bus">Bus</option><option value="boat">Boat</option><option value="walk">Walk</option><option value="bike">Two-wheeler</option></select></div>
+          <div><label for="e-km">About how far (km)</label><input id="e-km" type="number" min="0" step="1" placeholder="auto"></div>
+        </div>
+        <label for="e-stayed">Where you stayed</label>
+        <input id="e-stayed" type="text" placeholder="Paati's house / hotel name">
+        <label for="e-did">What we did</label>
+        <textarea id="e-did" rows="2" placeholder="Temple in the morning, beach in the evening"></textarea>
+        <label for="e-saw">What he did</label>
+        <textarea id="e-saw" rows="2" placeholder="Stared at the waves for ten minutes, then ate sand"></textarea>
+        <label for="e-hated">What he hated</label>
+        <input id="e-hated" type="text" placeholder="The car seat after hour two">
+        <label for="e-memory">The one memory to keep</label>
+        <textarea id="e-memory" rows="2" placeholder="The line the story will read out"></textarea>
+        <label>Any firsts?</label>
+        <div id="e-firsts" class="chips wrap"></div>
+        <label class="check"><input id="e-highlight" type="checkbox"> The story should linger here</label>
+        <label for="e-photos">Cover photos (1 to 3, compressed on your phone before upload)</label>
+        <input id="e-photos" type="file" accept="image/*" multiple>
+        <div id="e-photo-preview" class="thumbs"></div>
+      </fieldset>
+      <div id="editor-more" class="editor-more">
+        <button id="btn-add-entry" class="btn" type="button">Save and add another entry</button>
+      </div>
+      <div id="editor-danger" class="editor-more" hidden>
+        <button id="btn-delete-entry" class="btn danger" type="button">Delete this entry</button>
+      </div>
+    </form>
+  </div>
+
+  <!-- Story player -->
+  <div id="player" class="player" hidden>
+    <div id="player-map"></div>
+    <div id="player-overlay"></div>
+    <div class="player-bar">
+      <button id="player-prev" class="btn ghost" type="button">Back</button>
+      <div id="player-dots" class="dots"></div>
+      <button id="player-next" class="btn primary" type="button">Next</button>
+      <button id="player-exit" class="btn ghost" type="button">Exit</button>
+    </div>
+  </div>
+
+  <div id="toast" class="toast" hidden></div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/maplibre-gl@5/dist/maplibre-gl.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+<script src="app-v1.0.js"></script>
+</body>
+</html>

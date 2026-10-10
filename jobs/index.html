@@ -1,0 +1,559 @@
+<!doctype html>
+<!-- Job Application Driver · app v1.0 · 10 Oct 2026 · single-file web app on Supabase (Project Zero) · login: sudharsan@facilio.com only · changelog at the foot of this file -->
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow">
+<title>Job Application Driver</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+:root{--bg:#f7f6f2;--surface:#fff;--fg:#1d2320;--muted:#5b645f;--line:#d9ddd6;--accent:#0f6e63;--accent-soft:#e2f0ec;--warn:#9a5b00;--warn-soft:#fbf0dc;--bad:#a33a2f;--bad-soft:#f8e5e2;--new:#5b3f9e;--new-soft:#ece6f7;--body:"IBM Plex Sans",system-ui,sans-serif;--mono:"IBM Plex Mono",ui-monospace,monospace}
+@media(prefers-color-scheme:dark){:root{--bg:#15191a;--surface:#1d2324;--fg:#e6e9e4;--muted:#9aa49d;--line:#313a38;--accent:#5fc3b3;--accent-soft:#163b36;--warn:#e3a94a;--warn-soft:#3a2b10;--bad:#e2857a;--bad-soft:#3d1f1b;--new:#b6a1ea;--new-soft:#2b2340;color-scheme:dark}}
+*{box-sizing:border-box}html,body{margin:0;height:100%}
+body{background:var(--bg);color:var(--fg);font-family:var(--body);font-size:14px;line-height:1.45}
+a{color:var(--accent)}
+button,.btn{font:inherit;border:1px solid var(--line);background:var(--surface);color:var(--fg);padding:6px 10px;border-radius:4px;cursor:pointer}
+button.primary{background:var(--accent);border-color:var(--accent);color:#fff}
+button.small{padding:3px 8px;font-size:12.5px}
+button:disabled{opacity:.5;cursor:default}
+input,select,textarea{font:inherit;border:1px solid var(--line);background:var(--surface);color:var(--fg);padding:6px 8px;border-radius:4px;width:100%}
+textarea{min-height:80px;resize:vertical}
+label{display:block;font-size:12px;color:var(--muted);margin:8px 0 3px;font-family:var(--mono);letter-spacing:.04em;text-transform:uppercase}
+.app{display:none;min-height:100%}
+.topbar{position:sticky;top:0;z-index:5;background:var(--surface);border-bottom:1px solid var(--line);padding:8px 16px;display:flex;flex-wrap:wrap;gap:8px 16px;align-items:center}
+.brand{font-weight:600}
+.brand small{font-family:var(--mono);font-weight:400;color:var(--muted);margin-left:6px}
+nav{display:flex;flex-wrap:wrap;gap:4px}
+nav button{border:none;background:none;padding:6px 8px;border-radius:4px;color:var(--muted)}
+nav button.active{background:var(--accent-soft);color:var(--accent);font-weight:500}
+.streams{display:flex;gap:6px;flex-wrap:wrap;margin-left:auto;align-items:center}
+.chip{border:1px solid var(--line);border-radius:14px;padding:3px 10px;font-size:12.5px;cursor:pointer;user-select:none}
+.chip.on{background:var(--accent-soft);border-color:var(--accent);color:var(--accent)}
+main{padding:16px;max-width:1280px;margin:0 auto}
+h2{font-size:1.2rem;margin:0 0 12px}h3{font-size:1rem;margin:16px 0 8px}
+.toolbar{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-bottom:12px}
+.toolbar .grow{flex:1;min-width:160px}
+table{border-collapse:collapse;width:100%;font-size:13.5px}
+th,td{text-align:left;vertical-align:top;padding:7px 8px;border-bottom:1px solid var(--line)}
+th{font-family:var(--mono);font-size:11px;letter-spacing:.05em;text-transform:uppercase;color:var(--muted);font-weight:500;white-space:nowrap}
+tr.row{cursor:pointer}tr.row:hover td{background:var(--accent-soft)}
+.scroll{overflow-x:auto}
+.tag{display:inline-block;padding:1px 7px;border-radius:3px;font-family:var(--mono);font-size:11px;white-space:nowrap;background:var(--line);color:var(--muted)}
+.tag.ok{background:var(--accent-soft);color:var(--accent)}.tag.warn{background:var(--warn-soft);color:var(--warn)}.tag.bad{background:var(--bad-soft);color:var(--bad)}.tag.new{background:var(--new-soft);color:var(--new)}
+.muted{color:var(--muted)}.mono{font-family:var(--mono);font-size:12px}
+.cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:12px}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:6px;padding:12px;min-width:0}
+.card h4{margin:0 0 6px;font-size:14px}
+.kpis{display:grid;grid-template-columns:repeat(auto-fill,minmax(170px,1fr));gap:12px;margin-bottom:16px}
+.kpi{background:var(--surface);border:1px solid var(--line);border-radius:6px;padding:12px}
+.kpi b{display:block;font-size:1.6rem;font-weight:600;font-variant-numeric:tabular-nums}
+.kpi span{color:var(--muted);font-size:12.5px}
+.kanban{display:grid;grid-auto-flow:column;grid-auto-columns:minmax(220px,1fr);gap:10px;overflow-x:auto;padding-bottom:8px}
+.col{background:var(--surface);border:1px solid var(--line);border-radius:6px;padding:8px;min-height:120px}
+.col h4{margin:0 0 8px;font-size:12px;font-family:var(--mono);text-transform:uppercase;letter-spacing:.05em;color:var(--muted)}
+.kcard{border:1px solid var(--line);border-radius:4px;padding:8px;margin-bottom:8px;cursor:pointer;background:var(--bg)}
+.kcard:hover{border-color:var(--accent)}
+.modal-bg{position:fixed;inset:0;background:rgba(0,0,0,.4);display:none;z-index:10;align-items:flex-start;justify-content:center;overflow:auto;padding:24px 12px}
+.modal{background:var(--surface);border:1px solid var(--line);border-radius:8px;max-width:860px;width:100%;padding:16px 18px;margin:auto}
+.modal h3{margin:0 0 8px}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:0 16px}
+@media(max-width:640px){.grid2{grid-template-columns:1fr}}
+.actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px;align-items:center}
+.actions .right{margin-left:auto}
+.toast{position:fixed;bottom:16px;left:50%;transform:translateX(-50%);background:var(--fg);color:var(--bg);padding:8px 14px;border-radius:6px;z-index:20;display:none;max-width:90vw}
+.login{max-width:360px;margin:12vh auto;background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:20px}
+.login h1{font-size:1.2rem;margin:0 0 4px}
+.err{color:var(--bad);font-size:13px;margin-top:8px;min-height:1em}
+.tabs{display:flex;gap:4px;flex-wrap:wrap;border-bottom:1px solid var(--line);margin:10px 0}
+.tabs button{border:none;background:none;border-bottom:2px solid transparent;border-radius:0;color:var(--muted)}
+.tabs button.active{border-bottom-color:var(--accent);color:var(--accent)}
+.callout{border-left:3px solid var(--accent);background:var(--accent-soft);padding:8px 12px;margin:8px 0;border-radius:0 4px 4px 0}
+.callout.warn{border-left-color:var(--warn);background:var(--warn-soft)}
+pre.text{white-space:pre-wrap;font-family:var(--body);font-size:13px;background:var(--bg);border:1px solid var(--line);padding:10px;border-radius:4px;max-height:360px;overflow:auto}
+.hidden{display:none!important}
+.fit{font-family:var(--mono);font-weight:500}
+</style>
+</head>
+<body>
+
+<div id="login" class="login">
+  <h1>Job Application Driver</h1>
+  <div class="muted">v1.0 · one account only</div>
+  <form id="loginForm">
+    <label for="email">Email</label><input id="email" type="email" autocomplete="username" value="sudharsan@facilio.com">
+    <label for="password">Password</label><input id="password" type="password" autocomplete="current-password">
+    <div class="actions"><button class="primary" type="submit" id="loginBtn">Sign in</button></div>
+    <div class="err" id="loginErr"></div>
+  </form>
+</div>
+
+<div id="app" class="app">
+  <div class="topbar">
+    <div class="brand">Job Application Driver<small>v1.0</small></div>
+    <nav id="nav"></nav>
+    <div class="streams" id="streamChips"></div>
+    <button class="small" id="logoutBtn">Sign out</button>
+  </div>
+  <main id="main"></main>
+</div>
+
+<div class="modal-bg" id="modalBg"><div class="modal" id="modal"></div></div>
+<div class="toast" id="toast"></div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.js"></script>
+<script>
+/* ===================== config ===================== */
+const SUPABASE_URL = 'https://bxzmneeacjjtwmtdsrjd.supabase.co';
+const SUPABASE_KEY = 'sb_publishable_dcwUfURxdPF8AquVEs7KzA_xpcJQR1b'; // publishable key: safe in the browser; RLS does the isolation
+const ALLOWED_EMAIL = 'sudharsan@facilio.com';
+const sb = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+const PM_STREAM = '11111111-1111-4111-8111-000000000001';
+
+/* ===================== small helpers ===================== */
+const $ = (s, el=document) => el.querySelector(s);
+const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const fmtD = d => d ? new Date(d).toLocaleDateString('en-IN', {day:'2-digit', month:'short', year:'2-digit'}) : '';
+const fmtDT = d => d ? new Date(d).toLocaleString('en-IN', {day:'2-digit', month:'short', hour:'2-digit', minute:'2-digit'}) : '';
+const daysAgo = d => d ? Math.floor((Date.now() - new Date(d)) / 86400000) : null;
+let toastT; function toast(m){ const t=$('#toast'); t.textContent=m; t.style.display='block'; clearTimeout(toastT); toastT=setTimeout(()=>t.style.display='none', 2600); }
+function err(e){ console.error(e); toast('Error: ' + (e.message || e)); }
+async function q(p){ const {data, error} = await p; if (error) throw error; return data; }
+
+/* ===================== state ===================== */
+const state = { user:null, streams:[], selected:new Set(), settings:{}, screen:'inbox', boards:[], noise:[], cache:{} };
+function selStreams(){ return [...state.selected]; }
+function streamName(id){ return (state.streams.find(s=>s.id===id)||{}).name || ''; }
+function inStreams(qb, col='job_stream_id'){ const ids=selStreams(); return ids.length && ids.length < state.streams.length ? qb.in(col, ids) : qb; }
+
+/* ===================== auth ===================== */
+$('#loginForm').addEventListener('submit', async e => {
+  e.preventDefault(); $('#loginErr').textContent=''; $('#loginBtn').disabled=true;
+  const email = $('#email').value.trim().toLowerCase(), password = $('#password').value;
+  if (email !== ALLOWED_EMAIL) { $('#loginErr').textContent = 'This app has one account: ' + ALLOWED_EMAIL; $('#loginBtn').disabled=false; return; }
+  const { error } = await sb.auth.signInWithPassword({ email, password });
+  $('#loginBtn').disabled=false;
+  if (error) { $('#loginErr').textContent = error.message; return; }
+});
+$('#logoutBtn').addEventListener('click', async () => { await sb.auth.signOut(); });
+sb.auth.onAuthStateChange(async (ev, session) => {
+  if (session && session.user && session.user.email?.toLowerCase() === ALLOWED_EMAIL) { state.user = session.user; await boot(); }
+  else if (session && session.user) { await sb.auth.signOut(); $('#loginErr').textContent='Not an allowed account.'; }
+  else { state.user=null; $('#app').style.display='none'; $('#login').style.display='block'; }
+});
+
+async function boot(){
+  $('#login').style.display='none'; $('#app').style.display='block';
+  state.streams = await q(sb.from('job_streams').select('*').order('created_at'));
+  try { const saved = JSON.parse(localStorage.getItem('jd.streams')||'null'); if (saved) saved.forEach(id=>state.selected.add(id)); } catch(e){}
+  if (!state.selected.size) state.streams.forEach(s=>state.selected.add(s.id));
+  state.boards = await q(sb.from('job_boards').select('*').order('name'));
+  state.noise = await q(sb.from('noise_reasons').select('*').order('reason'));
+  const st = await q(sb.from('user_settings').select('*').maybeSingle()); state.settings = (st && st.settings) || {};
+  renderNav(); renderChips();
+  const hash = location.hash.replace('#','') || 'inbox'; go(SCREENS[hash] ? hash : 'inbox');
+}
+
+/* ===================== navigation ===================== */
+const SCREENS = {
+  inbox:{label:'Inbox', render:renderInbox},
+  pipeline:{label:'Pipeline', render:renderPipeline},
+  applications:{label:'Applications', render:renderApplications},
+  targets:{label:'Target companies', render:renderTargets},
+  streams:{label:'Streams', render:renderStreams},
+  resumes:{label:'Resumes', render:renderResumes},
+  people:{label:'People', render:renderPeople},
+  interviews:{label:'Interviews', render:renderInterviews},
+  prep:{label:'Prep', render:renderPrep},
+  numbers:{label:'Numbers', render:renderNumbers},
+  runs:{label:'Runs & questions', render:renderRuns},
+  settings:{label:'Settings', render:renderSettings},
+};
+function renderNav(){ $('#nav').innerHTML = Object.entries(SCREENS).map(([k,v])=>`<button data-s="${k}" class="${k===state.screen?'active':''}">${v.label}</button>`).join(''); $('#nav').querySelectorAll('button').forEach(b=>b.onclick=()=>go(b.dataset.s)); }
+function renderChips(){ $('#streamChips').innerHTML = state.streams.map(s=>`<span class="chip ${state.selected.has(s.id)?'on':''}" data-id="${s.id}">${esc(s.name)}</span>`).join(''); $('#streamChips').querySelectorAll('.chip').forEach(c=>c.onclick=()=>{ const id=c.dataset.id; if (state.selected.has(id)) { if (state.selected.size>1) state.selected.delete(id); } else state.selected.add(id); localStorage.setItem('jd.streams', JSON.stringify([...state.selected])); renderChips(); go(state.screen); }); }
+async function go(s){ state.screen=s; location.hash=s; renderNav(); $('#main').innerHTML='<div class="muted">Loading…</div>'; try { await SCREENS[s].render($('#main')); } catch(e){ err(e); $('#main').innerHTML='<div class="err">'+esc(e.message||e)+'</div>'; } }
+window.addEventListener('hashchange', ()=>{ const h=location.hash.replace('#',''); if (SCREENS[h] && h!==state.screen) go(h); });
+
+/* ===================== generic form engine ===================== */
+// field: {k, label, t:'text|textarea|number|date|datetime|bool|select|fk|array|json', opts:[], fk:{table,label}, ro:true}
+async function fkOptions(fk){ const key='fk:'+fk.table; if (!state.cache[key]) state.cache[key] = await q(sb.from(fk.table).select('id,'+fk.label).order(fk.label)); return state.cache[key]; }
+async function fieldHtml(f, v){
+  const id='f_'+f.k; const val = v==null?'':v;
+  if (f.t==='textarea'||f.t==='json') return `<label for="${id}">${esc(f.label)}</label><textarea id="${id}" ${f.ro?'readonly':''}>${esc(f.t==='json'&&val!==''?JSON.stringify(val,null,1):val)}</textarea>`;
+  if (f.t==='bool') return `<label for="${id}">${esc(f.label)}</label><select id="${id}"><option value="">—</option><option value="true" ${val===true?'selected':''}>yes</option><option value="false" ${val===false?'selected':''}>no</option></select>`;
+  if (f.t==='select') return `<label for="${id}">${esc(f.label)}</label><select id="${id}"><option value="">—</option>${f.opts.map(o=>`<option ${o===val?'selected':''}>${esc(o)}</option>`).join('')}</select>`;
+  if (f.t==='fk'){ const opts=await fkOptions(f.fk); return `<label for="${id}">${esc(f.label)}</label><select id="${id}"><option value="">—</option>${opts.map(o=>`<option value="${o.id}" ${o.id===val?'selected':''}>${esc(o[f.fk.label])}</option>`).join('')}</select>`; }
+  if (f.t==='array') return `<label for="${id}">${esc(f.label)} <span style="text-transform:none">(comma separated)</span></label><input id="${id}" value="${esc(Array.isArray(val)?val.join(', '):val)}">`;
+  const type = f.t==='number'?'number':f.t==='date'?'date':f.t==='datetime'?'datetime-local':'text';
+  let sv = val; if (f.t==='datetime' && val) sv = new Date(val).toISOString().slice(0,16);
+  return `<label for="${id}">${esc(f.label)}</label><input id="${id}" type="${type}" value="${esc(sv)}" ${f.ro?'readonly':''}>`;
+}
+function readField(f){
+  const el=$('#f_'+f.k); if(!el) return undefined; let v=el.value;
+  if (f.t==='number') return v===''?null:Number(v);
+  if (f.t==='bool') return v===''?null:v==='true';
+  if (f.t==='array') return v.trim()===''?null:v.split(',').map(s=>s.trim()).filter(Boolean);
+  if (f.t==='json') { if (v.trim()==='') return null; try { return JSON.parse(v); } catch(e){ throw new Error('Invalid JSON in '+f.label); } }
+  if (f.t==='datetime') return v===''?null:new Date(v).toISOString();
+  return v===''?null:v;
+}
+function openModal(html){ $('#modal').innerHTML=html; $('#modalBg').style.display='flex'; }
+function closeModal(){ $('#modalBg').style.display='none'; $('#modal').innerHTML=''; }
+$('#modalBg').addEventListener('click', e=>{ if (e.target===$('#modalBg')) closeModal(); });
+document.addEventListener('keydown', e=>{ if (e.key==='Escape') closeModal(); });
+
+// Generic editor: table, fields, row (null = new), after(saved) callback, extra html
+async function editRecord({table, title, fields, row, defaults={}, after, extra='', canDelete=true}){
+  const parts = []; for (const f of fields) parts.push(await fieldHtml(f, row ? row[f.k] : (defaults[f.k] ?? null)));
+  openModal(`<h3>${esc(title)}</h3><div class="grid2">${parts.map(p=>`<div>${p}</div>`).join('')}</div>${extra}
+    <div class="actions"><button class="primary" id="saveBtn">Save</button><button id="cancelBtn">Cancel</button>${row&&canDelete?'<button class="right" id="delBtn" style="color:var(--bad)">Delete</button>':''}</div><div class="err" id="formErr"></div>`);
+  $('#cancelBtn').onclick=closeModal;
+  $('#saveBtn').onclick=async()=>{ try{ const payload={}; for (const f of fields){ if (f.ro) continue; const v=readField(f); if (v!==undefined) payload[f.k]=v; } Object.assign(payload, defaults._force||{});
+      let saved; if (row) saved = await q(sb.from(table).update(payload).eq('id', row.id).select().single()); else saved = await q(sb.from(table).insert(payload).select().single());
+      state.cache={}; closeModal(); toast('Saved'); if (after) await after(saved); } catch(e){ $('#formErr').textContent=e.message||e; } };
+  if (row&&canDelete) $('#delBtn').onclick=async()=>{ const ok=await confirmBox('Delete this record? This cannot be undone.'); if(!ok) return; try{ await q(sb.from(table).delete().eq('id', row.id)); state.cache={}; closeModal(); toast('Deleted'); if (after) await after(null);}catch(e){ $('#formErr').textContent=e.message||e; } };
+}
+function confirmBox(msg){ return new Promise(res=>{ const prev=$('#modal').innerHTML; openModal(`<h3>Confirm</h3><p>${esc(msg)}</p><div class="actions"><button class="primary" id="okBtn">Yes</button><button id="noBtn">No</button></div>`); $('#okBtn').onclick=()=>{ closeModal(); res(true); }; $('#noBtn').onclick=()=>{ $('#modal').innerHTML=prev; res(false); }; }); }
+
+/* ===================== field sets ===================== */
+const streamFk = {k:'job_stream_id', label:'Stream', t:'fk', fk:{table:'job_streams', label:'name'}};
+const boardFk = {k:'job_board_id', label:'Source / portal', t:'fk', fk:{table:'job_boards', label:'name'}};
+const F = {
+  lead: [streamFk, {k:'title',label:'Title',t:'text'}, {k:'company',label:'Company',t:'text'}, {k:'location',label:'Location',t:'text'}, boardFk, {k:'url',label:'URL',t:'text'}, {k:'posted_at',label:'Posted at',t:'datetime'}, {k:'posted_at_basis',label:'Posted-at basis',t:'select',opts:['listing','email_received']}, {k:'easy_apply',label:'Easy apply',t:'bool'}, {k:'status',label:'Status',t:'select',opts:['new','fit_checked','parked','promoted','noise']}, {k:'noise_reason_id',label:'Parked because',t:'fk',fk:{table:'noise_reasons',label:'reason'}}, {k:'fit_score',label:'Fit score',t:'number'}, {k:'jd_confidence',label:'JD confidence',t:'select',opts:['full','snippet_only']}, {k:'alert_definition_id',label:'Alert that produced it',t:'fk',fk:{table:'alert_definitions',label:'query_text'}}, {k:'target_company_id',label:'Target company',t:'fk',fk:{table:'target_companies',label:'name'}}, {k:'raw_snippet',label:'Snippet',t:'textarea'}, {k:'fit_breakdown',label:'Fit breakdown (JSON)',t:'json'}, {k:'jd_text',label:'Job description',t:'textarea'}],
+  application: [streamFk, {k:'title',label:'Title',t:'text'}, {k:'company',label:'Company',t:'text'}, {k:'location',label:'Location',t:'text'}, boardFk, {k:'url',label:'URL',t:'text'}, {k:'status',label:'Status',t:'select',opts:['applied','screening','round_1','round_2','round_3','offer','rejected','withdrawn','ghosted']}, {k:'applied_date',label:'Applied date',t:'date'}, {k:'apply_channel',label:'Apply channel',t:'select',opts:['easy_apply','website','email','consultant','referral']}, {k:'resume_decision',label:'Resume decision',t:'select',opts:['generic','tailored']}, {k:'decision_reason',label:'Decision reason',t:'textarea'}, {k:'fit_score',label:'Fit score',t:'number'}, {k:'via_consultant_org_id',label:'Via agency',t:'fk',fk:{table:'consultant_organizations',label:'name'}}, {k:'final_status',label:'Final status',t:'select',opts:['open','rejected','offer','withdrawn','ghosted']}, {k:'closed_at',label:'Closed at',t:'datetime'}, {k:'rejection_message',label:'Rejection message (verbatim)',t:'textarea'}, {k:'rejection_received_at',label:'Rejection received',t:'datetime'}, {k:'next_action',label:'Next action',t:'text'}, {k:'next_action_due',label:'Next action due',t:'date'}, {k:'notes',label:'Notes',t:'textarea'}],
+  target: [streamFk, {k:'name',label:'Company',t:'text'}, {k:'website',label:'Website',t:'text'}, {k:'careers_url',label:'Careers URL',t:'text'}, {k:'linkedin_company_url',label:'LinkedIn company URL',t:'text'}, {k:'why',label:'Why this company',t:'textarea'}, {k:'watched_roles',label:'Watched roles',t:'array'}, {k:'check_every_days',label:'Check every N days',t:'number'}, {k:'priority',label:'Priority (1 = top)',t:'number'}, {k:'status',label:'Status',t:'select',opts:['watching','in_conversation','applied','closed']}, {k:'last_checked_at',label:'Last checked',t:'datetime',ro:true}],
+  stream: [{k:'name',label:'Name',t:'text'}, {k:'goal',label:'Goal',t:'textarea'}, {k:'target_titles',label:'Target titles',t:'array'}, {k:'locations',label:'Locations',t:'array'}, {k:'seniority',label:'Seniority',t:'text'}, {k:'min_leads',label:'Lead health: min leads',t:'number'}, {k:'min_leads_window_days',label:'… in N days',t:'number'}, {k:'generic_document_id',label:'Generic resume',t:'fk',fk:{table:'documents',label:'version_label'}}, {k:'is_active',label:'Active',t:'bool'}],
+  alert: [streamFk, boardFk, {k:'query_text',label:'Query / keywords',t:'text'}, {k:'setup_method',label:'Set up as',t:'select',opts:['portal_alert','saved_search','email_subscription']}, {k:'sender_pattern',label:'Sender pattern (how mails are recognised)',t:'text'}, {k:'status',label:'Status',t:'select',opts:['proposed','live','dead']}, {k:'filters',label:'Filters (JSON)',t:'json'}, {k:'last_lead_at',label:'Last lead at',t:'datetime',ro:true}],
+  document: [streamFk, {k:'type',label:'Type',t:'select',opts:['resume','cover_letter']}, {k:'tag',label:'Tag',t:'select',opts:['generic','tailored']}, {k:'tailored_for_company',label:'Tailored for company',t:'text'}, {k:'version_label',label:'Version label',t:'text'}, {k:'status',label:'Status',t:'select',opts:['draft','final']}, {k:'storage_path',label:'File path / link',t:'text'}, {k:'derived_from_document_id',label:'Derived from',t:'fk',fk:{table:'documents',label:'version_label'}}, {k:'text',label:'Text',t:'textarea'}],
+  contact: [{k:'name',label:'Name',t:'text'}, {k:'type',label:'Type',t:'select',opts:['hr','hiring_manager','consultant','interviewer','referral','founder','other']}, {k:'organization',label:'Organisation',t:'text'}, {k:'email',label:'Email',t:'text'}, {k:'phone',label:'Phone',t:'text'}, {k:'linkedin_url',label:'LinkedIn URL',t:'text'}, {k:'consultant_organization_id',label:'Agency',t:'fk',fk:{table:'consultant_organizations',label:'name'}}, {k:'target_company_id',label:'Target company',t:'fk',fk:{table:'target_companies',label:'name'}}, {k:'source',label:'Source',t:'select',opts:['email','linkedin','wispr','scout','manual']}, {k:'last_touch_at',label:'Last touch',t:'datetime'}, {k:'notes',label:'Notes',t:'textarea'}],
+  agency: [{k:'name',label:'Agency name',t:'text'}, {k:'notes',label:'Notes',t:'textarea'}],
+  interview: [{k:'application_id',label:'Application',t:'fk',fk:{table:'applications',label:'title'}}, {k:'round_number',label:'Round',t:'number'}, {k:'stage_label',label:'Stage label',t:'text'}, {k:'interview_date',label:'Date',t:'date'}, {k:'interviewer_name',label:'Interviewer',t:'text'}, {k:'interviewer_linkedin_url',label:'Interviewer LinkedIn',t:'text'}, {k:'interviewer_contact_id',label:'Interviewer (contact)',t:'fk',fk:{table:'contacts',label:'name'}}, {k:'result',label:'Result',t:'select',opts:['pending','advanced','rejected']}, {k:'how_it_went',label:'How it went (1 to 5)',t:'number'}, {k:'how_it_went_note',label:'How it went (note)',t:'textarea'}, {k:'went_well',label:'Went well',t:'textarea'}, {k:'went_badly',label:'Went badly',t:'textarea'}, {k:'wispr_share_link',label:'Wispr Flow link',t:'text'}, {k:'wispr_meeting_id',label:'Wispr meeting id',t:'text'}, {k:'notes',label:'Notes',t:'textarea'}, {k:'transcript_text',label:'Transcript',t:'textarea'}],
+  question: [{k:'question',label:'Question asked',t:'textarea'}, {k:'answer_given',label:'Answer you gave',t:'textarea'}, {k:'self_rating',label:'Self rating (1 to 5)',t:'number'}, {k:'topic',label:'Topic',t:'select',opts:['prioritisation','discovery','evals','pricing','conflict','failure','why_us','why_you','leadership','technical','other']}, {k:'transcript_ref',label:'Transcript reference',t:'text'}],
+  prep: [streamFk, {k:'question',label:'Question',t:'textarea'}, {k:'best_answer',label:'Best answer',t:'textarea'}, {k:'topic',label:'Topic',t:'select',opts:['prioritisation','discovery','evals','pricing','conflict','failure','why_us','why_you','leadership','technical','other']}, {k:'source',label:'Source',t:'select',opts:['hand_written','from_interview']}, {k:'status',label:'Status',t:'select',opts:['proposed','approved']}, {k:'last_reviewed_at',label:'Last reviewed',t:'datetime'}],
+  outreach: [{k:'contact_id',label:'To (contact)',t:'fk',fk:{table:'contacts',label:'name'}}, {k:'channel',label:'Channel',t:'select',opts:['email','linkedin','whatsapp','call']}, {k:'status',label:'Status',t:'select',opts:['proposed','sent','replied','no_reply']}, {k:'sent_at',label:'Sent at',t:'datetime'}, {k:'replied_at',label:'Replied at',t:'datetime'}, {k:'plan_day',label:'Plan day (1/3/5)',t:'number'}, {k:'draft_text',label:'Message',t:'textarea'}],
+  postmortem: [{k:'final_status',label:'Final status',t:'select',opts:['rejected','offer','withdrawn','ghosted']}, {k:'rounds_reached',label:'Rounds reached',t:'number'}, {k:'mistake',label:'What mistake did I make',t:'textarea'}, {k:'not_done_well',label:'What did I not do well',t:'textarea'}, {k:'change_next_time',label:'What to change next time',t:'textarea'}, {k:'written_by',label:'Written by',t:'select',opts:['you','agent_draft']}],
+  appcontact: [{k:'contact_id',label:'Contact',t:'fk',fk:{table:'contacts',label:'name'}}, {k:'role_note',label:'Role on this application',t:'select',opts:['hr','consultant','interviewer','referral','hiring_manager']}],
+  appdoc: [{k:'document_id',label:'Document',t:'fk',fk:{table:'documents',label:'version_label'}}, {k:'role',label:'Sent as',t:'select',opts:['resume','cover_letter']}, {k:'sent_at',label:'Sent at',t:'datetime'}],
+  connection: [{k:'first_name',label:'First name',t:'text'}, {k:'last_name',label:'Last name',t:'text'}, {k:'company',label:'Company',t:'text'}, {k:'position',label:'Position',t:'text'}, {k:'linkedin_url',label:'LinkedIn URL',t:'text'}, {k:'connected_on',label:'Connected on',t:'date'}],
+};
+const normCo = s => (s||'').toLowerCase().replace(/\b(pvt|private|ltd|limited|inc|llc|llp|technologies|technology|solutions|systems|labs)\b\.?/g,'').replace(/[^a-z0-9]+/g,' ').trim();
+
+/* ===================== Inbox ===================== */
+async function renderInbox(el){
+  const thr = state.settings.fit_threshold ?? 60;
+  const leads = await q(inStreams(sb.from('leads').select('*, job_boards(name), target_companies(name)').in('status',['new','fit_checked'])).order('fit_score',{ascending:false,nullsFirst:false}).order('created_at',{ascending:false}).limit(300));
+  const conns = await q(sb.from('connections').select('company_normalised'));
+  const connSet = new Map(); conns.forEach(c=>connSet.set(c.company_normalised,(connSet.get(c.company_normalised)||0)+1));
+  const parked = await q(inStreams(sb.from('leads').select('id',{count:'exact',head:true}).eq('status','parked')));
+  el.innerHTML = `<h2>Inbox <span class="muted" style="font-weight:400;font-size:14px">${leads.length} open leads · fit gate ${thr}</span></h2>
+  <div class="toolbar"><input class="grow" id="inboxFilter" placeholder="filter title / company"><button id="newLead">+ Lead</button><button id="showParked">Parked</button></div>
+  <div class="scroll"><table><thead><tr><th>Fit</th><th>Title</th><th>Company</th><th>Location</th><th>Stream</th><th>Source</th><th>Age</th><th>Easy</th><th>Know</th><th>Actions</th></tr></thead><tbody id="inboxRows"></tbody></table></div>`;
+  const draw = () => { const f=($('#inboxFilter').value||'').toLowerCase(); $('#inboxRows').innerHTML = leads.filter(l=>!f||(l.title+' '+l.company).toLowerCase().includes(f)).map(l=>{
+    const age = daysAgo(l.posted_at||l.created_at); const stale = age!=null && age > (state.settings.freshness_days??14);
+    const fit = l.fit_score==null?'<span class="tag">not scored</span>':`<span class="fit" style="color:${l.fit_score>=thr?'var(--accent)':'var(--warn)'}">${Math.round(l.fit_score)}</span>`;
+    const know = connSet.get(normCo(l.company))||0;
+    return `<tr class="row" data-id="${l.id}"><td>${fit}</td><td>${esc(l.title)}${l.target_companies?` <span class="tag new">preferred co.</span>`:''}</td><td>${esc(l.company)}</td><td>${esc(l.location||'')}</td><td class="muted">${esc(streamName(l.job_stream_id))}</td><td class="muted">${esc(l.job_boards?.name||l.source_platform||'')}</td><td class="${stale?'tag warn':''}">${age==null?'':age+' d'}${l.posted_at_basis==='email_received'?'<span class="muted" title="posting date not in the alert; email date used">*</span>':''}</td><td>${l.easy_apply?'yes':''}</td><td>${know?`<span class="tag ok">${know}</span>`:''}</td>
+    <td style="white-space:nowrap"><button class="small act" data-a="apply" data-id="${l.id}">Apply</button> <button class="small act" data-a="tailor" data-id="${l.id}">Tailor</button> <button class="small act" data-a="park" data-id="${l.id}">Park</button> ${l.url?`<a class="btn small" href="${esc(l.url)}" target="_blank" rel="noopener">Open</a>`:''}</td></tr>`; }).join('') || '<tr><td colspan="10" class="muted">No open leads. Add one, or wait for the next sourcing run.</td></tr>';
+    $('#inboxRows').querySelectorAll('tr.row').forEach(tr=>tr.onclick=e=>{ if (e.target.closest('button,a')) return; const l=leads.find(x=>x.id===tr.dataset.id); editRecord({table:'leads',title:'Lead',fields:F.lead,row:l,after:()=>go('inbox')}); });
+    $('#inboxRows').querySelectorAll('button.act').forEach(b=>b.onclick=()=>leadAction(b.dataset.a, leads.find(x=>x.id===b.dataset.id)));
+  };
+  draw(); $('#inboxFilter').oninput=draw;
+  $('#newLead').onclick=()=>editRecord({table:'leads',title:'New lead',fields:F.lead,row:null,defaults:{job_stream_id:selStreams()[0]||PM_STREAM,status:'new',posted_at_basis:'listing'},after:()=>go('inbox')});
+  $('#showParked').onclick=()=>renderParked(el);
+}
+async function renderParked(el){
+  const leads = await q(inStreams(sb.from('leads').select('*, job_boards(name), noise_reasons(reason)').in('status',['parked','noise'])).order('created_at',{ascending:false}).limit(300));
+  el.innerHTML = `<h2>Parked leads <span class="muted" style="font-weight:400;font-size:14px">${leads.length}</span></h2><div class="toolbar"><button id="back">← Inbox</button></div>
+  <div class="scroll"><table><thead><tr><th>Title</th><th>Company</th><th>Reason</th><th>Fit</th><th>Seen</th><th></th></tr></thead><tbody>${leads.map(l=>`<tr class="row" data-id="${l.id}"><td>${esc(l.title)}</td><td>${esc(l.company)}</td><td class="muted">${esc(l.noise_reasons?.reason||l.status)}</td><td>${l.fit_score==null?'':Math.round(l.fit_score)}</td><td>${fmtD(l.created_at)}</td><td><button class="small un" data-id="${l.id}">Unpark</button></td></tr>`).join('')||'<tr><td colspan="6" class="muted">Nothing parked.</td></tr>'}</tbody></table></div>`;
+  $('#back').onclick=()=>go('inbox');
+  el.querySelectorAll('tr.row').forEach(tr=>tr.onclick=e=>{ if (e.target.closest('button')) return; editRecord({table:'leads',title:'Lead',fields:F.lead,row:leads.find(x=>x.id===tr.dataset.id),after:()=>renderParked(el)}); });
+  el.querySelectorAll('button.un').forEach(b=>b.onclick=async()=>{ await q(sb.from('leads').update({status:'new',noise_reason_id:null}).eq('id',b.dataset.id)); renderParked(el); });
+}
+async function leadAction(a, l){
+  if (a==='park'){
+    const opts = state.noise.map(n=>`<option value="${n.id}">${esc(n.reason)}</option>`).join('');
+    openModal(`<h3>Park: ${esc(l.title)}</h3><label>Reason</label><select id="parkReason">${opts}</select><div class="actions"><button class="primary" id="ok">Park</button><button id="no">Cancel</button></div>`);
+    $('#no').onclick=closeModal; $('#ok').onclick=async()=>{ await q(sb.from('leads').update({status:'parked',noise_reason_id:$('#parkReason').value}).eq('id',l.id)); closeModal(); toast('Parked'); go('inbox'); };
+    return;
+  }
+  // apply or tailor: create the application from the lead
+  const decision = a==='tailor'?'tailored':'generic';
+  const stream = state.streams.find(s=>s.id===l.job_stream_id) || state.streams[0];
+  const docs = await q(sb.from('documents').select('id,version_label,tag,type').eq('job_stream_id', stream.id).order('created_at'));
+  const generic = docs.find(d=>d.id===stream.generic_document_id) || docs.find(d=>d.tag==='generic'&&d.type==='resume');
+  openModal(`<h3>${decision==='tailored'?'Tailor and apply':'Apply with generic resume'}: ${esc(l.title)} at ${esc(l.company)}</h3>
+    <div class="grid2"><div><label>Apply channel</label><select id="ch"><option ${l.easy_apply?'selected':''}>easy_apply</option><option ${!l.easy_apply?'selected':''}>website</option><option>email</option><option>consultant</option><option>referral</option></select></div>
+    <div><label>Applied date</label><input id="ad" type="date" value="${new Date().toISOString().slice(0,10)}"></div></div>
+    <label>Why ${decision}</label><textarea id="why" placeholder="${decision==='tailored'?'which must-haves the generic resume does not lead with':'the generic resume already leads with what they ask for'}"></textarea>
+    ${decision==='tailored'?`<div class="callout">A tailored copy of ${esc(generic?generic.version_label:'the generic resume')} will be created in the library (tag tailored, company ${esc(l.company)}, status draft) for you to edit, and linked to this application.</div>`:`<div class="callout">${generic?esc(generic.version_label):'No generic resume on this stream yet'} will be linked as the document sent.</div>`}
+    <div class="actions"><button class="primary" id="ok">Create application</button><button id="no">Cancel</button></div><div class="err" id="e"></div>`);
+  $('#no').onclick=closeModal;
+  $('#ok').onclick=async()=>{ try{
+    const app = await q(sb.from('applications').insert({lead_id:l.id, job_stream_id:l.job_stream_id, title:l.title, company:l.company, location:l.location, url:l.url, job_board_id:l.job_board_id, source_platform:l.source_platform, status:'applied', applied_date:$('#ad').value||null, apply_channel:$('#ch').value, resume_decision:decision, decision_reason:$('#why').value||null, fit_score:l.fit_score, fit_breakdown:l.fit_breakdown, needs_tailored_resume:decision==='tailored', final_status:'open'}).select().single());
+    await q(sb.from('leads').update({status:'promoted', promoted_application_id:app.id}).eq('id', l.id));
+    await q(sb.from('status_history').insert({application_id:app.id, from_status:null, to_status:'applied', changed_at:new Date().toISOString(), cause:'manual', message_text:'Created from inbox'}));
+    let docId = generic?generic.id:null;
+    if (decision==='tailored' && generic){ const full = await q(sb.from('documents').select('text').eq('id',generic.id).single()); const d = await q(sb.from('documents').insert({job_stream_id:stream.id, type:'resume', tag:'tailored', tailored_for_company:l.company, derived_from_document_id:generic.id, version_label:`Tailored · ${l.company} · ${new Date().toISOString().slice(0,10)}`, text:full.text, status:'draft'}).select().single()); docId=d.id; }
+    if (docId) await q(sb.from('application_documents').insert({application_id:app.id, document_id:docId, role:'resume', sent_at:decision==='generic'?new Date().toISOString():null}));
+    state.cache={}; closeModal(); toast('Application created'); openApplication(app.id);
+  }catch(e){ $('#e').textContent=e.message||e; } };
+}
+
+/* ===================== Pipeline & Applications ===================== */
+const STATUSES = ['applied','screening','round_1','round_2','round_3','offer','rejected','withdrawn','ghosted'];
+async function loadApps(){ return q(inStreams(sb.from('applications').select('*, job_boards(name), consultant_organizations(name)')).order('updated_at',{ascending:false})); }
+async function renderPipeline(el){
+  const apps = await loadApps();
+  el.innerHTML = `<h2>Pipeline <span class="muted" style="font-weight:400;font-size:14px">${apps.length} applications</span></h2><div class="toolbar"><button id="newApp">+ Application</button></div><div class="kanban">${STATUSES.map(s=>`<div class="col"><h4>${s.replace('_',' ')} <span class="muted">${apps.filter(a=>a.status===s).length}</span></h4>${apps.filter(a=>a.status===s).map(a=>`<div class="kcard" data-id="${a.id}"><b>${esc(a.company)}</b><br>${esc(a.title)}<br><span class="muted mono">${esc(streamName(a.job_stream_id))}${a.resume_decision?' · '+a.resume_decision:''}</span>${a.next_action?`<br><span class="tag ${a.next_action_due&&new Date(a.next_action_due)<new Date()?'warn':''}">${esc(a.next_action)}${a.next_action_due?' · '+fmtD(a.next_action_due):''}</span>`:''}</div>`).join('')}</div>`).join('')}</div>`;
+  el.querySelectorAll('.kcard').forEach(c=>c.onclick=()=>openApplication(c.dataset.id));
+  $('#newApp').onclick=()=>editRecord({table:'applications',title:'New application',fields:F.application,row:null,defaults:{job_stream_id:selStreams()[0]||PM_STREAM,status:'applied',final_status:'open',applied_date:new Date().toISOString().slice(0,10)},after:s=>s?openApplication(s.id):go('pipeline')});
+}
+async function renderApplications(el){
+  const apps = await loadApps();
+  el.innerHTML = `<h2>Applications</h2><div class="toolbar"><input class="grow" id="af" placeholder="filter"><button id="newApp">+ Application</button></div><div class="scroll"><table><thead><tr><th>Company</th><th>Title</th><th>Stream</th><th>Status</th><th>Final</th><th>Resume</th><th>Fit</th><th>Applied</th><th>Via</th><th>Next action</th></tr></thead><tbody id="rows"></tbody></table></div>`;
+  const draw=()=>{ const f=($('#af').value||'').toLowerCase(); $('#rows').innerHTML=apps.filter(a=>!f||(a.title+' '+a.company).toLowerCase().includes(f)).map(a=>`<tr class="row" data-id="${a.id}"><td><b>${esc(a.company)}</b></td><td>${esc(a.title)}</td><td class="muted">${esc(streamName(a.job_stream_id))}</td><td><span class="tag">${esc(a.status)}</span></td><td>${a.final_status&&a.final_status!=='open'?`<span class="tag ${a.final_status==='offer'?'ok':'bad'}">${esc(a.final_status)}</span>`:''}</td><td>${esc(a.resume_decision||'')}</td><td>${a.fit_score==null?'':Math.round(a.fit_score)}</td><td>${fmtD(a.applied_date)}</td><td class="muted">${esc(a.consultant_organizations?.name||a.apply_channel||'')}</td><td>${esc(a.next_action||'')}${a.next_action_due?' <span class="muted">'+fmtD(a.next_action_due)+'</span>':''}</td></tr>`).join('')||'<tr><td colspan="10" class="muted">No applications yet.</td></tr>'; el.querySelectorAll('tr.row').forEach(r=>r.onclick=()=>openApplication(r.dataset.id)); };
+  draw(); $('#af').oninput=draw;
+  $('#newApp').onclick=()=>editRecord({table:'applications',title:'New application',fields:F.application,row:null,defaults:{job_stream_id:selStreams()[0]||PM_STREAM,status:'applied',final_status:'open'},after:s=>s?openApplication(s.id):go('applications')});
+}
+async function openApplication(id, tab='overview'){
+  const a = await q(sb.from('applications').select('*, job_boards(name), consultant_organizations(name), leads(url,jd_text,raw_snippet,fit_breakdown)').eq('id',id).single());
+  const [docs, people, outs, rounds, hist, pm] = await Promise.all([
+    q(sb.from('application_documents').select('*, documents(version_label,tag,type,status,tailored_for_company)').eq('application_id',id)),
+    q(sb.from('application_contacts').select('*, contacts(name,type,organization,email,linkedin_url)').eq('application_id',id)),
+    q(sb.from('outreach').select('*, contacts(name)').eq('application_id',id).order('created_at')),
+    q(sb.from('interviews').select('*').eq('application_id',id).order('round_number')),
+    q(sb.from('status_history').select('*').eq('application_id',id).order('changed_at')),
+    q(sb.from('post_mortems').select('*').eq('application_id',id).maybeSingle()),
+  ]);
+  const tabs=['overview','documents','people','outreach','rounds','timeline','post-mortem'];
+  const fb = a.fit_breakdown || a.leads?.fit_breakdown;
+  let body='';
+  if (tab==='overview') body = `<div class="grid2"><div><p><b>${esc(a.company)}</b> · ${esc(a.title)}<br><span class="muted">${esc(a.location||'')} · ${esc(streamName(a.job_stream_id))} · via ${esc(a.job_boards?.name||a.apply_channel||'')}${a.consultant_organizations?' · agency '+esc(a.consultant_organizations.name):''}</span></p>
+    <p>Status <span class="tag">${esc(a.status)}</span> ${a.final_status&&a.final_status!=='open'?`<span class="tag ${a.final_status==='offer'?'ok':'bad'}">${esc(a.final_status)}</span>`:''} · applied ${fmtD(a.applied_date)} · fit ${a.fit_score==null?'not scored':Math.round(a.fit_score)}</p>
+    <p>Resume decision: <b>${esc(a.resume_decision||'not set')}</b>${a.decision_reason?' · '+esc(a.decision_reason):''}</p>
+    ${a.next_action?`<p>Next: <b>${esc(a.next_action)}</b> ${a.next_action_due?'by '+fmtD(a.next_action_due):''}</p>`:''}
+    ${a.url?`<p><a href="${esc(a.url)}" target="_blank" rel="noopener">Open posting</a></p>`:''}
+    ${a.rejection_message?`<div class="callout warn"><b>Rejection, ${fmtDT(a.rejection_received_at)}</b><br>${esc(a.rejection_message)}</div>`:''}</div>
+    <div>${fb?`<label>Fit breakdown</label><pre class="text">${esc(typeof fb==='string'?fb:JSON.stringify(fb,null,1))}</pre>`:''}${a.notes?`<label>Notes</label><pre class="text">${esc(a.notes)}</pre>`:''}</div></div>
+    <div class="actions"><button id="editApp">Edit</button><button id="chStatus">Change status</button>${a.leads?.jd_text?'<button id="showJd">Job description</button>':''}</div>`;
+  if (tab==='documents') body = `<table><thead><tr><th>Document</th><th>Tag</th><th>Sent as</th><th>Sent at</th><th>Status</th></tr></thead><tbody>${docs.map(d=>`<tr class="row" data-id="${d.id}"><td>${esc(d.documents?.version_label)}</td><td><span class="tag ${d.documents?.tag==='tailored'?'new':'ok'}">${esc(d.documents?.tag)}</span>${d.documents?.tailored_for_company?' '+esc(d.documents.tailored_for_company):''}</td><td>${esc(d.role||'')}</td><td>${fmtDT(d.sent_at)}</td><td>${esc(d.documents?.status||'')}</td></tr>`).join('')||'<tr><td colspan="5" class="muted">Nothing linked yet.</td></tr>'}</tbody></table><div class="actions"><button id="addDoc">+ Link document</button></div>`;
+  if (tab==='people') body = `<table><thead><tr><th>Name</th><th>Role here</th><th>Type</th><th>Organisation</th><th>Email</th><th>LinkedIn</th></tr></thead><tbody>${people.map(p=>`<tr class="row" data-id="${p.id}"><td>${esc(p.contacts?.name)}</td><td>${esc(p.role_note||'')}</td><td>${esc(p.contacts?.type||'')}</td><td>${esc(p.contacts?.organization||'')}</td><td>${esc(p.contacts?.email||'')}</td><td>${p.contacts?.linkedin_url?`<a href="${esc(p.contacts.linkedin_url)}" target="_blank" rel="noopener">profile</a>`:''}</td></tr>`).join('')||'<tr><td colspan="6" class="muted">No people linked. HR, consultant, interviewers go here.</td></tr>'}</tbody></table><div class="actions"><button id="addPerson">+ Link person</button><button id="newPerson">+ New contact</button></div>`;
+  if (tab==='outreach') body = `<table><thead><tr><th>To</th><th>Channel</th><th>Status</th><th>Sent</th><th>Replied</th><th>Message</th></tr></thead><tbody>${outs.map(o=>`<tr class="row" data-id="${o.id}"><td>${esc(o.contacts?.name||'')}</td><td>${esc(o.channel||'')}</td><td><span class="tag">${esc(o.status||'')}</span></td><td>${fmtDT(o.sent_at)}</td><td>${fmtDT(o.replied_at)}</td><td class="muted">${esc((o.draft_text||'').slice(0,80))}</td></tr>`).join('')||'<tr><td colspan="6" class="muted">No outreach logged.</td></tr>'}</tbody></table><div class="actions"><button id="addOut">+ Outreach</button></div>`;
+  if (tab==='rounds') body = `<table><thead><tr><th>Round</th><th>Stage</th><th>Date</th><th>Interviewer</th><th>Result</th><th>Went</th><th>Debrief</th></tr></thead><tbody>${rounds.map(r=>`<tr class="row" data-id="${r.id}"><td>${r.round_number}</td><td>${esc(r.stage_label||'')}</td><td>${fmtD(r.interview_date)}</td><td>${esc(r.interviewer_name||'')}</td><td>${esc(r.result||'')}</td><td>${r.how_it_went??''}</td><td>${r.debriefed_at?'<span class="tag ok">done</span>':'<span class="tag warn">pending</span>'}</td></tr>`).join('')||'<tr><td colspan="7" class="muted">No rounds yet.</td></tr>'}</tbody></table><div class="actions"><button id="addRound">+ Round</button></div>`;
+  if (tab==='timeline') body = `<table><thead><tr><th>When</th><th>From</th><th>To</th><th>Cause</th><th>What they said</th></tr></thead><tbody>${hist.map(h=>`<tr><td>${fmtDT(h.changed_at)}</td><td>${esc(h.from_status||'')}</td><td><span class="tag">${esc(h.to_status)}</span></td><td class="muted">${esc(h.cause||'')}</td><td>${esc(h.message_text||'')}</td></tr>`).join('')||'<tr><td colspan="5" class="muted">No changes recorded.</td></tr>'}</tbody></table>`;
+  if (tab==='post-mortem') body = pm ? `<div class="grid2"><div><label>Final status</label>${esc(pm.final_status||'')} · rounds reached ${pm.rounds_reached??''}<label>Mistake</label>${esc(pm.mistake||'')}</div><div><label>Not done well</label>${esc(pm.not_done_well||'')}<label>Change next time</label>${esc(pm.change_next_time||'')}</div></div><div class="actions"><button id="editPm">Edit</button></div>` : `<p class="muted">No post-mortem yet. Write one when the application closes.</p><div class="actions"><button id="editPm">+ Post-mortem</button></div>`;
+  openModal(`<h3>${esc(a.company)}: ${esc(a.title)}</h3><div class="tabs">${tabs.map(t=>`<button class="${t===tab?'active':''}" data-t="${t}">${t}</button>`).join('')}</div>${body}<div class="actions"><button id="closeApp" class="right">Close</button></div>`);
+  $('#modal').querySelectorAll('.tabs button').forEach(b=>b.onclick=()=>openApplication(id,b.dataset.t));
+  $('#closeApp').onclick=()=>{ closeModal(); go(state.screen); };
+  const re=()=>openApplication(id,tab);
+  if ($('#editApp')) $('#editApp').onclick=()=>editRecord({table:'applications',title:'Edit application',fields:F.application,row:a,after:s=>s?openApplication(id):go(state.screen)});
+  if ($('#chStatus')) $('#chStatus').onclick=()=>changeStatus(a, re);
+  if ($('#showJd')) $('#showJd').onclick=()=>openModal(`<h3>Job description</h3><pre class="text" style="max-height:70vh">${esc(a.leads.jd_text)}</pre><div class="actions"><button id="b">Back</button></div>`) || ($('#b').onclick=re);
+  if ($('#addDoc')) $('#addDoc').onclick=()=>editRecord({table:'application_documents',title:'Link document',fields:F.appdoc,row:null,defaults:{application_id:id,_force:{application_id:id}},after:re});
+  if ($('#addPerson')) $('#addPerson').onclick=()=>editRecord({table:'application_contacts',title:'Link person',fields:F.appcontact,row:null,defaults:{_force:{application_id:id}},after:re});
+  if ($('#newPerson')) $('#newPerson').onclick=()=>editRecord({table:'contacts',title:'New contact',fields:F.contact,row:null,defaults:{organization:a.company,source:'manual'},after:async c=>{ if(c) await q(sb.from('application_contacts').insert({application_id:id,contact_id:c.id,role_note:c.type})); re(); }});
+  if ($('#addOut')) $('#addOut').onclick=()=>editRecord({table:'outreach',title:'Outreach',fields:F.outreach,row:null,defaults:{status:'sent',sent_at:new Date().toISOString(),_force:{application_id:id}},after:re});
+  if ($('#addRound')) $('#addRound').onclick=()=>editRecord({table:'interviews',title:'Interview round',fields:F.interview.filter(f=>f.k!=='application_id'),row:null,defaults:{round_number:rounds.length+1,result:'pending',_force:{application_id:id}},after:re});
+  if ($('#editPm')) $('#editPm').onclick=()=>editRecord({table:'post_mortems',title:'Post-mortem',fields:F.postmortem,row:pm,defaults:{final_status:a.final_status,rounds_reached:rounds.length,written_by:'you',_force:{application_id:id}},after:re});
+  $('#modal').querySelectorAll('tr.row').forEach(tr=>tr.onclick=()=>{ const rid=tr.dataset.id;
+    if (tab==='documents') editRecord({table:'application_documents',title:'Document link',fields:F.appdoc,row:docs.find(x=>x.id===rid),after:re});
+    if (tab==='people') editRecord({table:'application_contacts',title:'Person on this application',fields:F.appcontact,row:people.find(x=>x.id===rid),after:re});
+    if (tab==='outreach') editRecord({table:'outreach',title:'Outreach',fields:F.outreach,row:outs.find(x=>x.id===rid),after:re});
+    if (tab==='rounds') openInterview(rounds.find(x=>x.id===rid).id, re);
+  });
+}
+async function changeStatus(a, after){
+  openModal(`<h3>Change status: ${esc(a.company)}</h3><label>New status</label><select id="ns">${STATUSES.map(s=>`<option ${s===a.status?'selected':''}>${s}</option>`).join('')}</select><label>Cause</label><select id="cause"><option>manual</option><option>email</option><option>call</option><option>wispr</option></select><label>What they said (paste the message, verbatim)</label><textarea id="msg"></textarea><div class="actions"><button class="primary" id="ok">Save</button><button id="no">Cancel</button></div><div class="err" id="e"></div>`);
+  $('#no').onclick=after;
+  $('#ok').onclick=async()=>{ try{ const ns=$('#ns').value, msg=$('#msg').value||null, now=new Date().toISOString(); const upd={status:ns, updated_at:now};
+    if (['rejected','withdrawn','ghosted','offer'].includes(ns)) { upd.final_status=ns; upd.closed_at=now; if (ns==='rejected'&&msg){ upd.rejection_message=msg; upd.rejection_received_at=now; } }
+    await q(sb.from('applications').update(upd).eq('id',a.id));
+    await q(sb.from('status_history').insert({application_id:a.id, from_status:a.status, to_status:ns, changed_at:now, cause:$('#cause').value, message_text:msg}));
+    if (ns==='rejected'){ const pm = await q(sb.from('post_mortems').select('id').eq('application_id',a.id).maybeSingle()); if(!pm){ const n = await q(sb.from('interviews').select('id',{count:'exact',head:true}).eq('application_id',a.id)); await q(sb.from('post_mortems').insert({application_id:a.id, final_status:'rejected', rounds_reached:n?.length??0, written_by:'you'})); } }
+    toast('Status updated'); after(); }catch(e){ $('#e').textContent=e.message||e; } };
+}
+
+/* ===================== Target companies ===================== */
+async function renderTargets(el){
+  const targets = await q(inStreams(sb.from('target_companies').select('*')).order('priority',{nullsFirst:false}));
+  const ins = await q(sb.from('company_insights').select('*').order('created_at',{ascending:false}));
+  const conns = await q(sb.from('connections').select('company_normalised,first_name,last_name,position'));
+  el.innerHTML = `<h2>Target companies <span class="muted" style="font-weight:400;font-size:14px">watched daily by the Company Scout (not yet scheduled)</span></h2><div class="toolbar"><button id="newT">+ Company</button></div><div class="cards">${targets.map(t=>{ const i=ins.find(x=>x.target_company_id===t.id); const kn=conns.filter(c=>c.company_normalised&&normCo(t.name).includes(c.company_normalised)||c.company_normalised&&c.company_normalised.includes(normCo(t.name)));
+    return `<div class="card"><h4>${esc(t.name)} <span class="tag">${esc(t.status||'')}</span></h4><div class="muted">${esc(streamName(t.job_stream_id))} · priority ${t.priority??''} · every ${t.check_every_days??1} d · ${t.last_checked_at?'checked '+fmtDT(t.last_checked_at):'<span class="tag warn">never checked</span>'}</div><p>${esc(t.why||'')}</p><div class="mono muted">watch: ${esc((t.watched_roles||[]).join(', '))}</div>
+    ${i?`<p><b>Fit role:</b> ${esc(i.best_fit_role||'')} <span class="muted">${esc(i.best_fit_reason||'')}</span></p>`:'<p class="muted">No scout insight yet.</p>'}
+    ${kn.length?`<p><span class="tag ok">${kn.length} connection${kn.length>1?'s':''}</span> ${kn.slice(0,3).map(c=>esc(c.first_name+' '+(c.last_name||'')+(c.position?' · '+c.position:''))).join('; ')}</p>`:''}
+    <div class="actions"><button class="small ed" data-id="${t.id}">Edit</button>${t.careers_url?`<a class="btn small" href="${esc(t.careers_url)}" target="_blank" rel="noopener">Careers</a>`:''}${t.website?`<a class="btn small" href="${esc(t.website)}" target="_blank" rel="noopener">Site</a>`:''}</div></div>`; }).join('')||'<p class="muted">No target companies in the selected streams.</p>'}</div>`;
+  $('#newT').onclick=()=>editRecord({table:'target_companies',title:'New target company',fields:F.target,row:null,defaults:{job_stream_id:selStreams()[0]||PM_STREAM,check_every_days:1,status:'watching'},after:()=>go('targets')});
+  el.querySelectorAll('button.ed').forEach(b=>b.onclick=()=>editRecord({table:'target_companies',title:'Target company',fields:F.target,row:targets.find(t=>t.id===b.dataset.id),after:()=>go('targets')}));
+}
+
+/* ===================== Streams ===================== */
+async function renderStreams(el){
+  const alerts = await q(sb.from('alert_definitions').select('*, job_boards(name)').order('created_at'));
+  const since = d => new Date(Date.now()-d*86400000).toISOString();
+  const leadCounts = {};
+  for (const s of state.streams){ const w=s.min_leads_window_days||7; const {count} = await sb.from('leads').select('id',{count:'exact',head:true}).eq('job_stream_id',s.id).gte('created_at',since(w)); leadCounts[s.id]=count||0; }
+  el.innerHTML = `<h2>Job streams</h2><div class="toolbar"><button id="newS">+ Stream</button><button id="newA">+ Alert</button></div><div class="cards">${state.streams.map(s=>{ const n=leadCounts[s.id]; const ok = n >= (s.min_leads||0); const al=alerts.filter(a=>a.job_stream_id===s.id);
+    return `<div class="card"><h4>${esc(s.name)} ${s.is_active===false?'<span class="tag">inactive</span>':''}</h4><p class="muted">${esc(s.goal||'')}</p><div class="mono muted">titles: ${esc((s.target_titles||[]).join(', '))}<br>locations: ${esc((s.locations||[]).join(', '))}</div>
+    <p>Lead health: <span class="tag ${ok?'ok':'warn'}">${n} fresh lead${n===1?'':'s'} in ${s.min_leads_window_days||7} d (rule: at least ${s.min_leads||0})</span></p>
+    <p>Generic resume: ${s.generic_document_id?'<span class="tag ok">set</span>':'<span class="tag warn">missing</span>'}</p>
+    <label>Alerts</label><table>${al.map(a=>`<tr class="row al" data-id="${a.id}"><td>${esc(a.job_boards?.name||'')}</td><td>${esc(a.query_text)}</td><td><span class="tag ${a.status==='live'?'ok':a.status==='dead'?'bad':'warn'}">${esc(a.status||'')}</span></td><td class="muted">${a.last_lead_at?fmtD(a.last_lead_at):'no lead yet'}</td></tr>`).join('')||'<tr><td class="muted">No alerts defined.</td></tr>'}</table>
+    <div class="actions"><button class="small ed" data-id="${s.id}">Edit stream</button></div></div>`; }).join('')}</div>`;
+  $('#newS').onclick=()=>editRecord({table:'job_streams',title:'New stream',fields:F.stream,row:null,defaults:{is_active:true,min_leads:3,min_leads_window_days:7},after:async()=>{ state.streams = await q(sb.from('job_streams').select('*').order('created_at')); state.streams.forEach(s=>state.selected.add(s.id)); renderChips(); go('streams'); }});
+  $('#newA').onclick=()=>editRecord({table:'alert_definitions',title:'New alert',fields:F.alert,row:null,defaults:{job_stream_id:selStreams()[0]||PM_STREAM,status:'proposed',setup_method:'portal_alert'},after:()=>go('streams')});
+  el.querySelectorAll('button.ed').forEach(b=>b.onclick=()=>editRecord({table:'job_streams',title:'Stream',fields:F.stream,row:state.streams.find(s=>s.id===b.dataset.id),canDelete:false,after:async()=>{ state.streams = await q(sb.from('job_streams').select('*').order('created_at')); renderChips(); go('streams'); }}));
+  el.querySelectorAll('tr.al').forEach(r=>r.onclick=()=>editRecord({table:'alert_definitions',title:'Alert',fields:F.alert,row:alerts.find(a=>a.id===r.dataset.id),after:()=>go('streams')}));
+}
+
+/* ===================== Resumes (document library) ===================== */
+async function renderResumes(el){
+  const docs = await q(inStreams(sb.from('documents').select('*')).order('created_at',{ascending:false}));
+  const links = await q(sb.from('application_documents').select('document_id, sent_at, applications(company,title)'));
+  const monthKey = d => new Date(d).toISOString().slice(0,7); const thisMonth = monthKey(new Date());
+  const tailored = docs.filter(d=>d.tag==='tailored');
+  el.innerHTML = `<h2>Resume library</h2><div class="kpis"><div class="kpi"><b>${docs.filter(d=>d.tag==='generic').length}</b><span>generic documents</span></div><div class="kpi"><b>${tailored.length}</b><span>tailored, all time</span></div><div class="kpi"><b>${tailored.filter(d=>monthKey(d.created_at)===thisMonth).length}</b><span>tailored this month</span></div></div>
+  <div class="toolbar"><button id="newD">+ Document</button></div><div class="scroll"><table><thead><tr><th>Version</th><th>Type</th><th>Tag</th><th>Company</th><th>Stream</th><th>Status</th><th>Created</th><th>Sent to</th></tr></thead><tbody>${docs.map(d=>{ const l=links.filter(x=>x.document_id===d.id); return `<tr class="row" data-id="${d.id}"><td>${esc(d.version_label||'')}</td><td>${esc(d.type)}</td><td><span class="tag ${d.tag==='tailored'?'new':'ok'}">${esc(d.tag)}</span></td><td>${esc(d.tailored_for_company||'')}</td><td class="muted">${esc(streamName(d.job_stream_id))}</td><td>${esc(d.status||'')}</td><td>${fmtD(d.created_at)}</td><td>${l.map(x=>esc(x.applications?.company||'')).join(', ')||'<span class="muted">not sent</span>'}</td></tr>`; }).join('')||'<tr><td colspan="8" class="muted">No documents.</td></tr>'}</tbody></table></div>`;
+  $('#newD').onclick=()=>editRecord({table:'documents',title:'New document',fields:F.document,row:null,defaults:{job_stream_id:selStreams()[0]||PM_STREAM,type:'resume',tag:'generic',status:'final'},after:()=>go('resumes')});
+  el.querySelectorAll('tr.row').forEach(r=>r.onclick=()=>editRecord({table:'documents',title:'Document',fields:F.document,row:docs.find(d=>d.id===r.dataset.id),after:()=>go('resumes')}));
+}
+
+/* ===================== People ===================== */
+async function renderPeople(el){
+  const [contacts, agencies, links, conns] = await Promise.all([q(sb.from('contacts').select('*, consultant_organizations(name), target_companies(name)').order('name')), q(sb.from('consultant_organizations').select('*').order('name')), q(sb.from('application_contacts').select('contact_id, role_note, applications(company)')), sb.from('connections').select('id',{count:'exact',head:true})]);
+  el.innerHTML = `<h2>People</h2><div class="toolbar"><input class="grow" id="pf" placeholder="filter"><button id="newC">+ Contact</button><button id="newAg">+ Agency</button><button id="impConn">Import LinkedIn Connections.csv</button><span class="muted">${conns.count||0} connections loaded</span></div>
+  <div class="scroll"><table><thead><tr><th>Name</th><th>Type</th><th>Organisation</th><th>Agency</th><th>Applications</th><th>Email</th><th>LinkedIn</th><th>Last touch</th></tr></thead><tbody id="rows"></tbody></table></div>
+  <h3>Agencies</h3><table><tbody>${agencies.map(a=>`<tr class="row ag" data-id="${a.id}"><td>${esc(a.name)}</td><td class="muted">${esc(a.notes||'')}</td></tr>`).join('')||'<tr><td class="muted">No agencies yet.</td></tr>'}</tbody></table>`;
+  const draw=()=>{ const f=($('#pf').value||'').toLowerCase(); $('#rows').innerHTML=contacts.filter(c=>!f||(c.name+' '+(c.organization||'')).toLowerCase().includes(f)).map(c=>{ const l=links.filter(x=>x.contact_id===c.id); return `<tr class="row ct" data-id="${c.id}"><td>${esc(c.name)}</td><td><span class="tag">${esc(c.type||'')}</span></td><td>${esc(c.organization||c.target_companies?.name||'')}</td><td>${esc(c.consultant_organizations?.name||'')}</td><td class="muted">${l.map(x=>esc((x.applications?.company||'')+(x.role_note?' ('+x.role_note+')':''))).join(', ')}</td><td>${esc(c.email||'')}</td><td>${c.linkedin_url?`<a href="${esc(c.linkedin_url)}" target="_blank" rel="noopener">profile</a>`:''}</td><td>${fmtD(c.last_touch_at)}</td></tr>`; }).join('')||'<tr><td colspan="8" class="muted">No contacts yet.</td></tr>'; el.querySelectorAll('tr.ct').forEach(r=>r.onclick=()=>editRecord({table:'contacts',title:'Contact',fields:F.contact,row:contacts.find(c=>c.id===r.dataset.id),after:()=>go('people')})); };
+  draw(); $('#pf').oninput=draw;
+  el.querySelectorAll('tr.ag').forEach(r=>r.onclick=()=>editRecord({table:'consultant_organizations',title:'Agency',fields:F.agency,row:agencies.find(a=>a.id===r.dataset.id),after:()=>go('people')}));
+  $('#newC').onclick=()=>editRecord({table:'contacts',title:'New contact',fields:F.contact,row:null,defaults:{source:'manual'},after:()=>go('people')});
+  $('#newAg').onclick=()=>editRecord({table:'consultant_organizations',title:'New agency',fields:F.agency,row:null,after:()=>go('people')});
+  $('#impConn').onclick=importConnections;
+}
+function importConnections(){
+  openModal(`<h3>Import LinkedIn connections</h3><p class="muted">LinkedIn → Settings → Data privacy → Get a copy of your data → Connections. Upload the Connections.csv here. Existing rows are replaced.</p><input type="file" id="csv" accept=".csv,text/csv"><div class="actions"><button class="primary" id="ok">Import</button><button id="no">Cancel</button></div><div class="err" id="e"></div>`);
+  $('#no').onclick=closeModal;
+  $('#ok').onclick=async()=>{ try{ const f=$('#csv').files[0]; if(!f) throw new Error('Choose the file first'); const text=await f.text(); const rows=parseCsv(text); const hi=rows.findIndex(r=>r.some(c=>/first name/i.test(c))); if(hi<0) throw new Error('No "First Name" header found; is this the Connections export?'); const h=rows[hi].map(c=>c.trim().toLowerCase()); const idx=n=>h.findIndex(x=>x===n);
+      const recs=rows.slice(hi+1).filter(r=>r.length>=3&&r[idx('first name')]).map(r=>({first_name:r[idx('first name')], last_name:r[idx('last name')], company:r[idx('company')]||null, company_normalised:normCo(r[idx('company')]), position:r[idx('position')]||null, linkedin_url:r[idx('url')]||null, connected_on:parseLiDate(r[idx('connected on')]), imported_at:new Date().toISOString()}));
+      await q(sb.from('connections').delete().neq('id','00000000-0000-0000-0000-000000000000'));
+      for (let i=0;i<recs.length;i+=500) await q(sb.from('connections').insert(recs.slice(i,i+500)));
+      closeModal(); toast(recs.length+' connections imported'); go('people'); }catch(e){ $('#e').textContent=e.message||e; } };
+}
+function parseCsv(t){ const rows=[]; let row=[], cur='', inq=false; for (let i=0;i<t.length;i++){ const c=t[i]; if (inq){ if (c==='"'){ if (t[i+1]==='"'){cur+='"'; i++;} else inq=false; } else cur+=c; } else { if (c==='"') inq=true; else if (c===','){ row.push(cur); cur=''; } else if (c==='\n'||c==='\r'){ if (c==='\r'&&t[i+1]==='\n') i++; row.push(cur); rows.push(row); row=[]; cur=''; } else cur+=c; } } if (cur!==''||row.length){ row.push(cur); rows.push(row); } return rows; }
+function parseLiDate(s){ if(!s) return null; const d=new Date(s); return isNaN(d)?null:d.toISOString().slice(0,10); }
+
+/* ===================== Interviews ===================== */
+async function renderInterviews(el){
+  const rounds = await q(sb.from('interviews').select('*, applications(company,title,job_stream_id)').order('interview_date',{ascending:false}));
+  const rows = rounds.filter(r=>!r.applications||selStreams().includes(r.applications.job_stream_id)||state.selected.size===state.streams.length);
+  const pending = rows.filter(r=>r.interview_date && new Date(r.interview_date)<new Date() && !r.debriefed_at);
+  el.innerHTML = `<h2>Interviews</h2>${pending.length?`<div class="callout warn">${pending.length} round${pending.length>1?'s':''} waiting for a debrief.</div>`:''}<div class="toolbar"><button id="newR">+ Round</button></div><div class="scroll"><table><thead><tr><th>Date</th><th>Company</th><th>Round</th><th>Stage</th><th>Interviewer</th><th>Result</th><th>Went</th><th>Debrief</th><th>Transcript</th></tr></thead><tbody>${rows.map(r=>`<tr class="row" data-id="${r.id}"><td>${fmtD(r.interview_date)}</td><td><b>${esc(r.applications?.company||'')}</b><br><span class="muted">${esc(r.applications?.title||'')}</span></td><td>${r.round_number}</td><td>${esc(r.stage_label||'')}</td><td>${esc(r.interviewer_name||'')}</td><td>${esc(r.result||'')}</td><td>${r.how_it_went??''}</td><td>${r.debriefed_at?'<span class="tag ok">done</span>':'<span class="tag warn">pending</span>'}</td><td>${r.wispr_share_link?`<a href="${esc(r.wispr_share_link)}" target="_blank" rel="noopener">Wispr</a>`:r.transcript_text?'text':''}</td></tr>`).join('')||'<tr><td colspan="9" class="muted">No interviews yet.</td></tr>'}</tbody></table></div>`;
+  $('#newR').onclick=()=>editRecord({table:'interviews',title:'New round',fields:F.interview,row:null,defaults:{round_number:1,result:'pending'},after:()=>go('interviews')});
+  el.querySelectorAll('tr.row').forEach(r=>r.onclick=()=>openInterview(r.dataset.id, ()=>go('interviews')));
+}
+async function openInterview(id, back){
+  const r = await q(sb.from('interviews').select('*, applications(company,title,job_stream_id)').eq('id',id).single());
+  const qs = await q(sb.from('interview_questions').select('*').eq('interview_id',id).order('created_at'));
+  openModal(`<h3>${esc(r.applications?.company||'')} · round ${r.round_number} ${esc(r.stage_label||'')}</h3><div class="muted">${fmtD(r.interview_date)} · ${esc(r.interviewer_name||'')} · result ${esc(r.result||'pending')} · went ${r.how_it_went??'?'}/5 ${r.debriefed_at?'· debriefed '+fmtD(r.debriefed_at):''}</div>
+    ${r.went_well?`<label>Went well</label><div>${esc(r.went_well)}</div>`:''}${r.went_badly?`<label>Went badly</label><div>${esc(r.went_badly)}</div>`:''}
+    <h3>Questions asked</h3><table><thead><tr><th>Question</th><th>Topic</th><th>Self</th><th>Answer given</th><th></th></tr></thead><tbody>${qs.map(x=>`<tr class="row" data-id="${x.id}"><td>${esc(x.question)}</td><td>${esc(x.topic||'')}</td><td>${x.self_rating??''}</td><td class="muted">${esc((x.answer_given||'').slice(0,120))}</td><td>${x.prep_answer_id?'<span class="tag ok">in prep bank</span>':`<button class="small toPrep" data-id="${x.id}">→ Prep</button>`}</td></tr>`).join('')||'<tr><td colspan="5" class="muted">No questions logged. Add what was asked and how you answered.</td></tr>'}</tbody></table>
+    <div class="actions"><button id="addQ">+ Question</button><button id="editR">Edit round</button><button id="markDb">${r.debriefed_at?'Debriefed':'Mark debriefed'}</button><button id="back" class="right">Back</button></div>`);
+  const re=()=>openInterview(id, back);
+  $('#back').onclick=back; $('#editR').onclick=()=>editRecord({table:'interviews',title:'Round',fields:F.interview,row:r,after:s=>s?re():back()});
+  $('#addQ').onclick=()=>editRecord({table:'interview_questions',title:'Question asked',fields:F.question,row:null,defaults:{_force:{interview_id:id}},after:re});
+  $('#markDb').onclick=async()=>{ await q(sb.from('interviews').update({debriefed_at:new Date().toISOString()}).eq('id',id)); re(); };
+  $('#modal').querySelectorAll('tr.row').forEach(tr=>tr.onclick=e=>{ if(e.target.closest('button')) return; editRecord({table:'interview_questions',title:'Question',fields:F.question,row:qs.find(x=>x.id===tr.dataset.id),after:re}); });
+  $('#modal').querySelectorAll('button.toPrep').forEach(b=>b.onclick=async()=>{ const x=qs.find(y=>y.id===b.dataset.id); const p=await q(sb.from('prep_answers').insert({job_stream_id:r.applications?.job_stream_id||PM_STREAM, question:x.question, best_answer:x.answer_given||'', topic:x.topic, source:'from_interview', source_interview_question_id:x.id, status:'proposed'}).select().single()); await q(sb.from('interview_questions').update({prep_answer_id:p.id}).eq('id',x.id)); toast('Added to prep bank as proposed'); re(); });
+}
+
+/* ===================== Prep ===================== */
+async function renderPrep(el){
+  const rows = await q(inStreams(sb.from('prep_answers').select('*')).order('topic').order('created_at'));
+  const topics=[...new Set(rows.map(r=>r.topic||'other'))];
+  el.innerHTML = `<h2>Prep: About Me bank</h2><div class="toolbar"><input class="grow" id="pf" placeholder="search questions"><button id="newP">+ Question & answer</button><span class="muted">${rows.filter(r=>r.status==='proposed').length} proposed, ${rows.filter(r=>r.status==='approved').length} approved</span></div>
+  ${topics.map(t=>`<h3>${esc(t)}</h3><div class="cards" data-topic="${esc(t)}">${rows.filter(r=>(r.topic||'other')===t).map(r=>`<div class="card pq" data-id="${r.id}"><h4>${esc(r.question)} ${r.status==='proposed'?'<span class="tag warn">proposed</span>':'<span class="tag ok">approved</span>'}</h4><div style="white-space:pre-wrap">${esc(r.best_answer)}</div><div class="muted mono" style="margin-top:6px">${esc(streamName(r.job_stream_id))} · ${esc(r.source||'')}${r.last_reviewed_at?' · reviewed '+fmtD(r.last_reviewed_at):''}</div></div>`).join('')}</div>`).join('')||'<p class="muted">Empty. Add the questions you want to answer well, or send questions here from an interview round.</p>'}`;
+  $('#newP').onclick=()=>editRecord({table:'prep_answers',title:'Prep answer',fields:F.prep,row:null,defaults:{job_stream_id:selStreams()[0]||PM_STREAM,source:'hand_written',status:'approved'},after:()=>go('prep')});
+  el.querySelectorAll('.pq').forEach(c=>c.onclick=()=>editRecord({table:'prep_answers',title:'Prep answer',fields:F.prep,row:rows.find(r=>r.id===c.dataset.id),after:()=>go('prep')}));
+  $('#pf').oninput=()=>{ const f=$('#pf').value.toLowerCase(); el.querySelectorAll('.pq').forEach(c=>{ const r=rows.find(x=>x.id===c.dataset.id); c.style.display=!f||(r.question+' '+r.best_answer).toLowerCase().includes(f)?'':'none'; }); };
+}
+
+/* ===================== Numbers ===================== */
+async function renderNumbers(el){
+  const [apps, leads, rounds, notes] = await Promise.all([q(inStreams(sb.from('applications').select('id,job_stream_id,status,final_status,applied_date,resume_decision,created_at,lead_id'))), q(inStreams(sb.from('leads').select('id,status,fit_score,posted_at,created_at,promoted_application_id'))), q(sb.from('interviews').select('id,application_id,result,interview_date,round_number')), q(sb.from('notifications').select('minutes_to_reply,sent_at,replied_at'))]);
+  const appIds=new Set(apps.map(a=>a.id)); const r=rounds.filter(x=>appIds.has(x.application_id));
+  const withInt = new Set(r.map(x=>x.application_id)).size;
+  const wk = d => { const x=new Date(d); const s=new Date(x); s.setDate(x.getDate()-((x.getDay()+6)%7)); return s.toISOString().slice(0,10); };
+  const weeks={}; apps.forEach(a=>{ const k=wk(a.applied_date||a.created_at); weeks[k]=(weeks[k]||0)+1; });
+  const byDec = {generic:apps.filter(a=>a.resume_decision==='generic'), tailored:apps.filter(a=>a.resume_decision==='tailored')};
+  const intRate = arr => arr.length?Math.round(100*arr.filter(a=>r.some(x=>x.application_id===a.id)).length/arr.length)+'%':'—';
+  const passByRound = {}; r.forEach(x=>{ const k='round '+x.round_number; passByRound[k]=passByRound[k]||{n:0,adv:0}; passByRound[k].n++; if (x.result==='advanced') passByRound[k].adv++; });
+  const postToApply = apps.map(a=>{ const l=leads.find(x=>x.promoted_application_id===a.id||x.id===a.lead_id); return l&&l.posted_at&&a.applied_date?(new Date(a.applied_date)-new Date(l.posted_at))/86400000:null; }).filter(x=>x!=null).sort((a,b)=>a-b);
+  const med = arr => arr.length?arr[Math.floor(arr.length/2)].toFixed(1):'—';
+  const replies = notes.filter(n=>n.minutes_to_reply!=null).map(n=>n.minutes_to_reply).sort((a,b)=>a-b);
+  const good = leads.filter(l=>l.fit_score!=null && l.fit_score>=(state.settings.fit_threshold??60));
+  const actedFast = good.filter(l=>l.status==='promoted'||l.status==='parked');
+  el.innerHTML = `<h2>Numbers</h2><div class="kpis">
+    <div class="kpi"><b>${apps.length}</b><span>applications</span></div>
+    <div class="kpi"><b>${apps.length?Math.round(100*withInt/apps.length)+'%':'—'}</b><span>interviews per application</span></div>
+    <div class="kpi"><b>${intRate(byDec.generic)} / ${intRate(byDec.tailored)}</b><span>interview rate: generic / tailored</span></div>
+    <div class="kpi"><b>${med(postToApply)} d</b><span>median posting to apply</span></div>
+    <div class="kpi"><b>${apps.length?Math.round(100*byDec.tailored.length/apps.length)+'%':'—'}</b><span>applications with tailored resume</span></div>
+    <div class="kpi"><b>${med(replies)} min</b><span>median minutes to reply to a push</span></div>
+    <div class="kpi"><b>${good.length?Math.round(100*actedFast.length/good.length)+'%':'—'}</b><span>good leads acted on</span></div>
+    <div class="kpi"><b>${apps.filter(a=>a.final_status==='rejected').length} / ${apps.filter(a=>a.final_status==='offer').length}</b><span>rejected / offers</span></div></div>
+  <div class="grid2"><div><h3>Applications per week</h3><table><tbody>${Object.entries(weeks).sort().map(([k,v])=>`<tr><td class="mono">${k}</td><td>${'▇'.repeat(Math.min(v,40))} ${v}</td></tr>`).join('')||'<tr><td class="muted">none yet</td></tr>'}</tbody></table></div>
+  <div><h3>Pass rate per round</h3><table><tbody>${Object.entries(passByRound).map(([k,v])=>`<tr><td>${k}</td><td>${v.adv} advanced of ${v.n} (${Math.round(100*v.adv/v.n)}%)</td></tr>`).join('')||'<tr><td class="muted">no rounds yet</td></tr>'}</tbody></table>
+  <h3>Lead funnel</h3><table><tbody><tr><td>seen</td><td>${leads.length}</td></tr><tr><td>scored</td><td>${leads.filter(l=>l.fit_score!=null).length}</td></tr><tr><td>above gate</td><td>${good.length}</td></tr><tr><td>applied</td><td>${leads.filter(l=>l.status==='promoted').length}</td></tr><tr><td>parked</td><td>${leads.filter(l=>l.status==='parked'||l.status==='noise').length}</td></tr></tbody></table></div></div>
+  <p class="muted">Definitions: "interviews per application" = applications with at least one round ÷ applications. "Good leads acted on" = leads at or above the fit gate that were applied to or parked (a decision was made).</p>`;
+}
+
+/* ===================== Runs & questions ===================== */
+async function renderRuns(el){
+  const [runs, qs] = await Promise.all([q(sb.from('agent_runs').select('*').order('started_at',{ascending:false}).limit(50)), q(sb.from('agent_questions').select('*').order('created_at',{ascending:false}).limit(100))]);
+  el.innerHTML = `<h2>Agent runs & questions</h2><h3>Open questions from agents</h3><table><thead><tr><th>Asked</th><th>About</th><th>Question</th><th>Answer</th></tr></thead><tbody>${qs.filter(x=>x.status!=='applied').map(x=>`<tr class="row qq" data-id="${x.id}"><td>${fmtDT(x.created_at)}</td><td class="muted">${esc(x.about_table||'')}</td><td>${esc(x.question)}</td><td>${x.answer?esc(x.answer):'<span class="tag warn">open</span>'}</td></tr>`).join('')||'<tr><td colspan="4" class="muted">No open questions.</td></tr>'}</tbody></table>
+  <h3>Runs</h3><div class="scroll"><table><thead><tr><th>Started</th><th>Agent</th><th>Read</th><th>Created</th><th>Parked</th><th>Model</th><th>Summary</th></tr></thead><tbody>${runs.map(r=>`<tr><td>${fmtDT(r.started_at)}</td><td><span class="tag">${esc(r.agent)}</span></td><td>${r.items_read??''}</td><td>${r.items_created??''}</td><td>${r.items_parked??''}</td><td class="mono muted">${esc(r.model||'')}</td><td>${r.summary?esc(r.summary):'<span class="tag bad">no summary: broken run</span>'}</td></tr>`).join('')||'<tr><td colspan="7" class="muted">No runs yet. The first sourcing run writes here.</td></tr>'}</tbody></table></div>`;
+  el.querySelectorAll('tr.qq').forEach(r=>r.onclick=()=>{ const x=qs.find(y=>y.id===r.dataset.id); openModal(`<h3>Answer</h3><p>${esc(x.question)}</p><textarea id="ans">${esc(x.answer||'')}</textarea><div class="actions"><button class="primary" id="ok">Save</button><button id="no">Cancel</button></div>`); $('#no').onclick=closeModal; $('#ok').onclick=async()=>{ await q(sb.from('agent_questions').update({answer:$('#ans').value,status:'answered',answered_at:new Date().toISOString()}).eq('id',x.id)); closeModal(); go('runs'); }; });
+}
+
+/* ===================== Settings ===================== */
+async function renderSettings(el){
+  const s = state.settings;
+  el.innerHTML = `<h2>Settings</h2><div class="grid2"><div>
+    <h3>Decision loop</h3>
+    <label for="s_fit">Fit gate (0 to 100): leads at or above this get a push</label><input id="s_fit" type="number" value="${s.fit_threshold??60}">
+    <label for="s_fresh">Freshness cutoff, days (older leads are parked)</label><input id="s_fresh" type="number" value="${s.freshness_days??14}">
+    <label for="s_cap">Daily cap on push messages</label><input id="s_cap" type="number" value="${s.daily_cap??8}">
+    <label>Quiet hours</label><div class="grid2"><input id="s_qf" type="time" value="${esc(s.quiet_hours?.from||'23:00')}"><input id="s_qt" type="time" value="${esc(s.quiet_hours?.to||'07:00')}"></div>
+    <label for="s_stale">"Going stale" after N days without a touch</label><input id="s_stale" type="number" value="${s.stale_days??10}">
+    <label for="s_ghost">Auto-mark ghosted after N days (reversible)</label><input id="s_ghost" type="number" value="${s.ghost_days??30}">
+    <h3>Notification channel</h3>
+    <label for="s_ch">Channel</label><select id="s_ch"><option ${s.channel==='telegram'?'selected':''}>telegram</option><option ${s.channel==='whatsapp'?'selected':''}>whatsapp</option><option ${s.channel==='web_push'?'selected':''}>web_push</option><option ${s.channel==='email'?'selected':''}>email</option></select>
+    <label for="s_tg">Telegram chat id (filled after you message the bot once)</label><input id="s_tg" value="${esc(s.telegram_chat_id||'')}">
+    <div class="actions"><button class="primary" id="saveS">Save settings</button></div><div class="err" id="sErr"></div>
+  </div><div>
+    <h3>Account</h3><p>Signed in as <b>${esc(state.user.email)}</b>. This is the only account that can sign in; other sign-ups are blocked at the database.</p>
+    <label for="np">New password (12+ characters)</label><input id="np" type="password" autocomplete="new-password"><label for="np2">Repeat</label><input id="np2" type="password" autocomplete="new-password">
+    <div class="actions"><button id="chPw">Change password</button></div><div class="err" id="pwErr"></div>
+    <h3>Reference data</h3><p class="muted">Sources / portals and park reasons are editable here.</p><div class="actions"><button id="edBoards">Sources & portals</button><button id="edNoise">Park reasons</button><button id="edCrit">Filter criteria</button></div>
+    <h3>About</h3><p class="muted">Job Application Driver v1.0 · 10 Oct 2026 · data in Supabase Project Zero, row-level security by owner · design doc v1.7 in PMOS/JobTracker.</p>
+  </div></div>`;
+  $('#saveS').onclick=async()=>{ try{ const ns={...s, fit_threshold:Number($('#s_fit').value), freshness_days:Number($('#s_fresh').value), daily_cap:Number($('#s_cap').value), quiet_hours:{from:$('#s_qf').value,to:$('#s_qt').value}, stale_days:Number($('#s_stale').value), ghost_days:Number($('#s_ghost').value), channel:$('#s_ch').value, telegram_chat_id:$('#s_tg').value||null}; await q(sb.from('user_settings').upsert({owner_id:state.user.id, settings:ns, updated_at:new Date().toISOString()})); state.settings=ns; toast('Settings saved'); }catch(e){ $('#sErr').textContent=e.message||e; } };
+  $('#chPw').onclick=async()=>{ const a=$('#np').value,b=$('#np2').value; if (a.length<12) return $('#pwErr').textContent='Use at least 12 characters.'; if (a!==b) return $('#pwErr').textContent='Passwords do not match.'; const {error}=await sb.auth.updateUser({password:a}); if (error) return $('#pwErr').textContent=error.message; $('#np').value=$('#np2').value=''; $('#pwErr').textContent=''; toast('Password changed'); };
+  $('#edBoards').onclick=()=>simpleList('job_boards',[{k:'name',label:'Name',t:'text'},{k:'kind',label:'Kind',t:'select',opts:['portal','agency','direct','referral','direct_outreach','career_page']},{k:'base_url',label:'URL',t:'text'},{k:'is_active',label:'Active',t:'bool'}],'name');
+  $('#edNoise').onclick=()=>simpleList('noise_reasons',[{k:'reason',label:'Reason',t:'text'}],'reason');
+  $('#edCrit').onclick=()=>simpleList('filter_criteria',[streamFk,{k:'criterion_type',label:'Type',t:'select',opts:['title_include','title_exclude','location_allow']},{k:'value',label:'Value',t:'text'},{k:'is_active',label:'Active',t:'bool'}],'value');
+}
+async function simpleList(table, fields, labelCol){
+  const rows = await q(sb.from(table).select('*').order(labelCol));
+  openModal(`<h3>${esc(table.replace('_',' '))}</h3><table><tbody>${rows.map(r=>`<tr class="row" data-id="${r.id}"><td>${esc(r[labelCol])}</td><td class="muted">${esc(r.kind||r.criterion_type||'')}${r.job_stream_id?' · '+esc(streamName(r.job_stream_id)):''}</td><td>${r.is_active===false?'<span class="tag">inactive</span>':''}</td></tr>`).join('')}</tbody></table><div class="actions"><button id="add">+ Add</button><button id="close" class="right">Close</button></div>`);
+  const re=()=>simpleList(table,fields,labelCol);
+  $('#close').onclick=()=>{ closeModal(); state.boards=[]; };
+  $('#add').onclick=()=>editRecord({table,title:'New',fields,row:null,defaults:{is_active:true,job_stream_id:selStreams()[0]||PM_STREAM},after:re});
+  $('#modal').querySelectorAll('tr.row').forEach(tr=>tr.onclick=()=>editRecord({table,title:'Edit',fields,row:rows.find(r=>r.id===tr.dataset.id),after:re}));
+}
+</script>
+<!-- CHANGELOG
+v1.0 · 10 Oct 2026 · First build. Password login for one allowed account; stream selector; screens: Inbox (leads with fit, age, connections, apply/tailor/park), Pipeline (kanban), Applications (list), Application detail (overview, documents, people, outreach, rounds, timeline, post-mortem, status change with verbatim message and auto post-mortem on rejection), Target companies, Streams (lead health + alerts), Resumes (library with tailored counts), People (contacts, agencies, LinkedIn Connections.csv import), Interviews (rounds, questions asked, send to prep bank, debrief flag), Prep (About Me bank by topic), Numbers (win metrics with definitions), Runs & questions, Settings (fit gate, freshness, caps, quiet hours, channel, password change, reference data).
+-->
+</body>
+</html>

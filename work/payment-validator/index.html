@@ -4,8 +4,9 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <!--
-  Sudharsan R portfolio · work/payment-validator · v3.1 · 9 Oct 2026
+  Sudharsan R portfolio · work/payment-validator · v3.2 · 10 Oct 2026
   Author: Sudharsan R (built with Claude). Hosting: GitHub Pages (sudharsan454).
+  v3.2: contractor case told as before → after with real before screens; Before → After strip on every case (10 Oct 2026).
   v3.1: 68-second intro video added under the home hero (9 Oct 2026).
   v3.0: site split into a light home page and one page per case (review feedback, 7 Oct 2026).
   
@@ -15,7 +16,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@800;900&family=Public+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap">
-<link rel="stylesheet" href="/assets/site-v3.1.css">
+<link rel="stylesheet" href="/assets/site-v3.2.css">
 </head>
 <body data-page="work/payment-validator">
 <nav class="nav" aria-label="Main">
@@ -44,6 +45,7 @@
 <section class="story">
   <div class="wrap narrow">
 
+    <div class="ba-strip"><div><span class="lbl">Before</span><p>Facility managers opened every vendor invoice and checked it by hand against the work order. On 54 invoices already approved or paid, the PDF and the system amount differed by AUD 17,366 in total.</p></div><div class="arrow" aria-hidden="true">→</div><div class="after"><span class="lbl">After</span><p>Two models read every invoice before anyone approves it. In five weeks of watch-only mode: 2,541 checked, 210 stopped at a hard check, the AI wrong on about 1%. Live now: 627 checked and 30 stopped in the first three days of October.</p></div></div>
     <h2>How it works</h2>
     <p>Payment Validator reads the PDF, compares it with the record and shows the result side by side. Hard failures are rejected automatically and the vendor is emailed. Clean invoices are marked safe to approve. The manager only looks at what needs a human.</p>
     <figure class="shot"><img src="/img/pv-validation.jpg" width="1600" height="971" loading="lazy" data-zoom="/img/pv-validation.jpg" alt="Payment Validator result screen: verdict, failed field, document checks and the vendor PDF side by side."><figcaption><span>Live product: an invoice stopped at a hard check, vendor emailed automatically.</span><span class="real">Real screen · details blurred</span></figcaption></figure>
@@ -87,7 +89,7 @@
         <span class="copied" id="copiedF" aria-live="polite"></span>
       </div>
     </div>
-    <p class="note">Product screens are real, with private details blurred. One customer is not named at their request. Every figure says where it comes from.<br>v3.1 · October 2026</p>
+    <p class="note">Product screens are real, with private details blurred. One customer is not named at their request. Every figure says where it comes from.<br>v3.2 · October 2026</p>
   </div>
 </footer>
 <script src="/assets/site-v3.0.js"></script>

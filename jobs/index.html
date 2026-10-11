@@ -1,5 +1,5 @@
 <!doctype html>
-<!-- Job Application Driver · app v1.0.1 · 11 Oct 2026 · v1.0.1: application detail embed disambiguated (two FKs between applications and leads). v1.0 · 10 Oct 2026 · single-file web app on Supabase (Project Zero) · login: sudharsan@facilio.com only · changelog at the foot of this file -->
+<!-- Job Application Driver · app v1.0.2 · 11 Oct 2026 · v1.0.2: boot deferred out of the auth callback (page froze on reload with a saved session). v1.0.1: application detail embed disambiguated (two FKs between applications and leads). v1.0 · 10 Oct 2026 · single-file web app on Supabase (Project Zero) · login: sudharsan@facilio.com only · changelog at the foot of this file -->
 <html lang="en">
 <head>
 <meta charset="utf-8">
@@ -79,7 +79,7 @@ pre.text{white-space:pre-wrap;font-family:var(--body);font-size:13px;background:
 
 <div id="login" class="login">
   <h1>Job Application Driver</h1>
-  <div class="muted">v1.0.1 · one account only</div>
+  <div class="muted">v1.0.2 · one account only</div>
   <form id="loginForm">
     <label for="email">Email</label><input id="email" type="email" autocomplete="username" value="sudharsan@facilio.com">
     <label for="password">Password</label><input id="password" type="password" autocomplete="current-password">
@@ -90,7 +90,7 @@ pre.text{white-space:pre-wrap;font-family:var(--body);font-size:13px;background:
 
 <div id="app" class="app">
   <div class="topbar">
-    <div class="brand">Job Application Driver<small>v1.0.1</small></div>
+    <div class="brand">Job Application Driver<small>v1.0.2</small></div>
     <nav id="nav"></nav>
     <div class="streams" id="streamChips"></div>
     <button class="small" id="logoutBtn">Sign out</button>
@@ -136,10 +136,15 @@ $('#loginForm').addEventListener('submit', async e => {
   if (error) { $('#loginErr').textContent = error.message; return; }
 });
 $('#logoutBtn').addEventListener('click', async () => { await sb.auth.signOut(); });
-sb.auth.onAuthStateChange(async (ev, session) => {
-  if (session && session.user && session.user.email?.toLowerCase() === ALLOWED_EMAIL) { state.user = session.user; await boot(); }
-  else if (session && session.user) { await sb.auth.signOut(); $('#loginErr').textContent='Not an allowed account.'; }
-  else { state.user=null; $('#app').style.display='none'; $('#login').style.display='block'; }
+// Never await Supabase calls inside this callback: supabase-js holds the auth lock while it runs, and a query
+// that needs the token would wait for the same lock (page froze on reload in v1.0.1). Defer with setTimeout.
+let booted = false;
+sb.auth.onAuthStateChange((ev, session) => {
+  setTimeout(async () => {
+    if (session && session.user && session.user.email?.toLowerCase() === ALLOWED_EMAIL) { state.user = session.user; if (!booted) { booted = true; try { await boot(); } catch(e) { booted = false; err(e); } } }
+    else if (session && session.user) { await sb.auth.signOut(); $('#loginErr').textContent='Not an allowed account.'; }
+    else { booted = false; state.user=null; $('#app').style.display='none'; $('#login').style.display='block'; }
+  }, 0);
 });
 
 async function boot(){
@@ -535,7 +540,7 @@ async function renderSettings(el){
     <label for="np">New password (12+ characters)</label><input id="np" type="password" autocomplete="new-password"><label for="np2">Repeat</label><input id="np2" type="password" autocomplete="new-password">
     <div class="actions"><button id="chPw">Change password</button></div><div class="err" id="pwErr"></div>
     <h3>Reference data</h3><p class="muted">Sources / portals and park reasons are editable here.</p><div class="actions"><button id="edBoards">Sources & portals</button><button id="edNoise">Park reasons</button><button id="edCrit">Filter criteria</button></div>
-    <h3>About</h3><p class="muted">Job Application Driver v1.0.1 · 11 Oct 2026 · data in Supabase Project Zero, row-level security by owner · design doc v1.7 in PMOS/JobTracker.</p>
+    <h3>About</h3><p class="muted">Job Application Driver v1.0.2 · 11 Oct 2026 · data in Supabase Project Zero, row-level security by owner · design doc v1.7 in PMOS/JobTracker.</p>
   </div></div>`;
   $('#saveS').onclick=async()=>{ try{ const ns={...s, fit_threshold:Number($('#s_fit').value), freshness_days:Number($('#s_fresh').value), daily_cap:Number($('#s_cap').value), quiet_hours:{from:$('#s_qf').value,to:$('#s_qt').value}, stale_days:Number($('#s_stale').value), ghost_days:Number($('#s_ghost').value), channel:$('#s_ch').value, telegram_chat_id:$('#s_tg').value||null}; await q(sb.from('user_settings').upsert({owner_id:state.user.id, settings:ns, updated_at:new Date().toISOString()})); state.settings=ns; toast('Settings saved'); }catch(e){ $('#sErr').textContent=e.message||e; } };
   $('#chPw').onclick=async()=>{ const a=$('#np').value,b=$('#np2').value; if (a.length<12) return $('#pwErr').textContent='Use at least 12 characters.'; if (a!==b) return $('#pwErr').textContent='Passwords do not match.'; const {error}=await sb.auth.updateUser({password:a}); if (error) return $('#pwErr').textContent=error.message; $('#np').value=$('#np2').value=''; $('#pwErr').textContent=''; toast('Password changed'); };
@@ -553,6 +558,7 @@ async function simpleList(table, fields, labelCol){
 }
 </script>
 <!-- CHANGELOG
+v1.0.2 · 11 Oct 2026 · Fix: on reload with a saved session the page stayed blank and the tab froze; boot() ran inside the supabase-js auth callback and deadlocked on the auth lock. Boot is now deferred and runs once. Found in the live browser validation.
 v1.0.1 · 11 Oct 2026 · Fix: Application detail failed to load ("more than one relationship was found for applications and leads"); the leads embed now names the FK applications_lead_id_fkey. Found in the live browser validation.
 v1.0 · 10 Oct 2026 · First build. Password login for one allowed account; stream selector; screens: Inbox (leads with fit, age, connections, apply/tailor/park), Pipeline (kanban), Applications (list), Application detail (overview, documents, people, outreach, rounds, timeline, post-mortem, status change with verbatim message and auto post-mortem on rejection), Target companies, Streams (lead health + alerts), Resumes (library with tailored counts), People (contacts, agencies, LinkedIn Connections.csv import), Interviews (rounds, questions asked, send to prep bank, debrief flag), Prep (About Me bank by topic), Numbers (win metrics with definitions), Runs & questions, Settings (fit gate, freshness, caps, quiet hours, channel, password change, reference data).
 -->

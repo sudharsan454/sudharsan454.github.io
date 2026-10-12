@@ -1,5 +1,8 @@
 # Changelog
 
+## v1.8 · 13 Oct 2026
+Date pickers no longer grey out days or move dates on their own (v1.5 to v1.7 set min/max on the pickers and clamped values, so a day after the trip's To could not be picked at all). A new entry fills only Arrived, with the day the previous entry ended; Left stays empty for you to fill. Every date rule now runs at Save: Arrived is needed, Left can't be before Arrived (the Left box is outlined red while it is), and an entry outside its trip opens a choice: "Extend the trip to … and save" or "Change the date". Nothing changes unless you pick Extend. For a new trip, Arrived follows the trip's From until you set Arrived yourself.
+
 ## v1.7 · 13 Oct 2026
 Covers. The trip form has a "Trip cover photo" field (also under Edit trip); it shows on the timeline, as a banner at the top of the trip sheet, and first among that trip's photos in the story's photo wall. Each entry's own photo wins wherever that entry is shown: its map pin, its story scene, its visit row and its card in the trip sheet. With no photo of its own an entry uses the trip cover, then the place's first letter. An entry's first photo is its cover; every other thumbnail has "Make cover" (in the trip sheet and the entry editor). A place visited on several trips keeps one pin, showing the latest visit's cover. Replacing a trip cover keeps the old photo as a trip photo. Deleting an entry now deletes its photos too (before, they stayed in storage with no entry and would have looked like trip covers). No database change.
 

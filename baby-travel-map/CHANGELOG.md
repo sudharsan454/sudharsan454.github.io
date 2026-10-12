@@ -1,5 +1,8 @@
 # Changelog
 
+## v1.6 · 13 Oct 2026
+A new entry's Arrived and Left are filled with the day the previous entry ended (kept inside the trip). Under the dates, one line shows the previous entry in date order: "Previous: Kovalam Lighthouse · 31 Jul 2026 · Start on 31 Jul 2026"; tapping the link sets Arrived to that day. When editing an existing entry it shows the entry before it; for the first entry it shows the trip's From–To.
+
 ## v1.5 · 13 Oct 2026
 Fix: Reorder → Save order wrote nothing in v1.4 (the new order was applied to the in-memory entries before being compared with the saved order, so every entry looked unchanged; the server log shows only the trip update at 18:13 on 12 Oct). It now compares against the saved order, writes the changed entries, re-reads, and says if the server order differs. Date rules: the date pickers grey out impossible days; To cannot be before From; Left cannot be before Arrived; an entry's Arrived/Left must sit inside its trip's From–To; changing a trip's dates is refused if it would leave entries outside, naming them. Trip dates no longer change on their own (v1.4 auto-fit removed; the trip range is now the rule entries must follow).
 

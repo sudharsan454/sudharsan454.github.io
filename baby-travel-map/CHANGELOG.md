@@ -1,5 +1,8 @@
 # Changelog
 
+## v1.4 · 13 Oct 2026
+Entries always run in date order (by Arrived), and same-day entries in the order you set. Applied in the trip sheet, entry numbering, the year story and the family link. New Reorder button in the trip sheet: up/down arrows within a day; moving to another day is done by changing the date. After any save, reorder or delete: entries renumbered, km recalculated where it was the automatic straight-line figure (typed km kept), trip From/To set to the span of its entries. "Left" before "Arrived" is refused. A new entry defaults to the day the last one ended.
+
 ## v1.3 · 12 Oct 2026
 Places the geocoder has never heard of (Vallichunai near Nagercoil was the first) can be added by hand: the place search always ends with "Add … by hand"; pick the nearest known town, tap the map where the place is (drag the pin to adjust), city/district/state fill from the town. Saved as kind "custom" and reused like any other place.
 

@@ -1,5 +1,12 @@
 # Changelog
 
+## v2.0 · 13 Oct 2026
+**His photo:** Settings has a "His photo" card. Pick a photo, it is cropped to a square (480 px) and saved; the preview shows him in all seven vehicles. Remove clears it (the file stays in storage). His photo also replaces the dot next to his name in the top bar.
+**Play this trip:** a new button in the trip sheet. The trip opens with its title, dates and his age, then he travels from home to each place in date order. Each leg draws a dotted line that grows behind him while he rides the actual vehicle for that leg with his face in the window: car, train, plane, bus, boat, two-wheeler, or a pram for "on foot". The vehicle turns to face the way he is going. On arrival the entry card opens (photo, what he did, ate, hated, the memory); after about 5 seconds it moves on by itself. Back, Next, swipe or arrow keys take over and stop the auto-play. Phones set to reduce motion get the full line at once, with no movement.
+**Year story and family link:** the per-entry scenes use the same ride (each trip starts from home); the family link shows his photo too. No auto-play there.
+**Main map:** while a trip's sheet is open, that trip's route is drawn dotted on the map (home → each place); it clears when the sheet closes.
+Migration `baby_travel_map_memories_v2_0_child_photo`: child.photo_path, and story_for_token() returns child_photo.
+
 ## v1.9 · 13 Oct 2026
 Removed the "The story should linger here" checkbox from the entry form. It was stored but never used by the story. The app no longer writes the highlight column; values already saved stay in the database untouched.
 

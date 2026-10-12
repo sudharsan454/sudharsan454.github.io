@@ -1,5 +1,8 @@
 # Changelog
 
+## v1.2 · 12 Oct 2026
+Every entry has "What he ate". Picking "Another first" opens a box for what the first was (saved as the milestone note; the story reads it as "First: …"). Picking purpose "Other" opens a box for the kind of trip (saved as the purpose). Migration `baby_travel_map_memories_v1_1_food`.
+
 ## v1.1 · 12 Oct 2026
 First load retries up to 3 times: right after a magic-link sign-in Supabase can reject the brand-new token for about a second ("JWT issued at future"); one retry clears it. Error text now distinguishes that case from the unexposed-schema case and offers Try again.
 

@@ -1,5 +1,8 @@
 # Changelog
 
+## v1.9 · 13 Oct 2026
+Removed the "The story should linger here" checkbox from the entry form. It was stored but never used by the story. The app no longer writes the highlight column; values already saved stay in the database untouched.
+
 ## v1.8 · 13 Oct 2026
 Date pickers no longer grey out days or move dates on their own (v1.5 to v1.7 set min/max on the pickers and clamped values, so a day after the trip's To could not be picked at all). A new entry fills only Arrived, with the day the previous entry ended; Left stays empty for you to fill. Every date rule now runs at Save: Arrived is needed, Left can't be before Arrived (the Left box is outlined red while it is), and an entry outside its trip opens a choice: "Extend the trip to … and save" or "Change the date". Nothing changes unless you pick Extend. For a new trip, Arrived follows the trip's From until you set Arrived yourself.
 

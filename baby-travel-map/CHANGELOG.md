@@ -1,5 +1,8 @@
 # Changelog
 
+## v1.5 · 13 Oct 2026
+Fix: Reorder → Save order wrote nothing in v1.4 (the new order was applied to the in-memory entries before being compared with the saved order, so every entry looked unchanged; the server log shows only the trip update at 18:13 on 12 Oct). It now compares against the saved order, writes the changed entries, re-reads, and says if the server order differs. Date rules: the date pickers grey out impossible days; To cannot be before From; Left cannot be before Arrived; an entry's Arrived/Left must sit inside its trip's From–To; changing a trip's dates is refused if it would leave entries outside, naming them. Trip dates no longer change on their own (v1.4 auto-fit removed; the trip range is now the rule entries must follow).
+
 ## v1.4 · 13 Oct 2026
 Entries always run in date order (by Arrived), and same-day entries in the order you set. Applied in the trip sheet, entry numbering, the year story and the family link. New Reorder button in the trip sheet: up/down arrows within a day; moving to another day is done by changing the date. After any save, reorder or delete: entries renumbered, km recalculated where it was the automatic straight-line figure (typed km kept), trip From/To set to the span of its entries. "Left" before "Arrived" is refused. A new entry defaults to the day the last one ended.
 

@@ -1,5 +1,8 @@
 # Changelog
 
+## v1.3 · 12 Oct 2026
+Places the geocoder has never heard of (Vallichunai near Nagercoil was the first) can be added by hand: the place search always ends with "Add … by hand"; pick the nearest known town, tap the map where the place is (drag the pin to adjust), city/district/state fill from the town. Saved as kind "custom" and reused like any other place.
+
 ## v1.2 · 12 Oct 2026
 Every entry has "What he ate". Picking "Another first" opens a box for what the first was (saved as the milestone note; the story reads it as "First: …"). Picking purpose "Other" opens a box for the kind of trip (saved as the purpose). Migration `baby_travel_map_memories_v1_1_food`.
 

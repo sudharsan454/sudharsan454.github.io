@@ -1,5 +1,8 @@
 # Changelog
 
+## v1.7 · 13 Oct 2026
+Covers. The trip form has a "Trip cover photo" field (also under Edit trip); it shows on the timeline, as a banner at the top of the trip sheet, and first among that trip's photos in the story's photo wall. Each entry's own photo wins wherever that entry is shown: its map pin, its story scene, its visit row and its card in the trip sheet. With no photo of its own an entry uses the trip cover, then the place's first letter. An entry's first photo is its cover; every other thumbnail has "Make cover" (in the trip sheet and the entry editor). A place visited on several trips keeps one pin, showing the latest visit's cover. Replacing a trip cover keeps the old photo as a trip photo. Deleting an entry now deletes its photos too (before, they stayed in storage with no entry and would have looked like trip covers). No database change.
+
 ## v1.6 · 13 Oct 2026
 A new entry's Arrived and Left are filled with the day the previous entry ended (kept inside the trip). Under the dates, one line shows the previous entry in date order: "Previous: Kovalam Lighthouse · 31 Jul 2026 · Start on 31 Jul 2026"; tapping the link sets Arrived to that day. When editing an existing entry it shows the entry before it; for the first entry it shows the trip's From–To.
 

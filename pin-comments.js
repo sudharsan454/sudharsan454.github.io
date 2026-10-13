@@ -1,4 +1,4 @@
-/* Facilio Run comment layer — ANCHORED PINS. v2 · 29-Jul-2026
+/* Facilio Run comment layer — ANCHORED PINS. v2.1 · 13-Oct-2026 (v2.1: mobile button placement; v2 · 29-Jul-2026)
    Drop-in:  <script src="pin-comments.js" data-page="THIS_FILENAME.html"></script>
 
    Adobe-Acrobat-style pins. "Add comment" button (top-right), or press C, or
@@ -474,6 +474,10 @@
     toolbar.setAttribute("data-pin-ui", "1");
     toolbar.addEventListener("click", function (e) { e.stopPropagation(); setMode(!mode); });
     document.body.appendChild(toolbar);
+    // v2.1 (13 Oct 2026): on phones the top-right button covered the site nav; move it bottom-left.
+    if (window.matchMedia && window.matchMedia("(max-width:700px)").matches) {
+      toolbar.style.top = "auto"; toolbar.style.right = "auto"; toolbar.style.bottom = "20px"; toolbar.style.left = "16px";
+    }
     setMode(false);
 
     document.addEventListener("click", onDocClick, true);

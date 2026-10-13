@@ -1,5 +1,5 @@
 <!doctype html>
-<!-- Baby Travel Map · app · v2.0 · 13 Oct 2026 · v2.0: his photo; Play this trip with him riding the actual vehicle along a dotted route; dotted route on the main map for the open trip (app-v2.0.js, app-v2.0.css). v1.9 · 13 Oct 2026 · v1.9: 'story should linger' checkbox removed (app-v1.9.js, app-v1.9.css). v1.8 · 13 Oct 2026 · v1.8: free date pickers, Left empty by default, rules at Save with Extend-the-trip (app-v1.8.js, app-v1.8.css). v1.7 · 13 Oct 2026 · v1.7: trip cover photo field; entry covers with Make cover (app-v1.7.js, app-v1.7.css). v1.6 · 13 Oct 2026 · v1.6: previous-entry info line + start-from-previous default (app-v1.6.js, app-v1.6.css). v1.5 · 13 Oct 2026 · v1.5: reorder saves; date rules on trips and entries (app-v1.5.js, app-v1.5.css). v1.4 · 13 Oct 2026 · v1.4: date-ordered entries + Reorder (app-v1.4.js, app-v1.4.css). v1.3 · 12 Oct 2026 · v1.3: add a place by hand when the geocoder has never heard of it (app-v1.3.js, app-v1.3.css). v1.2 · 12 Oct 2026 · v1.2: what he ate per entry; free-text "Another first" and purpose "Other" (app-v1.2.js). v1.1 · 12 Oct 2026 · v1.1: first-load retry + clearer sign-in errors (app-v1.1.js). v1.0 · 10 Oct 2026 · Claude for Sudharsan R · first build: magic-link sign-in, capture (trip + entries + covers + firsts), MapLibre map with globe story, timeline, year story (6 scenes), family share link, settings. Supabase Project Zero, schema memories. Changelog in CHANGELOG.md. -->
+<!-- Baby Travel Map · app · v2.1 · 13 Oct 2026 · v2.1: 'Started from' on a trip; 'Back home after this' on the last entry closes the loop (app-v2.1.js, app-v2.1.css). v2.0 · 13 Oct 2026 · v2.0: his photo; Play this trip with him riding the actual vehicle along a dotted route; dotted route on the main map for the open trip (app-v2.0.js, app-v2.0.css). v1.9 · 13 Oct 2026 · v1.9: 'story should linger' checkbox removed (app-v1.9.js, app-v1.9.css). v1.8 · 13 Oct 2026 · v1.8: free date pickers, Left empty by default, rules at Save with Extend-the-trip (app-v1.8.js, app-v1.8.css). v1.7 · 13 Oct 2026 · v1.7: trip cover photo field; entry covers with Make cover (app-v1.7.js, app-v1.7.css). v1.6 · 13 Oct 2026 · v1.6: previous-entry info line + start-from-previous default (app-v1.6.js, app-v1.6.css). v1.5 · 13 Oct 2026 · v1.5: reorder saves; date rules on trips and entries (app-v1.5.js, app-v1.5.css). v1.4 · 13 Oct 2026 · v1.4: date-ordered entries + Reorder (app-v1.4.js, app-v1.4.css). v1.3 · 12 Oct 2026 · v1.3: add a place by hand when the geocoder has never heard of it (app-v1.3.js, app-v1.3.css). v1.2 · 12 Oct 2026 · v1.2: what he ate per entry; free-text "Another first" and purpose "Other" (app-v1.2.js). v1.1 · 12 Oct 2026 · v1.1: first-load retry + clearer sign-in errors (app-v1.1.js). v1.0 · 10 Oct 2026 · Claude for Sudharsan R · first build: magic-link sign-in, capture (trip + entries + covers + firsts), MapLibre map with globe story, timeline, year story (6 scenes), family share link, settings. Supabase Project Zero, schema memories. Changelog in CHANGELOG.md. -->
 <html lang="en">
 <head>
 <meta charset="utf-8">
@@ -9,7 +9,7 @@
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='14' fill='%23f2b544'/%3E%3Ccircle cx='16' cy='13' r='5' fill='%23101418'/%3E%3Cpath d='M16 18 L16 29' stroke='%23101418' stroke-width='3' stroke-linecap='round'/%3E%3C/svg%3E">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,700&family=Atkinson+Hyperlegible:wght@400;700&display=swap">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/maplibre-gl@5/dist/maplibre-gl.css">
-<link rel="stylesheet" href="app-v2.0.css">
+<link rel="stylesheet" href="app-v2.1.css">
 </head>
 <body>
 <div id="app">
@@ -115,7 +115,7 @@
           <p id="account-email" class="muted"></p>
           <button id="btn-signout" class="btn" type="button">Sign out</button>
         </div>
-        <p class="muted small">Baby Travel Map v2.0 · data in Supabase (Project Zero, schema memories) · photos: covers only, originals stay in Google Photos.</p>
+        <p class="muted small">Baby Travel Map v2.1 · data in Supabase (Project Zero, schema memories) · photos: covers only, originals stay in Google Photos.</p>
       </div>
     </section>
   </main>
@@ -164,6 +164,11 @@
         <input id="t-album" type="url" placeholder="https://photos.app.goo.gl/…">
         <label for="t-summary">One line about the trip (optional)</label>
         <input id="t-summary" type="text" placeholder="His first long train ride">
+        <label for="t-from">Started from (optional)</label>
+        <input id="t-from" type="search" autocomplete="off" placeholder="Leave empty to start from home">
+        <div id="t-from-results" class="results"></div>
+        <input type="hidden" id="t-from-json">
+        <p id="t-from-current" class="muted small hint"></p>
         <label for="t-cover">Trip cover photo (optional)</label>
         <input id="t-cover" type="file" accept="image/*">
         <p class="muted small hint">Shown on the timeline, at the top of the trip and first in the photo wall. An entry with its own photo shows that instead.</p>
@@ -204,6 +209,18 @@
         <div id="e-first-other-wrap" hidden>
           <label for="e-first-other">What was the first?</label>
           <input id="e-first-other" type="text" placeholder="First time on a bullock cart">
+        </div>
+        <div id="e-home-wrap" class="home-block">
+          <label class="check"><input id="e-home" type="checkbox"> Back home after this</label>
+          <div id="e-home-fields" hidden>
+            <div class="row">
+              <div><label for="e-home-mode">How did you reach home?</label><select id="e-home-mode"><option value="car">Car</option><option value="train">Train</option><option value="flight">Flight</option><option value="bus">Bus</option><option value="boat">Boat</option><option value="walk">Walk</option><option value="bike">Two-wheeler</option></select></div>
+              <div><label for="e-home-on">Reached home on</label><input id="e-home-on" type="date"></div>
+            </div>
+            <label for="e-home-km">About how far (km)</label>
+            <input id="e-home-km" type="number" min="0" step="1" placeholder="auto">
+            <p id="e-home-hint" class="muted small hint"></p>
+          </div>
         </div>
         <label for="e-photos">Entry photos (up to 3 at a time; the first becomes this entry's cover, tap Make cover to change it)</label>
         <input id="e-photos" type="file" accept="image/*" multiple>
@@ -261,6 +278,6 @@
 
 <script src="https://cdn.jsdelivr.net/npm/maplibre-gl@5/dist/maplibre-gl.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
-<script src="app-v2.0.js"></script>
+<script src="app-v2.1.js"></script>
 </body>
 </html>

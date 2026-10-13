@@ -1,5 +1,11 @@
 # Changelog
 
+## v2.1 · 13 Oct 2026
+**Back home:** the last entry of a trip (and any new entry) has "Back home after this". Turning it on asks how you reached home (same vehicles), the date (defaults to the day you left that place) and about how far (auto = straight line from the last place to Home, kept live; a typed number is kept as typed). It is stored on the trip, so a trip goes home once. "Reached home" before you left the place is refused at Save; a date after the trip's To offers "Extend the trip". Edit trip refuses dates that would leave the home date outside.
+**The loop closes:** Play this trip adds a ride home in that vehicle and a closing card ("Back home … The whole trip, there and back: about N km"); the year story and the family link get the same scene after each trip that has one; the main-map route goes back to Home; the trip sheet shows a Back home row; trip km, year km and "since birth" km include the way back.
+**Started from (optional, on the trip):** empty = Home from Settings. If set, the first leg starts there (ride, map route and the first entry's auto km).
+Migration `baby_travel_map_memories_v2_1_start_and_return`: trip.start_place_id, return_mode, return_on, return_km; story_for_token() returns them.
+
 ## v2.0 · 13 Oct 2026
 **His photo:** Settings has a "His photo" card. Pick a photo, it is cropped to a square (480 px) and saved; the preview shows him in all seven vehicles. Remove clears it (the file stays in storage). His photo also replaces the dot next to his name in the top bar.
 **Play this trip:** a new button in the trip sheet. The trip opens with its title, dates and his age, then he travels from home to each place in date order. Each leg draws a dotted line that grows behind him while he rides the actual vehicle for that leg with his face in the window: car, train, plane, bus, boat, two-wheeler, or a pram for "on foot". The vehicle turns to face the way he is going. On arrival the entry card opens (photo, what he did, ate, hated, the memory); after about 5 seconds it moves on by itself. Back, Next, swipe or arrow keys take over and stop the auto-play. Phones set to reduce motion get the full line at once, with no movement.

@@ -1,5 +1,14 @@
 # Changelog
 
+## v2.2 · 13 Oct 2026
+**People:** a People card in Settings and a new People tab (bottom bar now has 5 tabs). Add a person with name, relationship (suggestions: Amma, Appa, Paati, Thatha, Chithi, Mama, Athai…, or type your own) and an optional photo (cropped square, 360 px). No photo = coloured circle with their initials. Edit or Remove any time; removing takes them off their trips, trips and photos stay.
+**Who came along:** each trip sheet shows everyone's faces; tap a face to add or remove that person (saves at once). The trip form has the same picker (saved with the trip) and an Add button that creates a person and selects them in one go. The timeline shows small faces on each trip.
+**People tab:** everyone across all trips, most trips first, with relationship, trips together and the first trip with his age then. Tap a person for their trips and km together; tap a trip to open it.
+**Story:** Play this trip shows "With Paati and Appa" with faces on the first card; the year story and the family link get a "Who came along" scene.
+**Fix:** a second story started while the map was still moving could fail to start (map.loaded() is false during a move); the player now remembers it has loaded once.
+**Security:** RLS checked on every memories table (owner-only by signed-in email; anon has no table access; the family link reads only through story_for_token). person and trip_person get the same owner-only RLS, verified: owner sees their rows, another signed-in email sees none and cannot insert as the owner.
+Migrations `baby_travel_map_memories_v2_2_people` and `_v2_2_people_in_story` (story_for_token returns each trip's people).
+
 ## v2.1 · 13 Oct 2026
 **Back home:** the last entry of a trip (and any new entry) has "Back home after this". Turning it on asks how you reached home (same vehicles), the date (defaults to the day you left that place) and about how far (auto = straight line from the last place to Home, kept live; a typed number is kept as typed). It is stored on the trip, so a trip goes home once. "Reached home" before you left the place is refused at Save; a date after the trip's To offers "Extend the trip". Edit trip refuses dates that would leave the home date outside.
 **The loop closes:** Play this trip adds a ride home in that vehicle and a closing card ("Back home … The whole trip, there and back: about N km"); the year story and the family link get the same scene after each trip that has one; the main-map route goes back to Home; the trip sheet shows a Back home row; trip km, year km and "since birth" km include the way back.

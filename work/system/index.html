@@ -4,8 +4,9 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <!--
-  Sudharsan R portfolio · work/system · v3.6 · 10 Oct 2026
+  Sudharsan R portfolio · work/system · v3.7 · 10 Oct 2026
   Author: Sudharsan R (built with Claude). Hosting: GitHub Pages (sudharsan454).
+  v3.7: case pages tightened to their own story; Beyond the product role; one-call discovery story on the system page; Berkeley eval lessons (14 Oct 2026).
   v3.6: top line is just 'AI Product Manager · Chennai, India' (14 Oct 2026).
   v3.5: top line reads AI Product Manager; Payment Validator numbers now Jul–Sep 2026 (AUD 1.26M held, 3 of 12,131 overturned) (14 Oct 2026).
   v3.4: mobile fixes: Before → After strip no longer covers text on phones, bigger tap targets, review button moved off the nav (13 Oct 2026).
@@ -20,7 +21,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@800;900&family=Public+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap">
-<link rel="stylesheet" href="/assets/site-v3.4.css">
+<link rel="stylesheet" href="/assets/site-v3.7.css">
 </head>
 <body data-page="work/system">
 <nav class="nav" aria-label="Main">
@@ -46,7 +47,7 @@
       <div><h4>1. Find the problem worth solving</h4><p><b>Discovery Impact Triage.</b> Turns call notes into one clearly stated problem. For a customer already live, it checks what people said against their real records and settings first.</p></div>
       <div><h4>2. Build the fix</h4><p><b>Agent and workflow builder.</b> Takes a customer's workflow and produces the rules, the prompt, every scenario the agent must handle, and the test run. When the fix isn't AI, it stops at the workflow.</p></div>
       <div><h4>3. Prove it works</h4><p><b>Eval builder and verdict.</b> Scores each test round against the actual records in the system, not the reply text. One answer at the end: ready for customers or not, and why.</p></div>
-      <div><h4>4. Keep it working</h4><p><b>Report checker.</b> Checks each customer performance report against the raw data before it goes out. The numbers can be right while the report is still wrong.</p></div>
+      <div><h4>4. Keep it working</h4><p><b>Report checker.</b> Checks every number in a customer's report against the raw data, and checks that the summary says what the numbers actually show.</p></div>
     </div></div>
     </div>
   </div>
@@ -64,9 +65,78 @@
     </ul>
     <p>And humans keep what they should. I design the handoff to people on day one, at the boundary the customer draws. AI does the repeat work; people make the calls that need judgement.</p>
 
-    <h2>What the first step looks like</h2>
-    <p>A real discovery output for a hospital FM prospect. Every problem we heard is grouped, given an owner, and either taken into the pilot or deliberately held back, with the reason in plain words. The top pick was the problem two people raised on their own, in two different situations, with the same root cause.</p>
-    <figure class="shot"><img src="/img/dit-disposition.jpg" width="1288" height="947" loading="lazy" data-zoom="/img/dit-disposition.jpg" alt="Discovery output: problem clusters with owner, whether each is in the pilot, why, and where it lands in the full rollout."><figcaption><span>What the pilot takes, and why the rest waits. Names replaced with roles.</span><span class="real">Real output · anonymised</span></figcaption></figure>
+    <h2>Where the roadmap came from</h2>
+    <p>Out of 80 discovery calls in four months, two choke points showed up everywhere: getting a request into the system, and getting an invoice approved. That set the roadmap. Helpdesk AI first, Payment Validator next.</p>
+    <div class="panel">
+      <p class="panel-title">How many of 16 enterprise accounts raised each problem</p>
+      <div class="bars">
+        <div class="bar-row"><span>No 24/7 helpdesk cover</span><div class="bar"><i style="width:68.75%"></i></div><b>11</b></div>
+        <div class="bar-row"><span>Intake is one person</span><div class="bar"><i style="width:50%"></i></div><b>8</b></div>
+        <div class="bar-row"><span>CSAT manual or missing</span><div class="bar"><i style="width:31.25%"></i></div><b>5</b></div>
+        <div class="bar-row"><span>Vendor chasing by phone</span><div class="bar"><i style="width:25%"></i></div><b>4</b></div>
+        <div class="bar-row"><span>Manual routing to teams</span><div class="bar"><i style="width:25%"></i></div><b>4</b></div>
+        <div class="bar-row"><span>Accent and language gaps</span><div class="bar"><i style="width:18.75%"></i></div><b>3</b></div>
+      </div>
+    </div>
+
+    <h2>One call, start to finish: how I find the problem</h2>
+    <p>A hospital estate came to us asking for a switchboard fix. Three people joined the discovery calls. This is how I broke down what they said, picked one problem and set the pilot. People are shown by role.</p>
+
+    <h3 class="step">1. Who was in the room</h3>
+    <div class="people">
+      <div class="person p-g"><span class="role">Sponsor</span><h4>Deputy Director of Estates</h4><p style="margin:0;font-size:var(--t-sm);color:var(--ink-2)">Came for switchboard automation. Wanted resource forecasting and live SLA reports, then handed over to operations.</p><q>My kind of role in this is almost done.</q><p class="pick">Would pick: <b>forecasting and reporting</b></p></div>
+      <div class="person p-s"><span class="role">Evaluator · takes it to the board</span><h4>Head of Operations</h4><q>You're just assigning blindly really to engineers.</q><q>Once a job has been closed by an engineer it kind of just disappears.</q><p class="pick">Would pick: <b>dispatch</b></p></div>
+      <div class="person p-i"><span class="role">Day-to-day judge · pilot site</span><h4>Operations lead</h4><q>It was closed at 3 o'clock. I look on the BMS and it's still not running… If this solution doesn't fix that, there's no point in me having it.</q><p class="pick">Would pick: <b>closing the loop</b></p></div>
+    </div>
+
+    <h3 class="step">2. Everything we heard: 24 problems</h3>
+    <div class="legend"><span style="--c:var(--ink-2)"><i></i>G · Sponsor</span><span style="--c:var(--teal)"><i></i>S · Head of Operations</span><span style="--c:var(--hivis)"><i></i>I · Operations lead</span></div>
+    <div class="issues">
+      <div class="cluster pick"><h4>Closing the loop <small>Picked</small></h4><ul>
+        <li class="i"><b>I3</b>Nothing visible between "assigned" and "closed"</li>
+        <li class="i"><b>I4</b>Closed doesn't mean fixed</li>
+        <li class="i"><b>I5</b>The person who asked is never kept informed</li>
+        <li class="s"><b>S4</b>Tracking finished jobs is tedious</li>
+        <li class="s"><b>S5</b>Remedial work vanishes after a planned visit</li></ul></div>
+      <div class="cluster"><h4>Intake</h4><ul>
+        <li class="i"><b>I1</b>Requests arrive vague: "Chemo too hot"</li>
+        <li class="i"><b>I2</b>No room, location, issue type or photo</li>
+        <li class="i"><b>I6</b>Duplicate tickets across two teams</li></ul></div>
+      <div class="cluster"><h4>Out of hours</h4><ul>
+        <li class="g"><b>G3</b>Out-of-hours dead zone</li>
+        <li class="g"><b>G4</b>Night phone jobs typed in next day</li>
+        <li class="g"><b>G5</b>Switchboard automation</li></ul></div>
+      <div class="cluster"><h4>Dispatch</h4><ul>
+        <li class="s"><b>S1</b>No live view of who is available</li>
+        <li class="s"><b>S2</b>Jobs assigned by hand from a backlog</li>
+        <li class="s"><b>S3</b>No idea how long a job will take</li>
+        <li class="s"><b>S6</b>Priority lives in people's heads</li>
+        <li class="s"><b>S7</b>In-house or subcontractor, picked from memory</li>
+        <li class="i"><b>I9</b>Travel wasted, visits not bundled</li>
+        <li class="i"><b>I10</b>Hidden limits, like who doesn't drive</li></ul></div>
+      <div class="cluster"><h4>Field capture</h4><ul>
+        <li class="i"><b>I7</b>Soft services not digitised</li>
+        <li class="i"><b>I8</b>Defects seen on walk-arounds go unlogged</li>
+        <li class="i"><b>I11</b>A photo instead of a checklist at completion</li></ul></div>
+      <div class="cluster"><h4>Reporting and cost</h4><ul>
+        <li class="g"><b>G1</b>Resource forecasting</li>
+        <li class="g"><b>G2</b>No live SLA and KPI reports</li>
+        <li class="i"><b>I12</b>Charging engineer time between two organisations</li></ul></div>
+    </div>
+
+    <h3 class="step">3. What we picked, and why</h3>
+    <table class="decide">
+      <thead><tr><th>Problem</th><th>Decision</th><th>Why</th></tr></thead>
+      <tbody>
+        <tr><td>Closing the loop</td><td><span class="tag top">Pilot, top priority</span></td><td>Two people raised the same root cause on their own: a fan marked fixed that wasn't, and remedial work that vanished. It was also the operations lead's pass or fail test.</td></tr>
+        <tr><td>Intake</td><td><span class="tag in">In, as support</span></td><td>It feeds the loop. On its own, 10 tickets a week is too few to prove anything.</td></tr>
+        <tr><td>Out of hours</td><td><span class="tag in">In, for free</span></td><td>An email agent answers around the clock anyway. The switchboard stays out.</td></tr>
+        <tr><td>Field capture</td><td><span class="tag in">In</span></td><td>It came in once WhatsApp became a day-one channel.</td></tr>
+        <tr><td>Dispatch</td><td><span class="tag">Not now</span></td><td>The pilot site is about 1% of dispatch volume, the availability data isn't in any system, and it would change how all 22 engineers work.</td></tr>
+        <tr><td>Reporting and cost</td><td><span class="tag">Not now</span></td><td>It only makes sense at full-estate scale.</td></tr>
+      </tbody>
+    </table>
+    <p>Success signal: every closed job carries a reason and a fix type, 100% of the time. Prove it at about 10 tickets a week, then roll out to 20,000 reactive and 100,000 planned jobs a year.</p>
 
     <h2>How I run my own week</h2>
     <p>PMOS is the operating system I built for myself. Every request lands as a task, every call I make is logged as a decision with its why, and anything meant to change a customer's behaviour is tracked as a bet, with a before number and an after number.</p>
@@ -94,7 +164,7 @@
         <span class="copied" id="copiedF" aria-live="polite"></span>
       </div>
     </div>
-    <p class="note">Product screens are real, with private details blurred. One customer is not named at their request. Every figure says where it comes from.<br>v3.6 · October 2026</p>
+    <p class="note">Product screens are real, with private details blurred. One customer is not named at their request. Every figure says where it comes from.<br>v3.7 · October 2026</p>
   </div>
 </footer>
 <script src="/assets/site-v3.0.js"></script>

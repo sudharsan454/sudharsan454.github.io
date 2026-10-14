@@ -4,8 +4,9 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <!--
-  Sudharsan R portfolio · work/contractor · v3.6 · 10 Oct 2026
+  Sudharsan R portfolio · work/contractor · v3.7 · 10 Oct 2026
   Author: Sudharsan R (built with Claude). Hosting: GitHub Pages (sudharsan454).
+  v3.7: case pages tightened to their own story; Beyond the product role; one-call discovery story on the system page; Berkeley eval lessons (14 Oct 2026).
   v3.6: top line is just 'AI Product Manager · Chennai, India' (14 Oct 2026).
   v3.5: top line reads AI Product Manager; Payment Validator numbers now Jul–Sep 2026 (AUD 1.26M held, 3 of 12,131 overturned) (14 Oct 2026).
   v3.4: mobile fixes: Before → After strip no longer covers text on phones, bigger tap targets, review button moved off the nav (13 Oct 2026).
@@ -20,7 +21,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@800;900&family=Public+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap">
-<link rel="stylesheet" href="/assets/site-v3.4.css">
+<link rel="stylesheet" href="/assets/site-v3.7.css">
 </head>
 <body data-page="work/contractor">
 <nav class="nav" aria-label="Main">
@@ -39,7 +40,7 @@
     <h1>Every field was there. Nothing said what to do next.</h1>
     <div class="case-top">
       <div>
-        <p class="lede">A US cleaning contractor was live on our field service product and unhappy. The team had built everything the customer asked for, and the customer still had too many steps, too many clicks and cases that slipped through. The customer asked for me to join. I spent a month inside their team and rebuilt four record types around two questions: what is missing, and what do I click next.</p>
+        <p class="lede">A US cleaning contractor was live on our product and unhappy. The team had built everything the customer asked for, and the customer still had too many steps, too many clicks and cases that slipped through. The customer asked for me to join. I spent a month inside their team and rebuilt four record types around two questions: what is missing, and what do I click next.</p>
         <div class="stats"><div><b class="hi">3 → 1</b><span>places where approvals happen</span></div><div><b>4</b><span>record types rebuilt around what's missing and what's next</span></div><div><b>~250</b><span>billing test cases through the full contract life</span></div></div><p class="note">Approvals: invoices, credit notes and netted finance → netted finance only. Test cases found 7 to 8 real bugs, all fixed before release.</p>
       </div>
       <div><figure class="shot"><img src="/img/contractor-command-centre.jpg" width="1600" height="1004" loading="lazy" data-zoom="/img/contractor-command-centre.jpg" alt="Command Centre home page: counts needing action for proposals, RFQs, contracts, vendors, approvals and work orders."><figcaption><span>The Command Centre: everything waiting on the team, on one page.</span><span class="real">Real screen · details blurred</span></figcaption></figure></div>
@@ -51,10 +52,9 @@
 
     <h2>What I walked into</h2>
     <p>The product had every field the customer had asked for. What it did not have was an answer to the questions their team asked a hundred times a day: can we use this vendor yet, which services still have no price, has anyone asked the vendors, will this contract actually bill. Each answer was spread over three or four tabs, or lived in someone's head. Approvals happened in three different modules. Records went out half done because nothing stopped them.</p>
-    <dl class="facts-list"><dt>Role</dt><dd>Product lead, embedded with the customer's team for a month, at their request</dd><dt>Built</dt><dd>A Command Centre home page, and a stepper plus a next-step line on vendors, proposals, RFQs and contracts</dd><dt>AI used</dt><dd>None. The problem was screens that said nothing.</dd></dl>
 
     <h2>The question I asked for a month</h2>
-    <p>Not "what is missing from the product". That question gets you more fields. I asked, for every record, "what do you need to know the moment you open this?" Every answer was one of three things: where is it in the process, what is blocking it, and what do I click next. So that became the rule for every screen: say where the record is, say what is missing in red, and name the one next action using the exact words on the button.</p>
+    <p>Not "what is missing from the product". That question gets you more fields. For every record I asked three things. At the moment a person opens it, what do they need to know? What were we actually showing them? And how quickly can they find it and take it in? The needs were always the same: where is it in the process, what is blocking it, and what do I click next. So that became the rule for every screen: say where the record is, show what is missing in red, and name the one next action using the exact words on the button.</p>
 
     <h2>Before and after, module by module</h2>
     <p class="note" style="margin-bottom:var(--s3)">The "before" screens are the stock summary pages from the customer's own org, captured on test records. The "after" screens are the live product. Click any screen to see it full size.</p>
@@ -69,7 +69,7 @@
     </div><div class="ba">
       <div class="ba-head"><h3>Request for quotation</h3><p>Has anyone asked the vendors yet?</p></div>
       <div class="ba-pair"><figure class="shot"><span class="ba-tag">Before</span><img src="/img/contractor-before-rfq.jpg" width="1470" height="662" loading="lazy" data-zoom="/img/contractor-before-rfq.jpg" alt="RFQ before: a letter-style document in a separate RFQ app, with site details and RFQ dates, and no status beyond Awarded."><figcaption><span>An RFQ was a printable document in a separate app. No stage, no vendors, no limit check.</span><span class="real">Real screen · before · letterhead blurred</span></figcaption></figure><figure class="shot"><span class="ba-tag after">After</span><img src="/img/contractor-rfq-draft.jpg" width="1600" height="900" loading="lazy" data-zoom="/img/contractor-rfq-draft.jpg" alt="RFQs tab after: each RFQ with its stepper, a next-step bar, and a warning that no not-to-exceed limit is set."><figcaption><span>Each RFQ with its stage, the next step, and a warning when no not-to-exceed limit is set.</span><span class="real">Real screen · after · client names blurred</span></figcaption></figure></div>
-      <dl class="ba-delta"><div><dt>Before</dt><dd>To check an RFQ you left the proposal, opened another app and read a page laid out like a letter. Nothing said whether vendors had been added or whether quotes were in.</dd></div><div class="after"><dt>After</dt><dd>RFQs sit on the proposal itself. The stepper reads vendors added, published, quotes in, shortlisted, awarded. A missing spend limit is called out before a quote can be checked against it.</dd></div></dl>
+      <dl class="ba-delta"><div><dt>Before</dt><dd>An RFQ raised for a client proposal lived in a separate app. To see where it stood you left the proposal and clicked through several screens, and the page read like a letter: nothing said whether vendors had been added or quotes were in.</dd></div><div class="after"><dt>After</dt><dd>I redrew it so the RFQs sit as a tab inside the client proposal itself. Each one shows its stage (vendors added, published, quotes in, shortlisted, awarded), the next step, and a warning when no spend limit is set. The answer sits where the question is asked.</dd></div></dl>
     </div><div class="ba">
       <div class="ba-head"><h3>Client contract</h3><p>Will this contract actually bill?</p></div>
       <div class="ba-pair"><figure class="shot"><span class="ba-tag">Before</span><img src="/img/contractor-before-contract.jpg" width="1470" height="662" loading="lazy" data-zoom="/img/contractor-before-contract.jpg" alt="Client contract summary before: general information and billing details, with billing cycle and credit note rule both blank, and a Publish button available."><figcaption><span>Billing cycle and credit note rule blank. Nothing stopped Publish.</span><span class="real">Real screen · before · test record</span></figcaption></figure><figure class="shot"><span class="ba-tag after">After</span><img src="/img/contractor-contract-fix.jpg" width="1600" height="900" loading="lazy" data-zoom="/img/contractor-contract-fix.jpg" alt="Client contract after: a red panel lists 3 things to fix before publishing, each with a Fix button, and the billing setup shows what the gaps cost."><figcaption><span>Three things to fix before Publish, each with its own Fix button.</span><span class="real">Real screen · after · test data</span></figcaption></figure></div>
@@ -93,9 +93,6 @@
     <h2>How I tested it</h2>
     <p>Contract changes in this business create invoices and credit notes, so a mistake costs real money. I ran about 250 test cases through the full life of each change and checked every record it created, not the screen. Early runs flagged problems that weren't real because the tests were missing context. Once that was fixed they found 7 to 8 real bugs, and all of them were sorted before the customer saw the change.</p>
 
-    <h2>The number I don't have</h2>
-    <p>How long it took to onboard a vendor, or to get a proposal priced, before I started. I did not capture a baseline on day one, so the proof on this page is structural: what the screen could not tell you then, and what it tells you now. Every project since starts with that baseline in the kickoff.</p>
-
     <div class="next"><a href="/#work"><span>Back</span>All work</a><a href="/work/frontline/" style="text-align:right"><span>Next case</span>Frontline →</a></div>
   </div>
 </section>
@@ -112,7 +109,7 @@
         <span class="copied" id="copiedF" aria-live="polite"></span>
       </div>
     </div>
-    <p class="note">Product screens are real, with private details blurred. One customer is not named at their request. Every figure says where it comes from.<br>v3.6 · October 2026</p>
+    <p class="note">Product screens are real, with private details blurred. One customer is not named at their request. Every figure says where it comes from.<br>v3.7 · October 2026</p>
   </div>
 </footer>
 <script src="/assets/site-v3.0.js"></script>

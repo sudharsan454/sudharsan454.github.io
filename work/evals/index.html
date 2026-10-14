@@ -4,8 +4,9 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <!--
-  Sudharsan R portfolio · work/evals · v3.6 · 10 Oct 2026
+  Sudharsan R portfolio · work/evals · v3.7 · 10 Oct 2026
   Author: Sudharsan R (built with Claude). Hosting: GitHub Pages (sudharsan454).
+  v3.7: case pages tightened to their own story; Beyond the product role; one-call discovery story on the system page; Berkeley eval lessons (14 Oct 2026).
   v3.6: top line is just 'AI Product Manager · Chennai, India' (14 Oct 2026).
   v3.5: top line reads AI Product Manager; Payment Validator numbers now Jul–Sep 2026 (AUD 1.26M held, 3 of 12,131 overturned) (14 Oct 2026).
   v3.4: mobile fixes: Before → After strip no longer covers text on phones, bigger tap targets, review button moved off the nav (13 Oct 2026).
@@ -20,7 +21,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@800;900&family=Public+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap">
-<link rel="stylesheet" href="/assets/site-v3.4.css">
+<link rel="stylesheet" href="/assets/site-v3.7.css">
 </head>
 <body data-page="work/evals">
 <nav class="nav" aria-label="Main">
@@ -52,7 +53,8 @@
     <div class="ba-strip"><div><span class="lbl">Before</span><p>An agent told a technician his signed sheet was filed. It wasn't. The step that files it had never run, and the chat looked fine.</p></div><div class="arrow" aria-hidden="true">→</div><div class="after"><span class="lbl">After</span><p>Every round reads the record back from the system before a pass is marked. Round 16 found four defects; each became a rule and a scenario, and round 17 passed all seven.</p></div></div>
     <h2>How it works</h2>
     <p>Each agent has a rule registry, a scenario list, and a run log of every round. When a round finds a defect, the defect becomes a new rule and a new scenario, so it can't come back quietly.</p>
-    <div class="panel">
+    <div class="callout"><b>Bruce, rounds 16 and 17</b><p>Round 16 found 4 defects. Each one became a rule and a test. Round 17 passed all 7.</p></div>
+    <div class="panel" hidden>
       <p class="panel-title">Bruce: checks passed per round</p>
       <svg viewBox="0 0 560 240" role="img" aria-label="Bruce eval rounds. R11: 7 of 8 passed. R12: 60 of 63. R13: 17 of 17. R14: 24 of 24. R16: 3 of 7, four defects found and turned into rules. R17: 7 of 7." style="display:block;width:100%;height:auto;font-family:var(--f-body)">
         <line x1="50" y1="200" x2="540" y2="200" stroke="var(--line-2)"/>
@@ -65,8 +67,8 @@
 
     <h2>Three lessons the evals taught me</h2>
     <p><b>You can't score a tool call from the chat.</b> Once, the agent told a technician his signed sheet was filed. It wasn't. The step that should have filed it had never run. Now every round reads the record back from the system before anything is marked as passed.</p>
-    <p><b>A fix from one incident must say what it doesn't cover.</b> A rule written to stop one false claim on closed jobs ended up blocking technicians from sending photos too. The fix was to split the rule clearly into what is accepted and what is refused.</p>
-    <p><b>"No" and "later" are different.</b> The agent once answered a refusal with "No problem" as if the person had only postponed. Declining and deferring now have their own replies, and both are tested.</p>
+    <p><b>The call can sound fine while the record is wrong.</b> At Berkeley, a caller reported flooding. The request was saved as "Unauthorized technician entry into living room", at the wrong site, as Urgent instead of Emergency. In that round, 10 of 14 requests had the site blank or wrong. Reading the transcripts alone would have hidden most of it. Now every round scores two things separately: the saved record must be 100% right, and the conversation must sound human.</p>
+    <p><b>Half the failures weren't the prompt.</b> Speech-to-text turned site names into words like "Cecilio", calls dropped while the caller was mid-sentence, and reference numbers were read back wrong. No prompt edit fixes that. Every failure is now sorted as a prompt fix or an engineering fix before anyone touches the prompt. One two-ticket call was retested 11 times before it passed.</p>
 
     <div class="next"><a href="/#work"><span>Back</span>All work</a><a href="/work/system/" style="text-align:right"><span>Next case</span>The system behind the work →</a></div>
   </div>
@@ -84,7 +86,7 @@
         <span class="copied" id="copiedF" aria-live="polite"></span>
       </div>
     </div>
-    <p class="note">Product screens are real, with private details blurred. One customer is not named at their request. Every figure says where it comes from.<br>v3.6 · October 2026</p>
+    <p class="note">Product screens are real, with private details blurred. One customer is not named at their request. Every figure says where it comes from.<br>v3.7 · October 2026</p>
   </div>
 </footer>
 <script src="/assets/site-v3.0.js"></script>

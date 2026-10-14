@@ -4,8 +4,9 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <!--
-  Sudharsan R portfolio · work/field-agents · v3.6 · 10 Oct 2026
+  Sudharsan R portfolio · work/field-agents · v3.7 · 10 Oct 2026
   Author: Sudharsan R (built with Claude). Hosting: GitHub Pages (sudharsan454).
+  v3.7: case pages tightened to their own story; Beyond the product role; one-call discovery story on the system page; Berkeley eval lessons (14 Oct 2026).
   v3.6: top line is just 'AI Product Manager · Chennai, India' (14 Oct 2026).
   v3.5: top line reads AI Product Manager; Payment Validator numbers now Jul–Sep 2026 (AUD 1.26M held, 3 of 12,131 overturned) (14 Oct 2026).
   v3.4: mobile fixes: Before → After strip no longer covers text on phones, bigger tap targets, review button moved off the nav (13 Oct 2026).
@@ -20,7 +21,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@800;900&family=Public+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap">
-<link rel="stylesheet" href="/assets/site-v3.4.css">
+<link rel="stylesheet" href="/assets/site-v3.7.css">
 </head>
 <body data-page="work/field-agents">
 <nav class="nav" aria-label="Main">
@@ -52,17 +53,18 @@
     <div class="ba-strip"><div><span class="lbl">Before</span><p>Site supervisors raised 1.2% of reactive jobs. The helpdesk team closed jobs for them in the app, on top of their own work. At Q3, 60% of jobs were still being edited a week after the visit.</p></div><div class="arrow" aria-hidden="true">→</div><div class="after"><span class="lbl">After</span><p>7.9% raised by supervisors within a month of the full loop. 189 jobs raised and closed in WhatsApp by 6 supervisors in 9 weeks, 86% closed, 66% within SLA. The person who did the job is back on the record.</p></div></div>
     <h2>Where it runs</h2>
     <p>Before building <b>Bruce</b>, the technician agent for Q3 Services in the UK, I read a year of their own records to see how big the gap really was. For CIT Group in Saudi Arabia, I built a supervisor agent so site supervisors raise jobs and add after-photos from WhatsApp.</p>
-    <div class="callout"><b>The head asked for one thing. The ground said another.</b><p>A CIT head wanted supervisors to create work orders in WhatsApp, nothing more. I built that, and the needle didn't move. Then I spoke to the supervisors. Jobs were still being closed by the helpdesk team in the Facilio app, as extra work on top of their own. So I built the whole loop in a few days: create, start, complete, all in WhatsApp. Within weeks the supervisors' share went from 1.2% to 7.9%. I showed the head the numbers, and he agreed the full loop was the better answer.</p></div>
+    <div class="callout"><b>The head asked for one thing. The ground said another.</b><p>A CIT head asked for one thing: let supervisors create work orders in WhatsApp. Before building, I spoke to the supervisors and technicians on the ground. Creating a job was only half of it. Jobs were still being closed by the helpdesk team in the Facilio app, as extra work on top of their own. So I built the whole loop in a few days: create, start, complete, all in WhatsApp. Within a month the supervisors' share went from 1.2% to 7.9%. I showed the head the numbers, and he agreed the full loop was the right answer.</p></div>
 
     <h2>What the records showed</h2>
     <ul>
       <li>The role for site operatives existed in the system, with nobody assigned to it.</li>
       <li>Only about a quarter of jobs were closed off on the day. A third were still changing a month later.</li>
-      <li>62% of on-demand jobs had no request behind them, because phone and email requests never became records.</li>
+      <li>62% of on-demand work orders had no service request linked to them. The request came by phone or email and someone typed the job straight in, so nobody could see who asked or when.</li>
     </ul>
     <p>That gave us a baseline to measure against, set before the agent went live. Targets were left for the customer to set.</p>
 
     <h2>What the agents do</h2>
+    <p><b>Each agent runs the customer's own Facilio workflow, start to finish, inside WhatsApp.</b> Nothing new to learn: the same steps and the same rules, in the app they already use all day.</p>
     <p>The technician agent walks the job as the technician lives it: accept or reject, attendance, insurance and water-risk questions, checklist and meter readings, further works, the compliance date, the service certificate filed straight from a WhatsApp photo, then resolve.</p>
     <p>The supervisor agent lets supervisors raise a work order from the field and attach after-photos as proof of completion.</p>
     <p class="note"><b>Watch for in the recordings:</b> the form opens inside WhatsApp; after saving, "Create another work order" or close and you're back in the chat. In Bruce, Next jumps straight to the next reading, nothing is saved without a confirm step, and "Back to chat with Bruce" returns the technician to the conversation. Taps at real speed, waiting cut, typing sped up. Test work orders; staff names blurred.</p>
@@ -72,9 +74,6 @@
 
     <h2>How I build an agent</h2>
     <p>I start from the flow, the people doing it today and the baseline numbers. The steps are fixed; the model handles the language. I choose the model, write the prompt, define the functions it can call and decide when each one is called.</p>
-
-    <h2>What I'd do differently</h2>
-    <p>Talk to the people on the ground before the first build, not after. Asking only the head of the account cost us a round.</p>
 
     <div class="next"><a href="/#work"><span>Back</span>All work</a><a href="/work/payment-validator/" style="text-align:right"><span>Next case</span>Payment Validator →</a></div>
   </div>
@@ -92,7 +91,7 @@
         <span class="copied" id="copiedF" aria-live="polite"></span>
       </div>
     </div>
-    <p class="note">Product screens are real, with private details blurred. One customer is not named at their request. Every figure says where it comes from.<br>v3.6 · October 2026</p>
+    <p class="note">Product screens are real, with private details blurred. One customer is not named at their request. Every figure says where it comes from.<br>v3.7 · October 2026</p>
   </div>
 </footer>
 <script src="/assets/site-v3.0.js"></script>

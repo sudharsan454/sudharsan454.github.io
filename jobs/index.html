@@ -1,5 +1,5 @@
 <!doctype html>
-<!-- Job Application Driver · app v1.0.5 · 17 Oct 2026 · v1.0.5: full job description on leads and applications (JD badge in Inbox and Applications, JD panel with source link, paste-by-hand box; runner v1.0.8 fills it). v1.0.4: #app=<id> deep link opens an application (used by Telegram replies from the runner). v1.0.3: login account switched to sudharsan454@gmail.com (all rows re-owned in Supabase, allowlist trigger updated). v1.0.2: boot deferred out of the auth callback (page froze on reload with a saved session). v1.0.1: application detail embed disambiguated (two FKs between applications and leads). v1.0 · 10 Oct 2026 · single-file web app on Supabase (Project Zero) · login: sudharsan454@gmail.com only · changelog at the foot of this file -->
+<!-- Job Application Driver · app v1.0.5 · 17 Oct 2026 · v1.0.5: Agents screen (on/off, schedule, model, versioned prompts, per-stream fitment rubric with weights/anchors/caps, guardrails, labelled evals with a go-live gate), read by runner v1.0.8. v1.0.4: #app=<id> deep link opens an application (used by Telegram replies from the runner). v1.0.3: login account switched to sudharsan454@gmail.com (all rows re-owned in Supabase, allowlist trigger updated). v1.0.2: boot deferred out of the auth callback (page froze on reload with a saved session). v1.0.1: application detail embed disambiguated (two FKs between applications and leads). v1.0 · 10 Oct 2026 · single-file web app on Supabase (Project Zero) · login: sudharsan454@gmail.com only · changelog at the foot of this file -->
 <html lang="en">
 <head>
 <meta charset="utf-8">
@@ -73,6 +73,9 @@ tr.row{cursor:pointer}tr.row:hover td{background:var(--accent-soft)}
 pre.text{white-space:pre-wrap;font-family:var(--body);font-size:13px;background:var(--bg);border:1px solid var(--line);padding:10px;border-radius:4px;max-height:360px;overflow:auto}
 .hidden{display:none!important}
 .fit{font-family:var(--mono);font-weight:500}
+.ag-split{display:grid;grid-template-columns:3fr 2fr;gap:0 16px}.ag-split>*{min-width:0}
+.grid2.ag-3{grid-template-columns:1fr 1fr 1fr}
+@media(max-width:640px){.ag-split,.grid2.ag-3{grid-template-columns:1fr}}
 </style>
 </head>
 <body>
@@ -173,6 +176,7 @@ const SCREENS = {
   interviews:{label:'Interviews', render:renderInterviews},
   prep:{label:'Prep', render:renderPrep},
   numbers:{label:'Numbers', render:renderNumbers},
+  agents:{label:'Agents', render:renderAgents},
   runs:{label:'Runs & questions', render:renderRuns},
   settings:{label:'Settings', render:renderSettings},
 };
@@ -222,14 +226,12 @@ async function editRecord({table, title, fields, row, defaults={}, after, extra=
 }
 function confirmBox(msg){ return new Promise(res=>{ const prev=$('#modal').innerHTML; openModal(`<h3>Confirm</h3><p>${esc(msg)}</p><div class="actions"><button class="primary" id="okBtn">Yes</button><button id="noBtn">No</button></div>`); $('#okBtn').onclick=()=>{ closeModal(); res(true); }; $('#noBtn').onclick=()=>{ $('#modal').innerHTML=prev; res(false); }; }); }
 
-/* ===================== JD badge (v1.0.5) ===================== */
-function jdTag(text, conf){ if (text && conf==='partial') return '<span class="tag warn" title="part of the job description">JD part</span>'; if (text) return '<span class="tag ok" title="full job description saved">JD</span>'; if (conf==='fetch_failed') return '<span class="tag bad" title="could not fetch the job description; paste it by hand">no JD</span>'; return '<span class="tag" title="waiting for the runner">JD pending</span>'; }
 /* ===================== field sets ===================== */
 const streamFk = {k:'job_stream_id', label:'Stream', t:'fk', fk:{table:'job_streams', label:'name'}};
 const boardFk = {k:'job_board_id', label:'Source / portal', t:'fk', fk:{table:'job_boards', label:'name'}};
 const F = {
-  lead: [streamFk, {k:'title',label:'Title',t:'text'}, {k:'company',label:'Company',t:'text'}, {k:'location',label:'Location',t:'text'}, boardFk, {k:'url',label:'URL',t:'text'}, {k:'posted_at',label:'Posted at',t:'datetime'}, {k:'posted_at_basis',label:'Posted-at basis',t:'select',opts:['listing','email_received']}, {k:'easy_apply',label:'Easy apply',t:'bool'}, {k:'status',label:'Status',t:'select',opts:['new','fit_checked','parked','promoted','noise']}, {k:'noise_reason_id',label:'Parked because',t:'fk',fk:{table:'noise_reasons',label:'reason'}}, {k:'fit_score',label:'Fit score',t:'number'}, {k:'jd_confidence',label:'JD status',t:'select',opts:['full','partial','fetch_failed','snippet_only']}, {k:'jd_source_url',label:'JD source',t:'text'}, {k:'jd_fetched_at',label:'JD fetched at',t:'datetime',ro:true}, {k:'jd_last_error',label:'JD last fetch error',t:'text',ro:true}, {k:'alert_definition_id',label:'Alert that produced it',t:'fk',fk:{table:'alert_definitions',label:'query_text'}}, {k:'target_company_id',label:'Target company',t:'fk',fk:{table:'target_companies',label:'name'}}, {k:'raw_snippet',label:'Snippet',t:'textarea'}, {k:'fit_breakdown',label:'Fit breakdown (JSON)',t:'json'}, {k:'jd_text',label:'Job description',t:'textarea'}],
-  application: [streamFk, {k:'title',label:'Title',t:'text'}, {k:'company',label:'Company',t:'text'}, {k:'location',label:'Location',t:'text'}, boardFk, {k:'url',label:'URL',t:'text'}, {k:'status',label:'Status',t:'select',opts:['applied','screening','round_1','round_2','round_3','offer','rejected','withdrawn','ghosted']}, {k:'applied_date',label:'Applied date',t:'date'}, {k:'apply_channel',label:'Apply channel',t:'select',opts:['easy_apply','website','email','consultant','referral']}, {k:'resume_decision',label:'Resume decision',t:'select',opts:['generic','tailored']}, {k:'decision_reason',label:'Decision reason',t:'textarea'}, {k:'fit_score',label:'Fit score',t:'number'}, {k:'via_consultant_org_id',label:'Via agency',t:'fk',fk:{table:'consultant_organizations',label:'name'}}, {k:'final_status',label:'Final status',t:'select',opts:['open','rejected','offer','withdrawn','ghosted']}, {k:'closed_at',label:'Closed at',t:'datetime'}, {k:'rejection_message',label:'Rejection message (verbatim)',t:'textarea'}, {k:'rejection_received_at',label:'Rejection received',t:'datetime'}, {k:'next_action',label:'Next action',t:'text'}, {k:'next_action_due',label:'Next action due',t:'date'}, {k:'notes',label:'Notes',t:'textarea'}, {k:'jd_confidence',label:'JD status',t:'select',opts:['full','partial','fetch_failed','snippet_only','manual']}, {k:'jd_source_url',label:'JD source',t:'text'}, {k:'jd_fetched_at',label:'JD fetched at',t:'datetime',ro:true}, {k:'jd_text',label:'Job description',t:'textarea'}],
+  lead: [streamFk, {k:'title',label:'Title',t:'text'}, {k:'company',label:'Company',t:'text'}, {k:'location',label:'Location',t:'text'}, boardFk, {k:'url',label:'URL',t:'text'}, {k:'posted_at',label:'Posted at',t:'datetime'}, {k:'posted_at_basis',label:'Posted-at basis',t:'select',opts:['listing','email_received']}, {k:'easy_apply',label:'Easy apply',t:'bool'}, {k:'status',label:'Status',t:'select',opts:['new','fit_checked','parked','promoted','noise']}, {k:'noise_reason_id',label:'Parked because',t:'fk',fk:{table:'noise_reasons',label:'reason'}}, {k:'fit_score',label:'Fit score',t:'number'}, {k:'jd_confidence',label:'JD confidence',t:'select',opts:['full','snippet_only']}, {k:'alert_definition_id',label:'Alert that produced it',t:'fk',fk:{table:'alert_definitions',label:'query_text'}}, {k:'target_company_id',label:'Target company',t:'fk',fk:{table:'target_companies',label:'name'}}, {k:'raw_snippet',label:'Snippet',t:'textarea'}, {k:'fit_breakdown',label:'Fit breakdown (JSON)',t:'json'}, {k:'jd_text',label:'Job description',t:'textarea'}],
+  application: [streamFk, {k:'title',label:'Title',t:'text'}, {k:'company',label:'Company',t:'text'}, {k:'location',label:'Location',t:'text'}, boardFk, {k:'url',label:'URL',t:'text'}, {k:'status',label:'Status',t:'select',opts:['applied','screening','round_1','round_2','round_3','offer','rejected','withdrawn','ghosted']}, {k:'applied_date',label:'Applied date',t:'date'}, {k:'apply_channel',label:'Apply channel',t:'select',opts:['easy_apply','website','email','consultant','referral']}, {k:'resume_decision',label:'Resume decision',t:'select',opts:['generic','tailored']}, {k:'decision_reason',label:'Decision reason',t:'textarea'}, {k:'fit_score',label:'Fit score',t:'number'}, {k:'via_consultant_org_id',label:'Via agency',t:'fk',fk:{table:'consultant_organizations',label:'name'}}, {k:'final_status',label:'Final status',t:'select',opts:['open','rejected','offer','withdrawn','ghosted']}, {k:'closed_at',label:'Closed at',t:'datetime'}, {k:'rejection_message',label:'Rejection message (verbatim)',t:'textarea'}, {k:'rejection_received_at',label:'Rejection received',t:'datetime'}, {k:'next_action',label:'Next action',t:'text'}, {k:'next_action_due',label:'Next action due',t:'date'}, {k:'notes',label:'Notes',t:'textarea'}],
   target: [streamFk, {k:'name',label:'Company',t:'text'}, {k:'website',label:'Website',t:'text'}, {k:'careers_url',label:'Careers URL',t:'text'}, {k:'linkedin_company_url',label:'LinkedIn company URL',t:'text'}, {k:'why',label:'Why this company',t:'textarea'}, {k:'watched_roles',label:'Watched roles',t:'array'}, {k:'check_every_days',label:'Check every N days',t:'number'}, {k:'priority',label:'Priority (1 = top)',t:'number'}, {k:'status',label:'Status',t:'select',opts:['watching','in_conversation','applied','closed']}, {k:'last_checked_at',label:'Last checked',t:'datetime',ro:true}],
   stream: [{k:'name',label:'Name',t:'text'}, {k:'goal',label:'Goal',t:'textarea'}, {k:'target_titles',label:'Target titles',t:'array'}, {k:'locations',label:'Locations',t:'array'}, {k:'seniority',label:'Seniority',t:'text'}, {k:'min_leads',label:'Lead health: min leads',t:'number'}, {k:'min_leads_window_days',label:'… in N days',t:'number'}, {k:'generic_document_id',label:'Generic resume',t:'fk',fk:{table:'documents',label:'version_label'}}, {k:'is_active',label:'Active',t:'bool'}],
   alert: [streamFk, boardFk, {k:'query_text',label:'Query / keywords',t:'text'}, {k:'setup_method',label:'Set up as',t:'select',opts:['portal_alert','saved_search','email_subscription']}, {k:'sender_pattern',label:'Sender pattern (how mails are recognised)',t:'text'}, {k:'status',label:'Status',t:'select',opts:['proposed','live','dead']}, {k:'filters',label:'Filters (JSON)',t:'json'}, {k:'last_lead_at',label:'Last lead at',t:'datetime',ro:true}],
@@ -256,13 +258,13 @@ async function renderInbox(el){
   const parked = await q(inStreams(sb.from('leads').select('id',{count:'exact',head:true}).eq('status','parked')));
   el.innerHTML = `<h2>Inbox <span class="muted" style="font-weight:400;font-size:14px">${leads.length} open leads · fit gate ${thr}</span></h2>
   <div class="toolbar"><input class="grow" id="inboxFilter" placeholder="filter title / company"><button id="newLead">+ Lead</button><button id="showParked">Parked</button></div>
-  <div class="scroll"><table><thead><tr><th>Fit</th><th>Title</th><th>Company</th><th>Location</th><th>Stream</th><th>Source</th><th>Age</th><th>Easy</th><th>Know</th><th>JD</th><th>Actions</th></tr></thead><tbody id="inboxRows"></tbody></table></div>`;
+  <div class="scroll"><table><thead><tr><th>Fit</th><th>Title</th><th>Company</th><th>Location</th><th>Stream</th><th>Source</th><th>Age</th><th>Easy</th><th>Know</th><th>Actions</th></tr></thead><tbody id="inboxRows"></tbody></table></div>`;
   const draw = () => { const f=($('#inboxFilter').value||'').toLowerCase(); $('#inboxRows').innerHTML = leads.filter(l=>!f||(l.title+' '+l.company).toLowerCase().includes(f)).map(l=>{
     const age = daysAgo(l.posted_at||l.created_at); const stale = age!=null && age > (state.settings.freshness_days??14);
     const fit = l.fit_score==null?'<span class="tag">not scored</span>':`<span class="fit" style="color:${l.fit_score>=thr?'var(--accent)':'var(--warn)'}">${Math.round(l.fit_score)}</span>`;
     const know = connSet.get(normCo(l.company))||0;
-    return `<tr class="row" data-id="${l.id}"><td>${fit}</td><td>${esc(l.title)}${l.target_companies?` <span class="tag new">preferred co.</span>`:''}</td><td>${esc(l.company)}</td><td>${esc(l.location||'')}</td><td class="muted">${esc(streamName(l.job_stream_id))}</td><td class="muted">${esc(l.job_boards?.name||l.source_platform||'')}</td><td class="${stale?'tag warn':''}">${age==null?'':age+' d'}${l.posted_at_basis==='email_received'?'<span class="muted" title="posting date not in the alert; email date used">*</span>':''}</td><td>${l.easy_apply?'yes':''}</td><td>${know?`<span class="tag ok">${know}</span>`:''}</td><td>${jdTag(l.jd_text,l.jd_confidence)}</td>
-    <td style="white-space:nowrap"><button class="small act" data-a="apply" data-id="${l.id}">Apply</button> <button class="small act" data-a="tailor" data-id="${l.id}">Tailor</button> <button class="small act" data-a="park" data-id="${l.id}">Park</button> ${l.url?`<a class="btn small" href="${esc(l.url)}" target="_blank" rel="noopener">Open</a>`:''}</td></tr>`; }).join('') || '<tr><td colspan="11" class="muted">No open leads. Add one, or wait for the next sourcing run.</td></tr>';
+    return `<tr class="row" data-id="${l.id}"><td>${fit}</td><td>${esc(l.title)}${l.target_companies?` <span class="tag new">preferred co.</span>`:''}</td><td>${esc(l.company)}</td><td>${esc(l.location||'')}</td><td class="muted">${esc(streamName(l.job_stream_id))}</td><td class="muted">${esc(l.job_boards?.name||l.source_platform||'')}</td><td class="${stale?'tag warn':''}">${age==null?'':age+' d'}${l.posted_at_basis==='email_received'?'<span class="muted" title="posting date not in the alert; email date used">*</span>':''}</td><td>${l.easy_apply?'yes':''}</td><td>${know?`<span class="tag ok">${know}</span>`:''}</td>
+    <td style="white-space:nowrap"><button class="small act" data-a="apply" data-id="${l.id}">Apply</button> <button class="small act" data-a="tailor" data-id="${l.id}">Tailor</button> <button class="small act" data-a="park" data-id="${l.id}">Park</button> ${l.url?`<a class="btn small" href="${esc(l.url)}" target="_blank" rel="noopener">Open</a>`:''}</td></tr>`; }).join('') || '<tr><td colspan="10" class="muted">No open leads. Add one, or wait for the next sourcing run.</td></tr>';
     $('#inboxRows').querySelectorAll('tr.row').forEach(tr=>tr.onclick=e=>{ if (e.target.closest('button,a')) return; const l=leads.find(x=>x.id===tr.dataset.id); editRecord({table:'leads',title:'Lead',fields:F.lead,row:l,after:()=>go('inbox')}); });
     $('#inboxRows').querySelectorAll('button.act').forEach(b=>b.onclick=()=>leadAction(b.dataset.a, leads.find(x=>x.id===b.dataset.id)));
   };
@@ -319,19 +321,13 @@ async function renderPipeline(el){
 }
 async function renderApplications(el){
   const apps = await loadApps();
-  el.innerHTML = `<h2>Applications</h2><div class="toolbar"><input class="grow" id="af" placeholder="filter"><button id="newApp">+ Application</button></div><div class="scroll"><table><thead><tr><th>Company</th><th>Title</th><th>Stream</th><th>Status</th><th>Final</th><th>Resume</th><th>Fit</th><th>Applied</th><th>Via</th><th>Next action</th><th>JD</th></tr></thead><tbody id="rows"></tbody></table></div>`;
-  const draw=()=>{ const f=($('#af').value||'').toLowerCase(); $('#rows').innerHTML=apps.filter(a=>!f||(a.title+' '+a.company).toLowerCase().includes(f)).map(a=>`<tr class="row" data-id="${a.id}"><td><b>${esc(a.company)}</b></td><td>${esc(a.title)}</td><td class="muted">${esc(streamName(a.job_stream_id))}</td><td><span class="tag">${esc(a.status)}</span></td><td>${a.final_status&&a.final_status!=='open'?`<span class="tag ${a.final_status==='offer'?'ok':'bad'}">${esc(a.final_status)}</span>`:''}</td><td>${esc(a.resume_decision||'')}</td><td>${a.fit_score==null?'':Math.round(a.fit_score)}</td><td>${fmtD(a.applied_date)}</td><td class="muted">${esc(a.consultant_organizations?.name||a.apply_channel||'')}</td><td>${esc(a.next_action||'')}${a.next_action_due?' <span class="muted">'+fmtD(a.next_action_due)+'</span>':''}</td><td>${jdTag(a.jd_text,a.jd_confidence)}</td></tr>`).join('')||'<tr><td colspan="11" class="muted">No applications yet.</td></tr>'; el.querySelectorAll('tr.row').forEach(r=>r.onclick=()=>openApplication(r.dataset.id)); };
+  el.innerHTML = `<h2>Applications</h2><div class="toolbar"><input class="grow" id="af" placeholder="filter"><button id="newApp">+ Application</button></div><div class="scroll"><table><thead><tr><th>Company</th><th>Title</th><th>Stream</th><th>Status</th><th>Final</th><th>Resume</th><th>Fit</th><th>Applied</th><th>Via</th><th>Next action</th></tr></thead><tbody id="rows"></tbody></table></div>`;
+  const draw=()=>{ const f=($('#af').value||'').toLowerCase(); $('#rows').innerHTML=apps.filter(a=>!f||(a.title+' '+a.company).toLowerCase().includes(f)).map(a=>`<tr class="row" data-id="${a.id}"><td><b>${esc(a.company)}</b></td><td>${esc(a.title)}</td><td class="muted">${esc(streamName(a.job_stream_id))}</td><td><span class="tag">${esc(a.status)}</span></td><td>${a.final_status&&a.final_status!=='open'?`<span class="tag ${a.final_status==='offer'?'ok':'bad'}">${esc(a.final_status)}</span>`:''}</td><td>${esc(a.resume_decision||'')}</td><td>${a.fit_score==null?'':Math.round(a.fit_score)}</td><td>${fmtD(a.applied_date)}</td><td class="muted">${esc(a.consultant_organizations?.name||a.apply_channel||'')}</td><td>${esc(a.next_action||'')}${a.next_action_due?' <span class="muted">'+fmtD(a.next_action_due)+'</span>':''}</td></tr>`).join('')||'<tr><td colspan="10" class="muted">No applications yet.</td></tr>'; el.querySelectorAll('tr.row').forEach(r=>r.onclick=()=>openApplication(r.dataset.id)); };
   draw(); $('#af').oninput=draw;
   $('#newApp').onclick=()=>editRecord({table:'applications',title:'New application',fields:F.application,row:null,defaults:{job_stream_id:selStreams()[0]||PM_STREAM,status:'applied',final_status:'open'},after:s=>s?openApplication(s.id):go('applications')});
 }
-function pasteJd(a, back, current){
-  openModal(`<h3>Job description · ${esc(a.company)}</h3><p class="muted">Paste the full job description. Every later step (fit, tailoring, interview prep, debrief) reads it.</p><label>Source link</label><input id="jdSrc" value="${esc(a.jd_source_url||a.url||'')}"><label>Job description</label><textarea id="jdTxt" style="min-height:45vh">${esc(current||'')}</textarea><div class="actions"><button class="primary" id="jdSave">Save</button><button id="jdNo">Cancel</button></div><div class="err" id="e"></div>`);
-  $('#jdNo').onclick=back;
-  $('#jdSave').onclick=async()=>{ const t=$('#jdTxt').value.trim(); if(!t){ $('#e').textContent='Paste the job description first.'; return; } try{ await q(sb.from('applications').update({jd_text:t, jd_source_url:$('#jdSrc').value||null, jd_confidence:'manual', jd_fetched_at:new Date().toISOString()}).eq('id',a.id)); toast('Job description saved'); back(); }catch(err){ $('#e').textContent=err.message||String(err); } };
-}
 async function openApplication(id, tab='overview'){
-  const a = await q(sb.from('applications').select('*, job_boards(name), consultant_organizations(name), leads!applications_lead_id_fkey(url,jd_text,jd_confidence,jd_source_url,raw_snippet,fit_breakdown)').eq('id',id).single());
-  const jdText = a.jd_text || a.leads?.jd_text || '', jdConf = a.jd_text ? a.jd_confidence : (a.leads?.jd_text ? a.leads.jd_confidence : (a.jd_confidence||a.leads?.jd_confidence)), jdSrc = a.jd_source_url || a.leads?.jd_source_url || '';
+  const a = await q(sb.from('applications').select('*, job_boards(name), consultant_organizations(name), leads!applications_lead_id_fkey(url,jd_text,raw_snippet,fit_breakdown)').eq('id',id).single());
   const [docs, people, outs, rounds, hist, pm] = await Promise.all([
     q(sb.from('application_documents').select('*, documents(version_label,tag,type,status,tailored_for_company)').eq('application_id',id)),
     q(sb.from('application_contacts').select('*, contacts(name,type,organization,email,linkedin_url)').eq('application_id',id)),
@@ -344,13 +340,13 @@ async function openApplication(id, tab='overview'){
   const fb = a.fit_breakdown || a.leads?.fit_breakdown;
   let body='';
   if (tab==='overview') body = `<div class="grid2"><div><p><b>${esc(a.company)}</b> · ${esc(a.title)}<br><span class="muted">${esc(a.location||'')} · ${esc(streamName(a.job_stream_id))} · via ${esc(a.job_boards?.name||a.apply_channel||'')}${a.consultant_organizations?' · agency '+esc(a.consultant_organizations.name):''}</span></p>
-    <p>${jdTag(jdText,jdConf)} Status <span class="tag">${esc(a.status)}</span> ${a.final_status&&a.final_status!=='open'?`<span class="tag ${a.final_status==='offer'?'ok':'bad'}">${esc(a.final_status)}</span>`:''} · applied ${fmtD(a.applied_date)} · fit ${a.fit_score==null?'not scored':Math.round(a.fit_score)}</p>
+    <p>Status <span class="tag">${esc(a.status)}</span> ${a.final_status&&a.final_status!=='open'?`<span class="tag ${a.final_status==='offer'?'ok':'bad'}">${esc(a.final_status)}</span>`:''} · applied ${fmtD(a.applied_date)} · fit ${a.fit_score==null?'not scored':Math.round(a.fit_score)}</p>
     <p>Resume decision: <b>${esc(a.resume_decision||'not set')}</b>${a.decision_reason?' · '+esc(a.decision_reason):''}</p>
     ${a.next_action?`<p>Next: <b>${esc(a.next_action)}</b> ${a.next_action_due?'by '+fmtD(a.next_action_due):''}</p>`:''}
     ${a.url?`<p><a href="${esc(a.url)}" target="_blank" rel="noopener">Open posting</a></p>`:''}
     ${a.rejection_message?`<div class="callout warn"><b>Rejection, ${fmtDT(a.rejection_received_at)}</b><br>${esc(a.rejection_message)}</div>`:''}</div>
     <div>${fb?`<label>Fit breakdown</label><pre class="text">${esc(typeof fb==='string'?fb:JSON.stringify(fb,null,1))}</pre>`:''}${a.notes?`<label>Notes</label><pre class="text">${esc(a.notes)}</pre>`:''}</div></div>
-    <div class="actions"><button id="editApp">Edit</button><button id="chStatus">Change status</button><button id="showJd">${jdText?'Job description':'Add job description'}</button></div>`;
+    <div class="actions"><button id="editApp">Edit</button><button id="chStatus">Change status</button>${a.leads?.jd_text?'<button id="showJd">Job description</button>':''}</div>`;
   if (tab==='documents') body = `<table><thead><tr><th>Document</th><th>Tag</th><th>Sent as</th><th>Sent at</th><th>Status</th></tr></thead><tbody>${docs.map(d=>`<tr class="row" data-id="${d.id}"><td>${esc(d.documents?.version_label)}</td><td><span class="tag ${d.documents?.tag==='tailored'?'new':'ok'}">${esc(d.documents?.tag)}</span>${d.documents?.tailored_for_company?' '+esc(d.documents.tailored_for_company):''}</td><td>${esc(d.role||'')}</td><td>${fmtDT(d.sent_at)}</td><td>${esc(d.documents?.status||'')}</td></tr>`).join('')||'<tr><td colspan="5" class="muted">Nothing linked yet.</td></tr>'}</tbody></table><div class="actions"><button id="addDoc">+ Link document</button></div>`;
   if (tab==='people') body = `<table><thead><tr><th>Name</th><th>Role here</th><th>Type</th><th>Organisation</th><th>Email</th><th>LinkedIn</th></tr></thead><tbody>${people.map(p=>`<tr class="row" data-id="${p.id}"><td>${esc(p.contacts?.name)}</td><td>${esc(p.role_note||'')}</td><td>${esc(p.contacts?.type||'')}</td><td>${esc(p.contacts?.organization||'')}</td><td>${esc(p.contacts?.email||'')}</td><td>${p.contacts?.linkedin_url?`<a href="${esc(p.contacts.linkedin_url)}" target="_blank" rel="noopener">profile</a>`:''}</td></tr>`).join('')||'<tr><td colspan="6" class="muted">No people linked. HR, consultant, interviewers go here.</td></tr>'}</tbody></table><div class="actions"><button id="addPerson">+ Link person</button><button id="newPerson">+ New contact</button></div>`;
   if (tab==='outreach') body = `<table><thead><tr><th>To</th><th>Channel</th><th>Status</th><th>Sent</th><th>Replied</th><th>Message</th></tr></thead><tbody>${outs.map(o=>`<tr class="row" data-id="${o.id}"><td>${esc(o.contacts?.name||'')}</td><td>${esc(o.channel||'')}</td><td><span class="tag">${esc(o.status||'')}</span></td><td>${fmtDT(o.sent_at)}</td><td>${fmtDT(o.replied_at)}</td><td class="muted">${esc((o.draft_text||'').slice(0,80))}</td></tr>`).join('')||'<tr><td colspan="6" class="muted">No outreach logged.</td></tr>'}</tbody></table><div class="actions"><button id="addOut">+ Outreach</button></div>`;
@@ -363,10 +359,7 @@ async function openApplication(id, tab='overview'){
   const re=()=>openApplication(id,tab);
   if ($('#editApp')) $('#editApp').onclick=()=>editRecord({table:'applications',title:'Edit application',fields:F.application,row:a,after:s=>s?openApplication(id):go(state.screen)});
   if ($('#chStatus')) $('#chStatus').onclick=()=>changeStatus(a, re);
-  if ($('#showJd')) $('#showJd').onclick=()=>{
-    if (jdText) { openModal(`<h3>Job description · ${esc(a.company)}</h3><p>${jdTag(jdText,jdConf)} ${jdSrc?`<a href="${esc(jdSrc)}" target="_blank" rel="noopener">source</a>`:''} <span class="muted">${jdText.length.toLocaleString()} chars</span></p><pre class="text" style="max-height:65vh">${esc(jdText)}</pre><div class="actions"><button id="jdEdit">Replace</button><button id="b">Back</button></div>`); $('#b').onclick=re; $('#jdEdit').onclick=()=>pasteJd(a, re, jdText); }
-    else pasteJd(a, re, '');
-  };
+  if ($('#showJd')) $('#showJd').onclick=()=>openModal(`<h3>Job description</h3><pre class="text" style="max-height:70vh">${esc(a.leads.jd_text)}</pre><div class="actions"><button id="b">Back</button></div>`) || ($('#b').onclick=re);
   if ($('#addDoc')) $('#addDoc').onclick=()=>editRecord({table:'application_documents',title:'Link document',fields:F.appdoc,row:null,defaults:{application_id:id,_force:{application_id:id}},after:re});
   if ($('#addPerson')) $('#addPerson').onclick=()=>editRecord({table:'application_contacts',title:'Link person',fields:F.appcontact,row:null,defaults:{_force:{application_id:id}},after:re});
   if ($('#newPerson')) $('#newPerson').onclick=()=>editRecord({table:'contacts',title:'New contact',fields:F.contact,row:null,defaults:{organization:a.company,source:'manual'},after:async c=>{ if(c) await q(sb.from('application_contacts').insert({application_id:id,contact_id:c.id,role_note:c.type})); re(); }});
@@ -533,6 +526,343 @@ async function renderRuns(el){
   el.querySelectorAll('tr.qq').forEach(r=>r.onclick=()=>{ const x=qs.find(y=>y.id===r.dataset.id); openModal(`<h3>Answer</h3><p>${esc(x.question)}</p><textarea id="ans">${esc(x.answer||'')}</textarea><div class="actions"><button class="primary" id="ok">Save</button><button id="no">Cancel</button></div>`); $('#no').onclick=closeModal; $('#ok').onclick=async()=>{ await q(sb.from('agent_questions').update({answer:$('#ans').value,status:'answered',answered_at:new Date().toISOString()}).eq('id',x.id)); closeModal(); go('runs'); }; });
 }
 
+/* ===================== Agents (v1.0.5) ===================== */
+// One row per agent in public.agents. The runner (v1.0.8+) reads this table on every pass.
+// Prompt and fitment edits are saved as NEW versions (never overwritten) and only take effect once activated.
+// agRubricText / agRenderSystem / agComputeFit must stay identical to render_rubric / render_system / compute_fit in runner/job_driver_runner.py.
+const AG_RUN_NAMES = {sourcer:['sourcer+fit'], fit:['sourcer+fit'], notifier:['notifier','replies'], status_sync:['status_sync'], sweeps:['sweeps']};
+const AG_BANDS = {strong:{min:80,max:100,label:'Strong · 80–100',push:true}, plausible:{min:60,max:79,label:'Plausible · 60–79',push:true}, stretch:{min:40,max:59,label:'Stretch · 40–59',push:false}, no:{min:0,max:39,label:'No · 0–39',push:false}};
+const AG_MARK = {fit:'SCORE_FIT.', sourcer:'EXTRACT_JOBS.', status_sync:'CLASSIFY_STATUS.'};
+const AG_OUT = {
+  fit: 'Output format (fixed by the system): JSON only, no prose.\n{"scores":[{"index":<int>,"params":{"<parameter key>":{"score":<0-100 or null>,"why":"<under 120 chars>"}},"basis":"title_only | snippet | jd","note":"<under 120 chars>"}]}\nOne entry per job. Include every parameter key listed above.',
+  sourcer: 'Output format (fixed by the system): JSON only.\n{"is_job_alert": true|false, "jobs": [{"title","company","location","url","easy_apply": true|false|null,"posted_text": "as written, e.g. 2 days ago, or null","snippet": "<=200 chars","stream": "one of the stream names, or null"}]}',
+  status_sync: 'Output format (fixed by the system): JSON only.\n{"outcome": "rejected|interview_invite|offer|assessment|acknowledgement|other", "company": "<name>", "verbatim": "<exact sentences, or empty>", "confidence": <0-1>}'
+};
+function agRubricText(rub){
+  const L=[];
+  for (const p of (rub?.params||[])) {
+    if (p.enabled===false) continue;
+    const a=p.anchors||{};
+    L.push(`- ${p.name} (key "${p.key}", weight ${p.weight}): ${p.description||''}`);
+    L.push(`    about 90: ${a.high||''}`); L.push(`    about 50: ${a.mid||''}`); L.push(`    about 10: ${a.low||''}`);
+    if (p.cap && p.cap.below!=null && p.cap.max!=null) L.push(`    Hard cap: if this is below ${p.cap.below}, the total cannot be above ${p.cap.max} (applied by the system).`);
+    L.push('    If you cannot judge it: return null.' + (p.if_unknown==='skip' ? ' It is then left out of the total.' : ' It is then scored 50.'));
+  }
+  return L.join('\n');
+}
+function agStreamsDesc(streams){ return streams.map(s=>`- "${s.name}": goal=${s.goal||''}; target titles=${(s.target_titles||[]).join(', ')}`).join('\n'); }
+function agRenderSystem(key, template, ctx){
+  let body = template||'';
+  if (key==='fit') body = body.split('{{rubric}}').join(agRubricText(ctx.rubric)).split('{{threshold}}').join(String(ctx.rubric?.threshold ?? 60));
+  if (key==='sourcer') body = body.split('{{streams}}').join(agStreamsDesc(ctx.streams||[]));
+  return (AG_MARK[key] ? AG_MARK[key]+'\n' : '') + body + (AG_OUT[key] ? '\n\n'+AG_OUT[key] : '');
+}
+// Same maths as compute_fit() in the runner: weighted mean of parameter scores, if-unknown rule, then caps.
+function agComputeFit(rub, params){
+  let tot=0, w=0; const caps=[];
+  for (const p of (rub.params||[])) { if (p.enabled===false) continue;
+    let s = params?.[p.key]?.score; s = (s===null||s===undefined||s==='') ? null : Math.max(0, Math.min(100, Number(s)));
+    if (s===null) { if (p.if_unknown==='skip') continue; s=50; }
+    tot += Number(p.weight)*s; w += Number(p.weight); }
+  let total = w ? Math.round(tot/w) : null;
+  for (const p of (rub.params||[])) { if (p.enabled===false||!p.cap||p.cap.below==null) continue; const s=params?.[p.key]?.score;
+    if (s!=null && s!=='' && Number(s) < Number(p.cap.below) && total!=null && total > Number(p.cap.max)) { total = Number(p.cap.max); caps.push(p.key); } }
+  return {total, caps};
+}
+const agSched = s => s?.mode==='every_n_hours' ? `every ${s.hours||4} h` : s?.mode==='nightly' ? 'nightly (after 21:36 IST)' : 'every runner pass (~2 h)';
+const agModel = m => !m || m.primary==='none' ? 'no AI' : `${m.primary}${m.fallback&&m.fallback!=='none'?' → '+m.fallback:''}`;
+const agTag = b => b==='live'?'<span class="tag ok">live</span>':b==='degraded'?'<span class="tag warn">degraded</span>':'<span class="tag">not built</span>';
+const agState = { tab:'overview' };
+
+async function renderAgents(el){
+  const [agents, pvs, runs] = await Promise.all([
+    q(sb.from('agents').select('*').order('sort')),
+    q(sb.from('agent_prompt_versions').select('id,agent_id,version')),
+    q(sb.from('agent_runs').select('agent,started_at,errors,summary').order('started_at',{ascending:false}).limit(200))]);
+  state.agents = agents;
+  const read = agents.filter(a=>a.last_run_at).sort((a,b)=>new Date(b.last_run_at)-new Date(a.last_run_at))[0];
+  const lastOf = a => runs.find(r=>(AG_RUN_NAMES[a.key]||[]).includes(r.agent));
+  el.innerHTML = `<h2>Agents</h2>
+    <div class="callout ${read?'':'warn'}">${read?`The runner read this setup at <b>${fmtDT(read.last_run_at)}</b>. Changes here apply on its next pass (about every 2 hours).`:'The runner has not read this setup yet. It needs runner v1.0.8; until then the agents run with their built-in settings.'}
+    Prompt and fitment edits are saved as new versions and only go live when you activate them.</div>
+    <div class="cards">${agents.map(a=>{ const r=lastOf(a); const pv=pvs.find(v=>v.id===a.active_prompt_version_id);
+      return `<div class="card agcard" data-id="${a.id}" style="cursor:pointer">
+        <div style="display:flex;gap:8px;align-items:center"><h4 style="margin:0;flex:1">${a.design_no?`<span class="muted mono">#${a.design_no}</span> `:''}${esc(a.name)}</h4>${agTag(a.built_status)}</div>
+        <div class="muted" style="margin:6px 0;font-size:13px">${esc(a.description||'')}</div>
+        <div class="mono muted">${a.built_status==='not_built'?'—':`${a.enabled?'<span class="tag ok">on</span>':'<span class="tag bad">off</span>'} · ${esc(agSched(a.schedule))} · ${esc(agModel(a.model))}${pv?` · prompt v${pv.version}`:''}`}</div>
+        <div class="mono muted" style="margin-top:4px">${r?`last run ${fmtDT(r.started_at)}${r.errors?' · <span style="color:var(--bad)">errors</span>':''}`:a.built_status==='not_built'?'':'no runs yet'}</div>
+      </div>`; }).join('')}</div>`;
+  el.querySelectorAll('.agcard').forEach(c=>c.onclick=()=>openAgent(c.dataset.id));
+}
+
+async function openAgent(id, tab){
+  const a = await q(sb.from('agents').select('*').eq('id',id).single());
+  if (agState.a && agState.a.id!==id) { agState.pv=null; agState.rv=null; }
+  agState.a = a; agState.tab = tab || 'overview';
+  const tabs = [['overview','Overview'], ['schedule','Schedule & model']];
+  if (AG_MARK[a.key]) tabs.push(['prompt','Prompt']);
+  if (a.key==='fit') tabs.push(['rubric','Fitment']);
+  tabs.push(['guardrails','Guardrails']);
+  if (a.key==='fit') tabs.push(['evals','Evals']);
+  if (!tabs.find(t=>t[0]===agState.tab)) agState.tab='overview';
+  openModal(`<div style="display:flex;align-items:center;gap:8px"><h3 style="flex:1">${a.design_no?`#${a.design_no} · `:''}${esc(a.name)}</h3>${agTag(a.built_status)}<button class="small" id="agClose">Close</button></div>
+    <div class="tabs" id="agTabs">${tabs.map(([k,l])=>`<button data-t="${k}" class="${k===agState.tab?'active':''}">${l}</button>`).join('')}</div><div id="agBody"><div class="muted">Loading…</div></div>`);
+  $('#modal').style.maxWidth='1120px';
+  $('#agClose').onclick=()=>{ closeModal(); $('#modal').style.maxWidth=''; if (state.screen==='agents') go('agents'); };
+  $('#agTabs').querySelectorAll('button').forEach(b=>b.onclick=()=>openAgent(id, b.dataset.t));
+  const body = $('#agBody');
+  try { await ({overview:agOverview, schedule:agSchedule, prompt:agPrompt, rubric:agRubric, guardrails:agGuardrails, evals:agEvals})[agState.tab](a, body); }
+  catch(e){ console.error(e); body.innerHTML = '<div class="err">'+esc(e.message||e)+'</div>'; }
+}
+async function agSave(patch, msg='Saved'){ const a=agState.a; await q(sb.from('agents').update({...patch, updated_at:new Date().toISOString()}).eq('id',a.id)); toast(msg); }
+
+async function agOverview(a, el){
+  const names = AG_RUN_NAMES[a.key]||[];
+  const runs = names.length ? await q(sb.from('agent_runs').select('*').in('agent',names).order('started_at',{ascending:false}).limit(12)) : [];
+  const nb = a.built_status==='not_built';
+  el.innerHTML = `<div class="grid2"><div>
+      <label>Status</label><div>${agTag(a.built_status)} ${a.status_note?`<span class="muted">${esc(a.status_note)}</span>`:''}</div>
+      <label>What it does</label><div>${esc(a.description||'')}</div>
+      <label>Reads</label><div class="mono">${esc(a.reads||'—')}</div>
+      <label>Writes</label><div class="mono">${esc(a.writes||'—')}</div>
+    </div><div>
+      <label>On / off</label>
+      <div style="display:flex;gap:8px;align-items:center;font-size:14px"><input type="checkbox" id="agEn" style="width:auto" ${a.enabled?'checked':''} ${nb?'disabled':''}> <span>${a.enabled?'Running':'Off'}</span></div>
+      <div class="muted" style="font-size:13px;margin-top:4px">${nb?'This agent is not built yet, so it cannot be turned on.':a.key==='fit'?'Off: new leads are saved unscored and nothing is pushed until it is back on.':a.key==='sourcer'?'Off: no new mails are read.':a.key==='notifier'?'Off: no new pushes. Your button taps are still processed.':'Off: skipped in the nightly run.'}</div>
+      <label>Schedule</label><div>${esc(agSched(a.schedule))}</div>
+      <label>Model</label><div>${esc(agModel(a.model))}</div>
+      <label>Runner last read this</label><div class="mono">${a.last_run_at?fmtDT(a.last_run_at)+' · '+esc(a.last_run_status||''):'not yet'}</div>
+    </div></div>
+    <h3>Recent runs</h3><div class="scroll"><table><thead><tr><th>Started</th><th>Run</th><th>Read</th><th>Created</th><th>Parked</th><th>Model</th><th>Summary / errors</th></tr></thead><tbody>
+    ${runs.map(r=>`<tr><td>${fmtDT(r.started_at)}</td><td><span class="tag">${esc(r.agent)}</span></td><td>${r.items_read??''}</td><td>${r.items_created??''}</td><td>${r.items_parked??''}</td><td class="mono muted">${esc(r.model||'')}</td><td>${esc(r.summary||'')}${r.errors?`<div style="color:var(--bad)" class="mono">${esc(JSON.stringify(r.errors).slice(0,300))}</div>`:''}</td></tr>`).join('')||'<tr><td colspan="7" class="muted">No runs.</td></tr>'}</tbody></table></div>`;
+  const en=$('#agEn'); if (en && !nb) en.onchange=async()=>{ try{ await agSave({enabled:en.checked}, en.checked?'Turned on':'Turned off'); openAgent(a.id,'overview'); }catch(e){ err(e); } };
+}
+
+async function agSchedule(a, el){
+  const s=a.schedule||{mode:'every_run'}, m=a.model||{};
+  const nightlyOnly = ['status_sync','sweeps','debrief','alert_coach','company_scout'].includes(a.key);
+  const modes = nightlyOnly ? [['nightly','Nightly (first pass after 21:36 IST)']] : [['every_run','Every runner pass (about every 2 hours)'],['every_n_hours','Every N hours'],['nightly','Nightly (first pass after 21:36 IST)']];
+  const maxLabel = {sourcer:'Max mails read per run', fit:'Jobs per AI call (batch size)', status_sync:'Max mails classified per night'}[a.key];
+  el.innerHTML = `<div class="grid2"><div>
+      <h3>When it runs</h3>
+      <label for="agMode">Schedule</label><select id="agMode">${modes.map(([k,l])=>`<option value="${k}" ${s.mode===k?'selected':''}>${l}</option>`).join('')}</select>
+      <div id="agHrsBox" class="${s.mode==='every_n_hours'?'':'hidden'}"><label for="agHrs">Every N hours (rounded to the 2-hour runner pass)</label><input id="agHrs" type="number" min="2" step="2" value="${s.hours||4}"></div>
+      ${maxLabel?`<label for="agMax">${maxLabel}</label><input id="agMax" type="number" min="1" value="${a.max_items??''}">`:''}
+      <p class="muted" style="font-size:13px">The runner wakes about every 2 hours, so that is the fastest any agent can run. Quiet hours and the daily push cap are in Settings.</p>
+    </div><div>
+      <h3>Model</h3>
+      ${a.uses_llm?`
+      <label for="agPri">Main model</label><select id="agPri"><option value="gemini" ${m.primary==='gemini'?'selected':''}>Gemini (free tier)</option><option value="groq" ${m.primary==='groq'?'selected':''}>Groq (free tier)</option><option value="ollama" disabled>Ollama on your Mac (not reachable from GitHub yet)</option></select>
+      <label for="agFb">Backup when the main model is limited or failing</label><select id="agFb"><option value="groq" ${m.fallback==='groq'?'selected':''}>Groq</option><option value="gemini" ${m.fallback==='gemini'?'selected':''}>Gemini</option><option value="none" ${m.fallback==='none'?'selected':''}>None (wait for the next run)</option></select>
+      <div class="grid2"><div><label for="agGm">Gemini model (blank = newest Flash)</label><input id="agGm" value="${esc(m.gemini_model||'')}" placeholder="auto"></div><div><label for="agQm">Groq model (blank = auto)</label><input id="agQm" value="${esc(m.groq_model||'')}" placeholder="auto"></div></div>
+      <div class="grid2"><div><label for="agTok">Max output tokens</label><input id="agTok" type="number" value="${m.max_tokens??4096}"></div><div><label for="agTo">Timeout, seconds</label><input id="agTo" type="number" value="${m.timeout_s??75}"></div></div>
+      <p class="muted" style="font-size:13px">Both models share one free quota per day across all agents. Ollama needs the runner to reach your Mac; it is listed so the choice exists when that is set up.</p>`
+      :'<p class="muted">This agent does not use an AI model.</p>'}
+    </div></div>
+    <div class="actions"><button class="primary" id="agSaveS">Save</button></div><div class="err" id="agErr"></div>`;
+  $('#agMode').onchange=()=>$('#agHrsBox').classList.toggle('hidden', $('#agMode').value!=='every_n_hours');
+  $('#agSaveS').onclick=async()=>{ try{
+    const sched={mode:$('#agMode').value}; if (sched.mode==='every_n_hours') { const h=Number($('#agHrs').value); if (!(h>=2)) throw new Error('Every N hours must be 2 or more.'); sched.hours=h; }
+    const patch={schedule:sched}; if ($('#agMax')) { const v=$('#agMax').value; patch.max_items = v===''?null:Math.max(1,Number(v)); }
+    if (a.uses_llm) { const pri=$('#agPri').value, fb=$('#agFb').value; if (pri===fb) throw new Error('Main and backup model are the same.');
+      patch.model={primary:pri, fallback:fb, gemini_model:$('#agGm').value.trim()||null, groq_model:$('#agQm').value.trim()||null, max_tokens:Number($('#agTok').value)||4096, timeout_s:Number($('#agTo').value)||75}; }
+    await agSave(patch); openAgent(a.id,'schedule'); }catch(e){ $('#agErr').textContent=e.message||e; } };
+}
+
+async function agEvalFor(versionField, versionId){
+  const runs = await q(sb.from('agent_eval_runs').select('id,total,decision_agreement,prompt_version_id,rubric_version_ids,finished_at').eq('agent_id',agState.a.id).eq('status','done').order('finished_at',{ascending:false}).limit(50));
+  return runs.find(r => versionField==='prompt' ? r.prompt_version_id===versionId : Object.values(r.rubric_version_ids||{}).includes(versionId));
+}
+function agPassesGate(run){ const g=agState.a.eval_gate||{}; return run && (run.total||0) >= (g.min_cases??10) && Number(run.decision_agreement||0) >= (g.min_agreement??80); }
+async function agGateConfirm(what, versionField, versionId){
+  if (agState.a.key!=='fit') return confirmBox(`This agent has no evals yet. Activate ${what}?`);
+  const r = await agEvalFor(versionField, versionId);
+  if (agPassesGate(r)) return true;
+  const g=agState.a.eval_gate||{};
+  return confirmBox(r ? `${what} last scored ${Math.round(r.decision_agreement)}% decision agreement on ${r.total} cases. The gate is ${g.min_agreement??80}% on at least ${g.min_cases??10}. Activate anyway?`
+                      : `${what} has no finished eval run yet. Queue one on the Evals tab first, or activate anyway?`);
+}
+
+async function agPrompt(a, el){
+  const vs = await q(sb.from('agent_prompt_versions').select('*').eq('agent_id',a.id).order('version',{ascending:false}));
+  const sel = vs.find(v=>v.id===agState.pv) || vs.find(v=>v.id===a.active_prompt_version_id) || vs[0];
+  const streams = state.streams;
+  const rubs = a.key==='fit' ? await q(sb.from('fit_rubric_versions').select('*')) : [];
+  const ph = {fit:'{{rubric}} = the fitment parameters of the stream · {{threshold}} = its threshold', sourcer:'{{streams}} = your streams with goal and target titles', status_sync:'no placeholders'}[a.key];
+  el.innerHTML = `<div class="grid2"><div>
+      <label for="agTpl">Prompt template · editing from v${sel?.version??'—'}${sel&&sel.id===a.active_prompt_version_id?' (active)':''}</label><textarea id="agTpl" style="min-height:300px;font-family:var(--mono);font-size:12.5px">${esc(sel?.system_template||'')}</textarea>
+      <div class="muted" style="font-size:12.5px">Placeholders: ${esc(ph)}. The marker line and the output format are added by the system, so edits cannot break the reply format.</div>
+      <label for="agNotes">What changed (saved with the version)</label><input id="agNotes" placeholder="e.g. stricter on Project Manager titles">
+      <div class="actions"><button class="primary" id="agNewV">Save as new version (draft)</button></div><div class="err" id="agErr"></div>
+      <h3>Versions</h3><table><tbody>${vs.map(v=>`<tr><td class="mono">v${v.version}</td><td>${fmtDT(v.created_at)}</td><td class="muted">${esc(v.notes||'')}</td><td>${v.id===a.active_prompt_version_id?'<span class="tag ok">active</span>':`<button class="small agAct" data-id="${v.id}" data-v="${v.version}">Activate</button>`}</td><td><button class="small agView" data-id="${v.id}">Open</button></td></tr>`).join('')}</tbody></table>
+    </div><div>
+      <label>Exactly what the AI receives as instructions${a.key==='fit'?` · stream <select id="agPrevS" style="width:auto;display:inline-block">${streams.map(s=>`<option value="${s.id}">${esc(s.name)}</option>`).join('')}</select>`:''}</label>
+      <pre class="text" id="agPrev" style="max-height:520px;font-family:var(--mono);font-size:12px"></pre>
+      <div class="muted" style="font-size:12.5px">${a.key==='fit'?'The resume, stream goal, locations and the jobs go in the user message.':a.key==='sourcer'?'The mail (from, subject, date, text) goes in the user message.':'The application and the mail go in the user message.'}</div>
+    </div></div>`;
+  const prev=()=>{ const ctx={streams}; if (a.key==='fit'){ const sid=$('#agPrevS').value; const s=streams.find(x=>x.id===sid); ctx.rubric=(rubs.find(r=>r.id===s?.fit_rubric_version_id)||{}).rubric; } $('#agPrev').textContent=agRenderSystem(a.key, $('#agTpl').value, ctx); };
+  $('#agTpl').oninput=prev; if ($('#agPrevS')) $('#agPrevS').onchange=prev; prev();
+  $('#agNewV').onclick=async()=>{ try{ const t=$('#agTpl').value.trim(); if (!t) throw new Error('The prompt is empty.');
+      if (a.key==='fit' && !t.includes('{{rubric}}')) throw new Error('The Fit prompt must contain {{rubric}}, or the parameters never reach the AI.');
+      if (a.key==='sourcer' && !t.includes('{{streams}}')) throw new Error('The Sourcer prompt must contain {{streams}}, or jobs cannot be matched to a stream.');
+      if (sel && t===sel.system_template.trim()) throw new Error('No change from v'+sel.version+'.');
+      const next=(vs[0]?.version||0)+1; const v=await q(sb.from('agent_prompt_versions').insert({agent_id:a.id, version:next, system_template:t, notes:$('#agNotes').value||null}).select().single());
+      agState.pv=v.id; toast(`Saved v${next} as a draft`); openAgent(a.id,'prompt'); }catch(e){ $('#agErr').textContent=e.message||e; } };
+  el.querySelectorAll('.agView').forEach(b=>b.onclick=()=>{ agState.pv=b.dataset.id; openAgent(a.id,'prompt'); });
+  el.querySelectorAll('.agAct').forEach(b=>b.onclick=async()=>{ const ok=await agGateConfirm('Prompt v'+b.dataset.v,'prompt',b.dataset.id); if(!ok){ openAgent(a.id,'prompt'); return; } try{ await agSave({active_prompt_version_id:b.dataset.id}, 'Prompt v'+b.dataset.v+' is live from the next run'); openAgent(a.id,'prompt'); }catch(e){ err(e); } });
+}
+
+async function agRubric(a, el){
+  const streams = state.streams;
+  const sid = agState.rs && streams.find(s=>s.id===agState.rs) ? agState.rs : streams[0].id; agState.rs=sid;
+  const stream = streams.find(s=>s.id===sid);
+  const vs = await q(sb.from('fit_rubric_versions').select('*').eq('job_stream_id',sid).order('version',{ascending:false}));
+  const sel = vs.find(v=>v.id===agState.rv) || vs.find(v=>v.id===stream.fit_rubric_version_id) || vs[0];
+  const rub = JSON.parse(JSON.stringify(sel?.rubric || {threshold:60, params:[]}));
+  el.innerHTML = `<div class="toolbar"><label style="margin:0">Stream</label><select id="rbS" style="width:auto">${streams.map(s=>`<option value="${s.id}" ${s.id===sid?'selected':''}>${esc(s.name)}</option>`).join('')}</select>
+      <label style="margin:0">Version</label><select id="rbV" style="width:auto">${vs.map(v=>`<option value="${v.id}" ${v.id===sel?.id?'selected':''}>v${v.version}${v.id===stream.fit_rubric_version_id?' · active':''}</option>`).join('')}</select>
+      ${sel && sel.id!==stream.fit_rubric_version_id?`<button class="small" id="rbAct">Activate v${sel.version}</button>`:'<span class="tag ok">active</span>'}</div>
+    <div class="callout">Fitment = a weighted average of these parameters. The AI scores each parameter 0–100 against the three anchors. The system does the maths, applies the caps, and parks anything below the threshold. Weights are relative; they do not need to add up to 100.</div>
+    <div class="ag-split"><div>
+      <div id="rbParams"></div>
+      <div class="actions"><button id="rbAdd">+ Add parameter</button></div>
+      <div class="grid2"><div><label for="rbThr">Threshold: push at or above</label><input id="rbThr" type="number" min="0" max="100" value="${rub.threshold??60}"></div><div><label for="rbNotes">What changed</label><input id="rbNotes" placeholder="e.g. location cap raised to 60"></div></div>
+      <div class="actions"><button class="primary" id="rbSave">Save as new version (draft)</button></div><div class="err" id="rbErr"></div>
+      <h3>Try it</h3><p class="muted" style="font-size:13px">Type parameter scores to see the total this rubric gives, caps included. Leave a box empty for "cannot judge".</p><div id="rbTry"></div><div id="rbTryOut" class="mono" style="margin-top:6px"></div>
+    </div><div><label>How this reaches the AI ({{rubric}} in the prompt)</label><pre class="text" id="rbPrev" style="max-height:640px;font-family:var(--mono);font-size:12px"></pre></div></div>`;
+  const prev = () => { $('#rbPrev').textContent = agRubricText(rub) + `\n\nThreshold: ${rub.threshold}`; };
+  const tryDraw=()=>{ $('#rbTry').innerHTML = rub.params.filter(p=>p.enabled!==false).map(p=>`<span style="display:inline-flex;gap:4px;align-items:center;margin:0 10px 6px 0"><span class="mono muted">${esc(p.key)}</span><input class="rbT" data-k="${esc(p.key)}" type="number" min="0" max="100" placeholder="?" style="width:62px"></span>`).join('');
+    const calc=()=>{ const ps={}; $('#rbTry').querySelectorAll('.rbT').forEach(x=>ps[x.dataset.k]={score:x.value===''?null:Number(x.value)}); const r=agComputeFit(rub, ps); $('#rbTryOut').innerHTML = `Total <b>${r.total??'—'}</b> · ${r.total!=null&&r.total>=Number(rub.threshold)?'<span class="tag ok">push</span>':'<span class="tag">park</span>'}${r.caps.length?` · capped by ${esc(r.caps.join(', '))}`:''}`; };
+    $('#rbTry').querySelectorAll('.rbT').forEach(x=>x.oninput=calc); calc(); };
+  const draw = () => {
+    const wsum = rub.params.filter(p=>p.enabled!==false).reduce((s,p)=>s+Number(p.weight||0),0)||1;
+    $('#rbParams').innerHTML = rub.params.map((p,i)=>`<div class="card" style="margin-bottom:10px" data-i="${i}">
+      <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap"><input type="checkbox" class="rbEn" style="width:auto" ${p.enabled!==false?'checked':''} title="Use this parameter">
+        <input class="rbName" value="${esc(p.name)}" style="flex:2;min-width:140px" placeholder="Name">
+        <input class="rbKey mono" value="${esc(p.key)}" style="flex:1;min-width:110px" placeholder="key">
+        <span class="muted mono">weight</span><input class="rbW" type="number" min="0" value="${p.weight}" style="width:70px">
+        <span class="tag ${p.enabled!==false?'new':''} rbShare">${p.enabled!==false?Math.round(100*Number(p.weight||0)/wsum):0}% of score</span>
+        <button class="small rbDel" style="margin-left:auto;color:var(--bad)">Remove</button></div>
+      <label>Description: what this parameter judges</label><textarea class="rbDesc" style="min-height:40px">${esc(p.description||'')}</textarea>
+      <div class="grid2 ag-3"><div><label>Scores about 90 when</label><textarea class="rbHi" style="min-height:52px">${esc(p.anchors?.high||'')}</textarea></div><div><label>About 50 when</label><textarea class="rbMid" style="min-height:52px">${esc(p.anchors?.mid||'')}</textarea></div><div><label>About 10 when</label><textarea class="rbLo" style="min-height:52px">${esc(p.anchors?.low||'')}</textarea></div></div>
+      <div class="grid2"><div><label>Hard cap (blank = none)</label><div style="display:flex;gap:6px;align-items:center"><span class="muted">if below</span><input class="rbCb" type="number" value="${p.cap?.below??''}" style="width:70px"><span class="muted">total at most</span><input class="rbCm" type="number" value="${p.cap?.max??''}" style="width:70px"></div></div>
+        <div><label>If the AI cannot judge it</label><select class="rbUnk"><option value="neutral" ${p.if_unknown!=='skip'?'selected':''}>Score it 50 (neutral)</option><option value="skip" ${p.if_unknown==='skip'?'selected':''}>Leave it out and re-weight the rest</option></select></div></div>
+    </div>`).join('') || '<div class="muted">No parameters.</div>';
+    $('#rbParams').querySelectorAll('.card').forEach(c=>{ const i=Number(c.dataset.i), p=rub.params[i];
+      const rd=()=>{ p.enabled=c.querySelector('.rbEn').checked; p.name=c.querySelector('.rbName').value; p.key=c.querySelector('.rbKey').value.trim(); p.weight=Number(c.querySelector('.rbW').value||0); p.description=c.querySelector('.rbDesc').value;
+        p.anchors={high:c.querySelector('.rbHi').value, mid:c.querySelector('.rbMid').value, low:c.querySelector('.rbLo').value};
+        const cb=c.querySelector('.rbCb').value, cm=c.querySelector('.rbCm').value; p.cap = (cb!==''&&cm!=='') ? {below:Number(cb), max:Number(cm)} : null; p.if_unknown=c.querySelector('.rbUnk').value; prev(); };
+      c.querySelectorAll('input,textarea,select').forEach(x=>x.addEventListener('input',rd));
+      c.querySelectorAll('.rbEn,.rbW,.rbUnk,.rbKey,.rbCb,.rbCm').forEach(x=>x.addEventListener('change',()=>{ rd(); draw(); tryDraw(); }));
+      c.querySelector('.rbDel').onclick=()=>{ rub.params.splice(i,1); draw(); prev(); tryDraw(); }; });
+  };
+  draw(); prev(); tryDraw();
+  $('#rbS').onchange=()=>{ agState.rs=$('#rbS').value; agState.rv=null; openAgent(a.id,'rubric'); };
+  $('#rbV').onchange=()=>{ agState.rv=$('#rbV').value; openAgent(a.id,'rubric'); };
+  $('#rbThr').oninput=()=>{ rub.threshold=Number($('#rbThr').value); prev(); tryDraw(); };
+  $('#rbAdd').onclick=()=>{ rub.params.push({key:'param_'+(rub.params.length+1), name:'New parameter', weight:10, enabled:true, description:'', anchors:{high:'',mid:'',low:''}, cap:null, if_unknown:'neutral'}); draw(); prev(); tryDraw(); };
+  $('#rbSave').onclick=async()=>{ try{
+      const keys=rub.params.map(p=>p.key); if (!rub.params.filter(p=>p.enabled!==false).length) throw new Error('Turn on at least one parameter.');
+      if (keys.some(k=>!/^[a-z][a-z0-9_]{1,30}$/.test(k))) throw new Error('Keys must be lowercase letters, digits or _ (e.g. role_level).');
+      if (new Set(keys).size!==keys.length) throw new Error('Two parameters share a key.');
+      for (const p of rub.params) { if (p.enabled===false) continue; if (!(p.weight>0)) throw new Error(`${p.name}: weight must be above 0.`); if (!p.anchors.high||!p.anchors.mid||!p.anchors.low) throw new Error(`${p.name}: fill all three anchors. They are what the AI scores against.`);
+        if (p.cap && (p.cap.max<0||p.cap.max>100||p.cap.below<0||p.cap.below>100)) throw new Error(`${p.name}: cap numbers must be 0–100.`); }
+      if (!(rub.threshold>=0&&rub.threshold<=100)) throw new Error('Threshold must be 0–100.');
+      if (sel && JSON.stringify(rub)===JSON.stringify(sel.rubric)) throw new Error('No change from v'+sel.version+'.');
+      const next=(vs[0]?.version||0)+1; const v=await q(sb.from('fit_rubric_versions').insert({job_stream_id:sid, version:next, rubric:rub, notes:$('#rbNotes').value||null}).select().single());
+      agState.rv=v.id; toast(`Saved fitment v${next} for ${stream.name} as a draft`); openAgent(a.id,'rubric'); }catch(e){ $('#rbErr').textContent=e.message||e; } };
+  if ($('#rbAct')) $('#rbAct').onclick=async()=>{ const ok=await agGateConfirm(`Fitment v${sel.version} (${stream.name})`,'rubric',sel.id); if(!ok){ openAgent(a.id,'rubric'); return; }
+    try{ await q(sb.from('job_streams').update({fit_rubric_version_id:sel.id}).eq('id',sid)); state.streams = await q(sb.from('job_streams').select('*').order('created_at')); toast(`Fitment v${sel.version} is live for ${stream.name} from the next run`); openAgent(a.id,'rubric'); }catch(e){ err(e); } };
+}
+
+async function agGuardrails(a, el){
+  const gr = JSON.parse(JSON.stringify(a.guardrails||[]));
+  el.innerHTML = `<p class="muted">Locked guardrails are enforced in the runner's code and cannot be switched off here. The others you can tune.</p>
+    <table><tbody>${gr.map((g,i)=>`<tr><td style="width:36px">${g.locked?'<span title="Always on">🔒</span>':`<input type="checkbox" class="grOn" data-i="${i}" style="width:auto" ${g.on?'checked':''}>`}</td>
+      <td><b>${esc(g.label)}</b><div class="muted" style="font-size:13px">${esc(g.desc)}</div></td>
+      <td style="width:170px">${g.value!==undefined?`<input class="grVal" data-i="${i}" type="number" step="any" value="${g.value}" style="width:90px" ${g.locked?'disabled':''}> <span class="muted mono">${esc(g.unit||'')}</span>`:''}</td></tr>`).join('')||'<tr><td class="muted">No guardrails for this agent.</td></tr>'}</tbody></table>
+    ${gr.some(g=>!g.locked)?'<div class="actions"><button class="primary" id="grSave">Save</button></div>':''}<div class="err" id="grErr"></div>`;
+  if ($('#grSave')) $('#grSave').onclick=async()=>{ try{ el.querySelectorAll('.grOn').forEach(x=>gr[x.dataset.i].on=x.checked); el.querySelectorAll('.grVal').forEach(x=>{ const v=Number(x.value); if (!(v>=0)) throw new Error('Values must be 0 or more.'); gr[x.dataset.i].value=v; });
+      await agSave({guardrails:gr}); openAgent(a.id,'guardrails'); }catch(e){ $('#grErr').textContent=e.message||e; } };
+}
+
+async function agEvals(a, el){
+  const [cases, runs, pvs, rvs] = await Promise.all([
+    q(sb.from('agent_evals').select('*').eq('agent_id',a.id).order('created_at')),
+    q(sb.from('agent_eval_runs').select('id,status,requested_at,finished_at,prompt_version_id,rubric_version_ids,total,decision_pass,band_pass,decision_agreement,band_agreement,model,error').eq('agent_id',a.id).order('requested_at',{ascending:false}).limit(20)),
+    q(sb.from('agent_prompt_versions').select('id,version').eq('agent_id',a.id).order('version',{ascending:false})),
+    q(sb.from('fit_rubric_versions').select('id,version,job_stream_id').order('version',{ascending:false}))]);
+  const g = a.eval_gate||{min_agreement:80,min_cases:10};
+  const passes = r => Number(r.decision_agreement)>=(g.min_agreement??80) && (r.total||0)>=(g.min_cases??10);
+  const nLab = () => cases.filter(c=>c.is_active && c.expected_band).length;
+  const lastDone = runs.find(r=>r.status==='done');
+  const lastRes = lastDone ? ((await q(sb.from('agent_eval_runs').select('results').eq('id',lastDone.id).single())).results||[]) : [];
+  const pvN = id => (pvs.find(v=>v.id===id)||{}).version, rvN = id => (rvs.find(v=>v.id===id)||{}).version;
+  const sn = id => streamName(id)||'—';
+  el.innerHTML = `<div class="grid2"><div>
+      <h3 style="margin-top:0">How evals work</h3>
+      <p style="font-size:13.5px">Each case is a job you label with the band you think it belongs in. An eval run scores every labelled case with the chosen prompt and fitment versions, then compares.
+      <b>Decision agreement</b>: the system's push or park matches your label (Strong and Plausible mean push). <b>Band agreement</b>: the score lands inside your band.</p>
+      <h3>Gate for going live</h3>
+      <div class="grid2"><div><label for="egA">Min decision agreement, %</label><input id="egA" type="number" value="${g.min_agreement??80}"></div><div><label for="egC">Min labelled cases</label><input id="egC" type="number" value="${g.min_cases??10}"></div></div>
+      <div class="actions"><button id="egSave">Save gate</button></div>
+    </div><div>
+      <h3 style="margin-top:0">Queue an eval run</h3>
+      <label for="erP">Prompt version</label><select id="erP">${pvs.map(v=>`<option value="${v.id}" ${v.id===a.active_prompt_version_id?'selected':''}>v${v.version}${v.id===a.active_prompt_version_id?' · active':''}</option>`).join('')}</select>
+      ${state.streams.map(s=>`<label>Fitment version · ${esc(s.name)}</label><select class="erR" data-s="${s.id}">${rvs.filter(v=>v.job_stream_id===s.id).map(v=>`<option value="${v.id}" ${v.id===s.fit_rubric_version_id?'selected':''}>v${v.version}${v.id===s.fit_rubric_version_id?' · active':''}</option>`).join('')}</select>`).join('')}
+      <div class="actions"><button class="primary" id="erGo" ${nLab()?'':'disabled'}>Queue eval run (${nLab()} labelled cases)</button></div>
+      <div class="muted" style="font-size:13px">Runs on the runner's next pass (up to 2 hours). Uses about ${Math.max(1,Math.ceil(nLab()/(a.max_items||8)))} AI calls from the same free quota. Unlabelled cases are skipped.</div><div class="err" id="erErr"></div>
+    </div></div>
+    <h3>Eval runs</h3><div class="scroll"><table><thead><tr><th>Requested</th><th>Status</th><th>Prompt</th><th>Fitment</th><th>Cases</th><th>Decision</th><th>Band</th><th>Model</th></tr></thead><tbody>
+      ${runs.map(r=>`<tr class="row erRow" data-id="${r.id}"><td>${fmtDT(r.requested_at)}</td><td>${r.status==='done'?'<span class="tag ok">done</span>':r.status==='failed'?`<span class="tag bad" title="${esc(r.error||'')}">failed</span>`:`<span class="tag warn">${esc(r.status)}</span>`}</td>
+        <td class="mono">v${pvN(r.prompt_version_id)??'?'}</td><td class="mono">${Object.entries(r.rubric_version_ids||{}).map(([s,id])=>`${esc(sn(s).split(' ')[0])} v${rvN(id)??'?'}`).join(', ')}</td><td>${r.total??''}</td>
+        <td>${r.decision_agreement!=null?`<b style="color:${passes(r)?'var(--accent)':'var(--bad)'}">${Math.round(r.decision_agreement)}%</b> (${r.decision_pass}/${r.total})`:''}</td>
+        <td>${r.band_agreement!=null?`${Math.round(r.band_agreement)}% (${r.band_pass}/${r.total})`:''}</td><td class="mono muted">${esc(r.model||'')}</td></tr>`).join('')||'<tr><td colspan="8" class="muted">No eval runs yet.</td></tr>'}</tbody></table></div>
+    <div id="erDetail"></div>
+    <h3 id="ecHead"></h3>
+    <div class="toolbar"><button id="ecLeads">+ Add new leads</button><button id="ecApps">+ Add from applications</button><button id="ecMan">+ Add by hand</button><span class="grow"></span><select id="ecF" style="width:auto"><option value="unl">Unlabelled first</option><option value="all">All</option><option value="miss">Misses in last run</option></select></div>
+    <div class="scroll"><table><thead><tr><th>Job</th><th>Stream</th><th>Your label</th><th>Last run</th><th></th></tr></thead><tbody id="ecBody"></tbody></table></div>`;
+  const resBy = Object.fromEntries(lastRes.map(r=>[r.case_id, r]));
+  const drawCases = () => {
+    $('#ecHead').textContent = `Cases · ${nLab()} of ${cases.filter(c=>c.is_active).length} labelled`;
+    $('#erGo').textContent = `Queue eval run (${nLab()} labelled cases)`; $('#erGo').disabled = !nLab();
+    const f=$('#ecF').value; let list=cases.filter(c=>c.is_active);
+    if (f==='unl') list=[...list.filter(c=>!c.expected_band), ...list.filter(c=>c.expected_band)];
+    if (f==='miss') list=list.filter(c=>resBy[c.id] && !resBy[c.id].decision_pass);
+    $('#ecBody').innerHTML = list.map(c=>{ const r=resBy[c.id], i=c.input||{};
+      return `<tr data-id="${c.id}"><td><b>${esc(i.title||'')}</b> · ${esc(i.company||'')}<div class="muted" style="font-size:12.5px">${esc(i.location||'')}${c.note?' · '+esc(c.note):''}</div></td><td class="muted">${esc(sn(c.job_stream_id))}</td>
+        <td style="white-space:nowrap">${Object.entries(AG_BANDS).map(([k,b])=>`<span class="chip ecB ${c.expected_band===k?'on':''}" data-b="${k}" title="${b.label}" style="margin:0 2px 2px 0">${k}</span>`).join('')}</td>
+        <td>${r?`<span class="fit">${r.got??'—'}</span> ${r.decision_pass?'<span class="tag ok">agrees</span>':'<span class="tag bad">differs</span>'}${r.caps_applied?.length?` <span class="muted mono">cap ${esc(r.caps_applied.join(','))}</span>`:''}`:'<span class="muted">—</span>'}</td>
+        <td><button class="small ecX" title="Remove from the eval set">✕</button></td></tr>`; }).join('') || '<tr><td colspan="5" class="muted">No cases.</td></tr>';
+    $('#ecBody').querySelectorAll('tr[data-id]').forEach(tr=>{ const c=cases.find(x=>x.id===tr.dataset.id);
+      tr.querySelectorAll('.ecB').forEach(ch=>ch.onclick=async()=>{ const b=ch.dataset.b===c.expected_band?null:ch.dataset.b; try{ await q(sb.from('agent_evals').update({expected_band:b, expected_min:b?AG_BANDS[b].min:null, expected_max:b?AG_BANDS[b].max:null}).eq('id',c.id)); c.expected_band=b; drawCases(); }catch(e){ err(e); } });
+      tr.querySelector('.ecX').onclick=async()=>{ try{ await q(sb.from('agent_evals').update({is_active:false}).eq('id',c.id)); c.is_active=false; drawCases(); }catch(e){ err(e); } }; });
+  };
+  drawCases(); $('#ecF').onchange=drawCases;
+  $('#egSave').onclick=async()=>{ try{ await agSave({eval_gate:{...g, min_agreement:Number($('#egA').value), min_cases:Number($('#egC').value), metric:'decision'}}, 'Gate saved'); }catch(e){ err(e); } };
+  $('#erGo').onclick=async()=>{ try{ const rv={}; el.querySelectorAll('.erR').forEach(s=>{ if (s.value) rv[s.dataset.s]=s.value; });
+      if (runs.some(r=>r.status==='queued'||r.status==='running')) { const ok=await confirmBox('An eval run is already waiting. Queue another one?'); if(!ok){ openAgent(a.id,'evals'); return; } }
+      await q(sb.from('agent_eval_runs').insert({agent_id:a.id, prompt_version_id:$('#erP').value, rubric_version_ids:rv, status:'queued'})); toast('Queued. It runs on the next runner pass.'); openAgent(a.id,'evals'); }catch(e){ $('#erErr').textContent=e.message||e; } };
+  el.querySelectorAll('.erRow').forEach(tr=>tr.onclick=async()=>{ const r=await q(sb.from('agent_eval_runs').select('*').eq('id',tr.dataset.id).single()); const res=(r.results||[]).slice().sort((x,y)=>(Number(!!x.decision_pass)-Number(!!y.decision_pass)));
+    $('#erDetail').innerHTML = `<h3>Run of ${fmtDT(r.requested_at)}${r.error?` · <span style="color:var(--bad)">${esc(r.error)}</span>`:''}</h3><div class="scroll"><table><thead><tr><th>Job</th><th>Your band</th><th>Score</th><th>Decision</th><th>Band</th><th>Parameters</th><th>Basis / note</th></tr></thead><tbody>
+      ${res.map(x=>`<tr><td>${esc(x.title||'')} · ${esc(x.company||'')}</td><td>${esc(x.expected_band||'')}</td><td class="fit">${x.got??'—'}${x.caps_applied?.length?`<div class="muted mono">cap ${esc(x.caps_applied.join(','))}</div>`:''}</td><td>${x.decision_pass?'✓':'<span style="color:var(--bad)">✗</span>'}</td><td>${x.band_pass?'✓':'✗'}</td>
+        <td class="mono" style="font-size:11.5px">${Object.entries(x.params||{}).map(([k,v])=>`<div title="${esc(v?.why||'')}">${esc(k)} <b>${v?.score??'null'}</b> <span class="muted">${esc((v?.why||'').slice(0,60))}</span></div>`).join('')}</td><td class="muted" style="font-size:12.5px">${esc(x.basis||'')}${x.note?' · '+esc(x.note):''}${x.error?`<div style="color:var(--bad)">${esc(x.error)}</div>`:''}</td></tr>`).join('')||'<tr><td colspan="7" class="muted">No results.</td></tr>'}</tbody></table></div>`;
+    $('#erDetail').scrollIntoView({behavior:'smooth'}); });
+  const addCases = async rows => { if (!rows.length) { toast('Nothing new to add'); return; } await q(sb.from('agent_evals').insert(rows)); toast(`Added ${rows.length} cases`); openAgent(a.id,'evals'); };
+  $('#ecLeads').onclick=async()=>{ try{ const have=new Set(cases.map(c=>c.lead_id).filter(Boolean)); const ls=await q(sb.from('leads').select('id,title,company,location,raw_snippet,jd_text,job_stream_id,fit_score').order('created_at',{ascending:false}).limit(200));
+      await addCases(ls.filter(l=>!have.has(l.id)).map(l=>({agent_id:a.id, job_stream_id:l.job_stream_id, lead_id:l.id, input:{title:l.title, company:l.company, location:l.location, snippet:l.raw_snippet, jd_text:l.jd_text}, note:'from lead · old score '+(l.fit_score??'none')}))); }catch(e){ err(e); } };
+  $('#ecApps').onclick=async()=>{ try{ const have=new Set(cases.map(c=>c.application_id).filter(Boolean)); const as=await q(sb.from('applications').select('id,title,company,location,job_stream_id,status,final_status').order('created_at',{ascending:false}).limit(300));
+      await addCases(as.filter(x=>!have.has(x.id)).map(x=>({agent_id:a.id, job_stream_id:x.job_stream_id, application_id:x.id, input:{title:x.title, company:x.company, location:x.location}, note:'from application · '+(x.final_status||x.status)}))); }catch(e){ err(e); } };
+  $('#ecMan').onclick=()=>{ openModal(`<h3>New eval case</h3><div class="grid2"><div><label>Title</label><input id="mT"></div><div><label>Company</label><input id="mC"></div><div><label>Location</label><input id="mL"></div><div><label>Stream</label><select id="mS">${state.streams.map(s=>`<option value="${s.id}">${esc(s.name)}</option>`).join('')}</select></div></div>
+      <label>Snippet or JD text (optional)</label><textarea id="mJ"></textarea><label>Your band</label><select id="mB">${Object.entries(AG_BANDS).map(([k,b])=>`<option value="${k}">${b.label}</option>`).join('')}</select>
+      <div class="actions"><button class="primary" id="mOk">Add</button><button id="mNo">Cancel</button></div><div class="err" id="mErr"></div>`);
+    $('#modal').style.maxWidth='';
+    $('#mNo').onclick=()=>openAgent(a.id,'evals');
+    $('#mOk').onclick=async()=>{ try{ if (!$('#mT').value.trim()) throw new Error('Title is required.'); const b=$('#mB').value;
+      await q(sb.from('agent_evals').insert({agent_id:a.id, job_stream_id:$('#mS').value, input:{title:$('#mT').value.trim(), company:$('#mC').value.trim(), location:$('#mL').value.trim(), snippet:null, jd_text:$('#mJ').value.trim()||null}, expected_band:b, expected_min:AG_BANDS[b].min, expected_max:AG_BANDS[b].max, note:'added by hand'}));
+      toast('Case added'); openAgent(a.id,'evals'); }catch(e){ $('#mErr').textContent=e.message||e; } }; };
+}
+
 /* ===================== Settings ===================== */
 async function renderSettings(el){
   const s = state.settings;
@@ -571,7 +901,7 @@ async function simpleList(table, fields, labelCol){
 }
 </script>
 <!-- CHANGELOG
-v1.0.5 · 17 Oct 2026 · Full job description: JD badge column in Inbox and Applications (JD / JD part / JD pending / no JD), application overview shows the JD from the application or its lead with source link, 'Add job description' paste box when none (saved as manual). Lead and application forms show JD status, source, fetched time and last error. Runner v1.0.8 fills the JD automatically.
+v1.0.5 · 17 Oct 2026 · Agents screen: one card per agent (9: 8 from the design plus nightly sweeps) with on/off, schedule (every pass / every N hours / nightly), model (Gemini or Groq, backup, Ollama listed but disabled), versioned prompts with a live preview of exactly what the AI receives, per-stream fitment rubric (parameters with weight, description, three anchors, hard cap, if-unknown rule, threshold, a try-it calculator), guardrails (locked ones enforced in code), and evals (label cases by band, queue a run for any prompt + fitment version, decision and band agreement, a go-live gate when activating a version). Data: tables agents, agent_prompt_versions, fit_rubric_versions, agent_evals, agent_eval_runs. The runner reads this from v1.0.8.
 v1.0.4 · 13 Oct 2026 · #app=<id> in the URL opens that application (Telegram reply links from the runner).
 v1.0.3 · 13 Oct 2026 · Login account switched to sudharsan454@gmail.com per Sudharsan; Supabase allowlist trigger and every owner_id row moved to that user. Facilio ID no longer accepted.
 v1.0.2 · 11 Oct 2026 · Fix: on reload with a saved session the page stayed blank and the tab froze; boot() ran inside the supabase-js auth callback and deadlocked on the auth lock. Boot is now deferred and runs once. Found in the live browser validation.

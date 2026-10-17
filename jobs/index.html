@@ -1,5 +1,5 @@
 <!doctype html>
-<!-- Job Application Driver · app v1.0.8 · 17 Oct 2026 · v1.0.8: Fitment tab, prompt preview and eval selectors read only fitment rubrics (agent_key = fit); the same table now also holds Resume Decider criteria (runner v1.0.11). v1.0.7: merges two parallel v1.0.5 builds: the JD panel (commit ee35102) and the Agents screen (on/off, schedule, model, versioned prompts, per-stream fitment rubric, guardrails, evals; JD Fetcher card). v1.0.5 (JD): full job description on leads and applications (JD badge in Inbox and Applications, JD panel with source link, paste-by-hand box; runner v1.0.8 fills it). v1.0.4: #app=<id> deep link opens an application (used by Telegram replies from the runner). v1.0.3: login account switched to sudharsan454@gmail.com (all rows re-owned in Supabase, allowlist trigger updated). v1.0.2: boot deferred out of the auth callback (page froze on reload with a saved session). v1.0.1: application detail embed disambiguated (two FKs between applications and leads). v1.0 · 10 Oct 2026 · single-file web app on Supabase (Project Zero) · login: sudharsan454@gmail.com only · changelog at the foot of this file -->
+<!-- Job Application Driver · app v1.0.9 · 17 Oct 2026 · v1.0.9: Resume Decider. Inbox gets a Resume column (Generic / Tailor / not yet run / Failed, a ? when the agent is unsure, your override wins); click it for the per-criterion breakdown, override or re-run. Jev's shadow fit score shows under the fit score (J 72). Agents → Resume Decider gets a Criteria tab (same editor as Fitment: weights, descriptions, anchors, threshold = Tailored at or above) and Jev as its model (Gemini backup). Read by runner v1.0.11. v1.0.8: Fitment tab, prompt preview and eval selectors read only fitment rubrics (agent_key = fit); the same table now also holds Resume Decider criteria (runner v1.0.11). v1.0.7: merges two parallel v1.0.5 builds: the JD panel (commit ee35102) and the Agents screen (on/off, schedule, model, versioned prompts, per-stream fitment rubric, guardrails, evals; JD Fetcher card). v1.0.5 (JD): full job description on leads and applications (JD badge in Inbox and Applications, JD panel with source link, paste-by-hand box; runner v1.0.8 fills it). v1.0.4: #app=<id> deep link opens an application (used by Telegram replies from the runner). v1.0.3: login account switched to sudharsan454@gmail.com (all rows re-owned in Supabase, allowlist trigger updated). v1.0.2: boot deferred out of the auth callback (page froze on reload with a saved session). v1.0.1: application detail embed disambiguated (two FKs between applications and leads). v1.0 · 10 Oct 2026 · single-file web app on Supabase (Project Zero) · login: sudharsan454@gmail.com only · changelog at the foot of this file -->
 <html lang="en">
 <head>
 <meta charset="utf-8">
@@ -82,7 +82,7 @@ pre.text{white-space:pre-wrap;font-family:var(--body);font-size:13px;background:
 
 <div id="login" class="login">
   <h1>Job Application Driver</h1>
-  <div class="muted">v1.0.8 · one account only</div>
+  <div class="muted">v1.0.9 · one account only</div>
   <form id="loginForm">
     <label for="email">Email</label><input id="email" type="email" autocomplete="username" value="sudharsan454@gmail.com">
     <label for="password">Password</label><input id="password" type="password" autocomplete="current-password">
@@ -93,7 +93,7 @@ pre.text{white-space:pre-wrap;font-family:var(--body);font-size:13px;background:
 
 <div id="app" class="app">
   <div class="topbar">
-    <div class="brand">Job Application Driver<small>v1.0.8</small></div>
+    <div class="brand">Job Application Driver<small>v1.0.9</small></div>
     <nav id="nav"></nav>
     <div class="streams" id="streamChips"></div>
     <button class="small" id="logoutBtn">Sign out</button>
@@ -252,6 +252,33 @@ const F = {
 const normCo = s => (s||'').toLowerCase().replace(/\b(pvt|private|ltd|limited|inc|llc|llp|technologies|technology|solutions|systems|labs)\b\.?/g,'').replace(/[^a-z0-9]+/g,' ').trim();
 
 /* ===================== Inbox ===================== */
+
+// ---- Resume Decider (app v1.0.8): picklist generic | tailored | not_run | failed; your override wins
+const RD_LABEL = {generic:'Generic', tailored:'Tailor', not_run:'not yet run', failed:'Failed'};
+function rdValue(l){ return l.resume_override || l.resume_decision || 'not_run'; }
+function rdTag(l){
+  const v = rdValue(l), cls = v==='generic'?'ok':v==='tailored'?'warn':v==='failed'?'bad':'';
+  const t = l.resume_override ? 'your call' : v==='failed' ? (l.resume_error||'failed') : v==='not_run' ? (l.resume_error?('last try: '+l.resume_error):'waits for the next runner pass (only leads at or above the fit gate)') : `score ${l.resume_score??'?'} · ${l.resume_engine||''}${l.resume_low_confidence?' · unsure':''}`;
+  return `<span class="tag ${cls} rd" data-id="${l.id}" style="cursor:pointer" title="${esc(t)}">${RD_LABEL[v]||v}${l.resume_low_confidence&&!l.resume_override?' ?':''}${l.resume_override?' ✎':''}</span>`;
+}
+async function rdOpen(l){
+  const b = l.resume_breakdown || {}, ps = b.params || {};
+  const rows = Object.entries(ps).map(([k,p])=>`<tr><td class="mono">${esc(k)}</td><td>${p.score==null?'<span class="muted">cannot judge</span>':p.score}</td><td class="muted">${esc(p.why||'')}</td></tr>`).join('');
+  const d = b.direct || {};
+  openModal(`<h3>Resume: ${esc(l.title)} at ${esc(l.company)}</h3>
+    <p>Agent says <b>${RD_LABEL[l.resume_decision]||l.resume_decision}</b>${l.resume_score!=null?` · score ${l.resume_score} (Tailored at or above ${b.threshold??'?'})`:''}${l.resume_engine?` · ${esc(l.resume_engine)}`:''}${l.resume_low_confidence?' · <span class="tag warn">unsure, your call</span>':''}${l.resume_override?` · your override: <b>${RD_LABEL[l.resume_override]}</b>`:''}</p>
+    ${l.resume_reason?`<p class="muted">${esc(l.resume_reason)}</p>`:''}
+    ${l.resume_error?`<div class="callout warn">Last error (try ${l.resume_attempts||0} of 3): ${esc(l.resume_error)}</div>`:''}
+    ${rows?`<table><thead><tr><th>Criterion</th><th>Score</th><th>Why</th></tr></thead><tbody>${rows}</tbody></table>`:'<p class="muted">No breakdown yet.</p>'}
+    ${d.choice?`<p class="muted" style="font-size:13px">Jev's direct answer: ${esc(d.choice)}${d.probabilities&&d.probabilities[d.choice]!=null?` (p=${Number(d.probabilities[d.choice]).toFixed(2)})`:''}${b.career_notes===false?' · no career notes yet, so "underplayed experience" was left out':''}</p>`:''}
+    <div class="actions"><button class="primary" id="rdG">Set Generic</button><button id="rdT">Set Tailor</button>${l.resume_override?'<button id="rdC">Clear my override</button>':''}<button id="rdR">Re-run on next pass</button><button id="rdX">Close</button></div><div class="err" id="rdE"></div>`);
+  const upd = async (patch, msg) => { try { await q(sb.from('leads').update(patch).eq('id',l.id)); closeModal(); toast(msg); go(state.screen||'inbox'); } catch(e){ $('#rdE').textContent=e.message||e; } };
+  $('#rdG').onclick=()=>upd({resume_override:'generic'}, 'Set to Generic');
+  $('#rdT').onclick=()=>upd({resume_override:'tailored'}, 'Set to Tailor');
+  if ($('#rdC')) $('#rdC').onclick=()=>upd({resume_override:null}, 'Override cleared');
+  $('#rdR').onclick=()=>upd({resume_decision:'not_run', resume_attempts:0, resume_error:null}, 'Will be decided again on the next runner pass');
+  $('#rdX').onclick=closeModal;
+}
 async function renderInbox(el){
   const thr = state.settings.fit_threshold ?? 60;
   const leads = await q(inStreams(sb.from('leads').select('*, job_boards(name), target_companies(name)').in('status',['new','fit_checked'])).order('fit_score',{ascending:false,nullsFirst:false}).order('created_at',{ascending:false}).limit(300));
@@ -260,14 +287,16 @@ async function renderInbox(el){
   const parked = await q(inStreams(sb.from('leads').select('id',{count:'exact',head:true}).eq('status','parked')));
   el.innerHTML = `<h2>Inbox <span class="muted" style="font-weight:400;font-size:14px">${leads.length} open leads · fit gate ${thr}</span></h2>
   <div class="toolbar"><input class="grow" id="inboxFilter" placeholder="filter title / company"><button id="newLead">+ Lead</button><button id="showParked">Parked</button></div>
-  <div class="scroll"><table><thead><tr><th>Fit</th><th>Title</th><th>Company</th><th>Location</th><th>Stream</th><th>Source</th><th>Age</th><th>Easy</th><th>Know</th><th>JD</th><th>Actions</th></tr></thead><tbody id="inboxRows"></tbody></table></div>`;
+  <div class="scroll"><table><thead><tr><th>Fit</th><th title="Resume Decider">Resume</th><th>Title</th><th>Company</th><th>Location</th><th>Stream</th><th>Source</th><th>Age</th><th>Easy</th><th>Know</th><th>JD</th><th>Actions</th></tr></thead><tbody id="inboxRows"></tbody></table></div>`;
   const draw = () => { const f=($('#inboxFilter').value||'').toLowerCase(); $('#inboxRows').innerHTML = leads.filter(l=>!f||(l.title+' '+l.company).toLowerCase().includes(f)).map(l=>{
     const age = daysAgo(l.posted_at||l.created_at); const stale = age!=null && age > (state.settings.freshness_days??14);
     const fit = l.fit_score==null?'<span class="tag">not scored</span>':`<span class="fit" style="color:${l.fit_score>=thr?'var(--accent)':'var(--warn)'}">${Math.round(l.fit_score)}</span>`;
     const know = connSet.get(normCo(l.company))||0;
-    return `<tr class="row" data-id="${l.id}"><td>${fit}</td><td>${esc(l.title)}${l.target_companies?` <span class="tag new">preferred co.</span>`:''}</td><td>${esc(l.company)}</td><td>${esc(l.location||'')}</td><td class="muted">${esc(streamName(l.job_stream_id))}</td><td class="muted">${esc(l.job_boards?.name||l.source_platform||'')}</td><td class="${stale?'tag warn':''}">${age==null?'':age+' d'}${l.posted_at_basis==='email_received'?'<span class="muted" title="posting date not in the alert; email date used">*</span>':''}</td><td>${l.easy_apply?'yes':''}</td><td>${know?`<span class="tag ok">${know}</span>`:''}</td><td>${jdTag(l.jd_text,l.jd_confidence)}</td>
-    <td style="white-space:nowrap"><button class="small act" data-a="apply" data-id="${l.id}">Apply</button> <button class="small act" data-a="tailor" data-id="${l.id}">Tailor</button> <button class="small act" data-a="park" data-id="${l.id}">Park</button> ${l.url?`<a class="btn small" href="${esc(l.url)}" target="_blank" rel="noopener">Open</a>`:''}</td></tr>`; }).join('') || '<tr><td colspan="11" class="muted">No open leads. Add one, or wait for the next sourcing run.</td></tr>';
-    $('#inboxRows').querySelectorAll('tr.row').forEach(tr=>tr.onclick=e=>{ if (e.target.closest('button,a')) return; const l=leads.find(x=>x.id===tr.dataset.id); editRecord({table:'leads',title:'Lead',fields:F.lead,row:l,after:()=>go('inbox')}); });
+    const jv = l.fit_shadow && l.fit_shadow.score!=null ? `<div class="mono muted" style="font-size:11px" title="Jev shadow fit score (not used for decisions yet)">J ${l.fit_shadow.score}</div>` : '';
+    return `<tr class="row" data-id="${l.id}"><td>${fit}${jv}</td><td>${rdTag(l)}</td><td>${esc(l.title)}${l.target_companies?` <span class="tag new">preferred co.</span>`:''}</td><td>${esc(l.company)}</td><td>${esc(l.location||'')}</td><td class="muted">${esc(streamName(l.job_stream_id))}</td><td class="muted">${esc(l.job_boards?.name||l.source_platform||'')}</td><td class="${stale?'tag warn':''}">${age==null?'':age+' d'}${l.posted_at_basis==='email_received'?'<span class="muted" title="posting date not in the alert; email date used">*</span>':''}</td><td>${l.easy_apply?'yes':''}</td><td>${know?`<span class="tag ok">${know}</span>`:''}</td><td>${jdTag(l.jd_text,l.jd_confidence)}</td>
+    <td style="white-space:nowrap"><button class="small act" data-a="apply" data-id="${l.id}">Apply</button> <button class="small act" data-a="tailor" data-id="${l.id}">Tailor</button> <button class="small act" data-a="park" data-id="${l.id}">Park</button> ${l.url?`<a class="btn small" href="${esc(l.url)}" target="_blank" rel="noopener">Open</a>`:''}</td></tr>`; }).join('') || '<tr><td colspan="12" class="muted">No open leads. Add one, or wait for the next sourcing run.</td></tr>';
+    $('#inboxRows').querySelectorAll('.rd').forEach(x=>x.onclick=e=>{ e.stopPropagation(); rdOpen(leads.find(y=>y.id===x.dataset.id)); });
+    $('#inboxRows').querySelectorAll('tr.row').forEach(tr=>tr.onclick=e=>{ if (e.target.closest('button,a,.rd')) return; const l=leads.find(x=>x.id===tr.dataset.id); editRecord({table:'leads',title:'Lead',fields:F.lead,row:l,after:()=>go('inbox')}); });
     $('#inboxRows').querySelectorAll('button.act').forEach(b=>b.onclick=()=>leadAction(b.dataset.a, leads.find(x=>x.id===b.dataset.id)));
   };
   draw(); $('#inboxFilter').oninput=draw;
@@ -612,7 +641,7 @@ async function openAgent(id, tab){
   agState.a = a; agState.tab = tab || 'overview';
   const tabs = [['overview','Overview'], ['schedule','Schedule & model']];
   if (AG_MARK[a.key]) tabs.push(['prompt','Prompt']);
-  if (a.key==='fit') tabs.push(['rubric','Fitment']);
+  if (a.key==='fit'||a.key==='resume_decider') tabs.push(['rubric', a.key==='fit'?'Fitment':'Criteria']);
   tabs.push(['guardrails','Guardrails']);
   if (a.key==='fit') tabs.push(['evals','Evals']);
   if (!tabs.find(t=>t[0]===agState.tab)) agState.tab='overview';
@@ -663,7 +692,8 @@ async function agSchedule(a, el){
     </div><div>
       <h3>Model</h3>
       ${a.uses_llm?`
-      <label for="agPri">Main model</label><select id="agPri"><option value="gemini" ${m.primary==='gemini'?'selected':''}>Gemini (free tier)</option><option value="groq" ${m.primary==='groq'?'selected':''}>Groq (free tier)</option><option value="ollama" disabled>Ollama on your Mac (not reachable from GitHub yet)</option></select>
+      <label for="agPri">Main model</label><select id="agPri">${a.key==='resume_decider'?`<option value="jev" ${m.primary==='jev'?'selected':''}>Jev (TypeSafe via Vercel, judge only, about $0.04 per million tokens)</option>`:''}<option value="gemini" ${m.primary==='gemini'?'selected':''}>Gemini (free tier)</option><option value="groq" ${m.primary==='groq'?'selected':''}>Groq (free tier)</option><option value="ollama" disabled>Ollama on your Mac (not reachable from GitHub yet)</option></select>
+      ${a.key==='fit'?'<p class="muted" style="font-size:13px">Jev also scores every lead with this same fitment in the background (shown as "J 72" under the fit score). It does not decide anything until it passes the eval gate.</p>':''}
       <label for="agFb">Backup when the main model is limited or failing</label><select id="agFb"><option value="groq" ${m.fallback==='groq'?'selected':''}>Groq</option><option value="gemini" ${m.fallback==='gemini'?'selected':''}>Gemini</option><option value="none" ${m.fallback==='none'?'selected':''}>None (wait for the next run)</option></select>
       <div class="grid2"><div><label for="agGm">Gemini model (blank = newest Flash)</label><input id="agGm" value="${esc(m.gemini_model||'')}" placeholder="auto"></div><div><label for="agQm">Groq model (blank = auto)</label><input id="agQm" value="${esc(m.groq_model||'')}" placeholder="auto"></div></div>
       <div class="grid2"><div><label for="agTok">Max output tokens</label><input id="agTok" type="number" value="${m.max_tokens??4096}"></div><div><label for="agTo">Timeout, seconds</label><input id="agTo" type="number" value="${m.timeout_s??75}"></div></div>
@@ -724,26 +754,27 @@ async function agPrompt(a, el){
 }
 
 async function agRubric(a, el){
+  const RK = a.key==='resume_decider' ? 'resume_decider' : 'fit', AF = RK==='fit' ? 'fit_rubric_version_id' : 'resume_rubric_version_id';
   const streams = state.streams;
   const sid = agState.rs && streams.find(s=>s.id===agState.rs) ? agState.rs : streams[0].id; agState.rs=sid;
   const stream = streams.find(s=>s.id===sid);
-  const vs = await q(sb.from('fit_rubric_versions').select('*').eq('job_stream_id',sid).eq('agent_key','fit').order('version',{ascending:false}));
-  const sel = vs.find(v=>v.id===agState.rv) || vs.find(v=>v.id===stream.fit_rubric_version_id) || vs[0];
-  const rub = JSON.parse(JSON.stringify(sel?.rubric || {threshold:60, params:[]}));
+  const vs = await q(sb.from('fit_rubric_versions').select('*').eq('job_stream_id',sid).eq('agent_key',RK).order('version',{ascending:false}));
+  const sel = vs.find(v=>v.id===agState.rv) || vs.find(v=>v.id===stream[AF]) || vs[0];
+  const rub = JSON.parse(JSON.stringify(sel?.rubric || {threshold:RK==='fit'?60:55, params:[]}));
   el.innerHTML = `<div class="toolbar"><label style="margin:0">Stream</label><select id="rbS" style="width:auto">${streams.map(s=>`<option value="${s.id}" ${s.id===sid?'selected':''}>${esc(s.name)}</option>`).join('')}</select>
-      <label style="margin:0">Version</label><select id="rbV" style="width:auto">${vs.map(v=>`<option value="${v.id}" ${v.id===sel?.id?'selected':''}>v${v.version}${v.id===stream.fit_rubric_version_id?' · active':''}</option>`).join('')}</select>
-      ${sel && sel.id!==stream.fit_rubric_version_id?`<button class="small" id="rbAct">Activate v${sel.version}</button>`:'<span class="tag ok">active</span>'}</div>
-    <div class="callout">Fitment = a weighted average of these parameters. The AI scores each parameter 0–100 against the three anchors. The system does the maths, applies the caps, and parks anything below the threshold. Weights are relative; they do not need to add up to 100.</div>
+      <label style="margin:0">Version</label><select id="rbV" style="width:auto">${vs.map(v=>`<option value="${v.id}" ${v.id===sel?.id?'selected':''}>v${v.version}${v.id===stream[AF]?' · active':''}</option>`).join('')}</select>
+      ${sel && sel.id!==stream[AF]?`<button class="small" id="rbAct">Activate v${sel.version}</button>`:'<span class="tag ok">active</span>'}</div>
+    <div class="callout">${RK==='fit'?'Fitment = a weighted average of these parameters. The AI scores each parameter 0–100 against the three anchors. The system does the maths, applies the caps, and parks anything below the threshold. Weights are relative; they do not need to add up to 100.':'Resume Decider = a weighted "need to tailor" score from these criteria. A higher score means more reason to tailor. Jev scores each criterion against the three anchors (about 10 / 50 / 90); the system does the maths. At or above the threshold the lead shows <b>Tailor</b>, below it <b>Generic</b>. It runs only on leads at or above the fit gate, and never changes your resume.'}</div>
     <div class="ag-split"><div>
       <div id="rbParams"></div>
       <div class="actions"><button id="rbAdd">+ Add parameter</button></div>
-      <div class="grid2"><div><label for="rbThr">Threshold: push at or above</label><input id="rbThr" type="number" min="0" max="100" value="${rub.threshold??60}"></div><div><label for="rbNotes">What changed</label><input id="rbNotes" placeholder="e.g. location cap raised to 60"></div></div>
+      <div class="grid2"><div><label for="rbThr">${RK==='fit'?'Threshold: push at or above':'Threshold: Tailored at or above'}</label><input id="rbThr" type="number" min="0" max="100" value="${rub.threshold??60}"></div><div><label for="rbNotes">What changed</label><input id="rbNotes" placeholder="e.g. location cap raised to 60"></div></div>
       <div class="actions"><button class="primary" id="rbSave">Save as new version (draft)</button></div><div class="err" id="rbErr"></div>
       <h3>Try it</h3><p class="muted" style="font-size:13px">Type parameter scores to see the total this rubric gives, caps included. Leave a box empty for "cannot judge".</p><div id="rbTry"></div><div id="rbTryOut" class="mono" style="margin-top:6px"></div>
     </div><div><label>How this reaches the AI ({{rubric}} in the prompt)</label><pre class="text" id="rbPrev" style="max-height:640px;font-family:var(--mono);font-size:12px"></pre></div></div>`;
   const prev = () => { $('#rbPrev').textContent = agRubricText(rub) + `\n\nThreshold: ${rub.threshold}`; };
   const tryDraw=()=>{ $('#rbTry').innerHTML = rub.params.filter(p=>p.enabled!==false).map(p=>`<span style="display:inline-flex;gap:4px;align-items:center;margin:0 10px 6px 0"><span class="mono muted">${esc(p.key)}</span><input class="rbT" data-k="${esc(p.key)}" type="number" min="0" max="100" placeholder="?" style="width:62px"></span>`).join('');
-    const calc=()=>{ const ps={}; $('#rbTry').querySelectorAll('.rbT').forEach(x=>ps[x.dataset.k]={score:x.value===''?null:Number(x.value)}); const r=agComputeFit(rub, ps); $('#rbTryOut').innerHTML = `Total <b>${r.total??'—'}</b> · ${r.total!=null&&r.total>=Number(rub.threshold)?'<span class="tag ok">push</span>':'<span class="tag">park</span>'}${r.caps.length?` · capped by ${esc(r.caps.join(', '))}`:''}`; };
+    const calc=()=>{ const ps={}; $('#rbTry').querySelectorAll('.rbT').forEach(x=>ps[x.dataset.k]={score:x.value===''?null:Number(x.value)}); const r=agComputeFit(rub, ps); $('#rbTryOut').innerHTML = `Total <b>${r.total??'—'}</b> · ${r.total!=null&&r.total>=Number(rub.threshold)?`<span class="tag ok">${RK==='fit'?'push':'tailor'}</span>`:`<span class="tag">${RK==='fit'?'park':'generic'}</span>`}${r.caps.length?` · capped by ${esc(r.caps.join(', '))}`:''}`; };
     $('#rbTry').querySelectorAll('.rbT').forEach(x=>x.oninput=calc); calc(); };
   const draw = () => {
     const wsum = rub.params.filter(p=>p.enabled!==false).reduce((s,p)=>s+Number(p.weight||0),0)||1;
@@ -780,10 +811,10 @@ async function agRubric(a, el){
         if (p.cap && (p.cap.max<0||p.cap.max>100||p.cap.below<0||p.cap.below>100)) throw new Error(`${p.name}: cap numbers must be 0–100.`); }
       if (!(rub.threshold>=0&&rub.threshold<=100)) throw new Error('Threshold must be 0–100.');
       if (sel && JSON.stringify(rub)===JSON.stringify(sel.rubric)) throw new Error('No change from v'+sel.version+'.');
-      const next=(vs[0]?.version||0)+1; const v=await q(sb.from('fit_rubric_versions').insert({job_stream_id:sid, agent_key:'fit', version:next, rubric:rub, notes:$('#rbNotes').value||null}).select().single());
-      agState.rv=v.id; toast(`Saved fitment v${next} for ${stream.name} as a draft`); openAgent(a.id,'rubric'); }catch(e){ $('#rbErr').textContent=e.message||e; } };
-  if ($('#rbAct')) $('#rbAct').onclick=async()=>{ const ok=await agGateConfirm(`Fitment v${sel.version} (${stream.name})`,'rubric',sel.id); if(!ok){ openAgent(a.id,'rubric'); return; }
-    try{ await q(sb.from('job_streams').update({fit_rubric_version_id:sel.id}).eq('id',sid)); state.streams = await q(sb.from('job_streams').select('*').order('created_at')); toast(`Fitment v${sel.version} is live for ${stream.name} from the next run`); openAgent(a.id,'rubric'); }catch(e){ err(e); } };
+      const next=(vs[0]?.version||0)+1; const v=await q(sb.from('fit_rubric_versions').insert({job_stream_id:sid, agent_key:RK, version:next, rubric:rub, notes:$('#rbNotes').value||null}).select().single());
+      agState.rv=v.id; toast(`Saved ${RK==='fit'?'fitment':'criteria'} v${next} for ${stream.name} as a draft`); openAgent(a.id,'rubric'); }catch(e){ $('#rbErr').textContent=e.message||e; } };
+  if ($('#rbAct')) $('#rbAct').onclick=async()=>{ const ok = RK==='fit' ? await agGateConfirm(`Fitment v${sel.version} (${stream.name})`,'rubric',sel.id) : await confirmBox(`Make criteria v${sel.version} live for ${stream.name}? It is used from the next runner pass; leads already decided keep their answer unless you re-run them.`); if(!ok){ openAgent(a.id,'rubric'); return; }
+    try{ await q(sb.from('job_streams').update({[AF]:sel.id}).eq('id',sid)); state.streams = await q(sb.from('job_streams').select('*').order('created_at')); toast(`${RK==='fit'?'Fitment':'Criteria'} v${sel.version} is live for ${stream.name} from the next run`); openAgent(a.id,'rubric'); }catch(e){ err(e); } };
 }
 
 async function agGuardrails(a, el){
@@ -894,7 +925,7 @@ async function renderSettings(el){
     <label for="np">New password (12+ characters)</label><input id="np" type="password" autocomplete="new-password"><label for="np2">Repeat</label><input id="np2" type="password" autocomplete="new-password">
     <div class="actions"><button id="chPw">Change password</button></div><div class="err" id="pwErr"></div>
     <h3>Reference data</h3><p class="muted">Sources / portals and park reasons are editable here.</p><div class="actions"><button id="edBoards">Sources & portals</button><button id="edNoise">Park reasons</button><button id="edCrit">Filter criteria</button></div>
-    <h3>About</h3><p class="muted">Job Application Driver v1.0.8 · 17 Oct 2026 · data in Supabase Project Zero, row-level security by owner · design doc v1.7 in PMOS/JobTracker.</p>
+    <h3>About</h3><p class="muted">Job Application Driver v1.0.9 · 17 Oct 2026 · data in Supabase Project Zero, row-level security by owner · design doc v1.7 in PMOS/JobTracker.</p>
   </div></div>`;
   $('#saveS').onclick=async()=>{ try{ const ns={...s, fit_threshold:Number($('#s_fit').value), freshness_days:Number($('#s_fresh').value), daily_cap:Number($('#s_cap').value), quiet_hours:{from:$('#s_qf').value,to:$('#s_qt').value}, stale_days:Number($('#s_stale').value), ghost_days:Number($('#s_ghost').value), channel:$('#s_ch').value, telegram_chat_id:$('#s_tg').value||null}; await q(sb.from('user_settings').upsert({owner_id:state.user.id, settings:ns, updated_at:new Date().toISOString()})); state.settings=ns; toast('Settings saved'); }catch(e){ $('#sErr').textContent=e.message||e; } };
   $('#chPw').onclick=async()=>{ const a=$('#np').value,b=$('#np2').value; if (a.length<12) return $('#pwErr').textContent='Use at least 12 characters.'; if (a!==b) return $('#pwErr').textContent='Passwords do not match.'; const {error}=await sb.auth.updateUser({password:a}); if (error) return $('#pwErr').textContent=error.message; $('#np').value=$('#np2').value=''; $('#pwErr').textContent=''; toast('Password changed'); };
@@ -912,6 +943,7 @@ async function simpleList(table, fields, labelCol){
 }
 </script>
 <!-- CHANGELOG
+v1.0.9 · 17 Oct 2026 · v1.0.9: Resume Decider. Inbox gets a Resume column (Generic / Tailor / not yet run / Failed, a ? when the agent is unsure, your override wins); click it for the per-criterion breakdown, override or re-run. Jev's shadow fit score shows under the fit score (J 72). Agents → Resume Decider gets a Criteria tab (same editor as Fitment: weights, descriptions, anchors, threshold = Tailored at or above) and Jev as its model (Gemini backup). Read by runner v1.0.11.
 v1.0.8 · 17 Oct 2026 · Fitment screens filter fit_rubric_versions to agent_key = fit (Resume Decider criteria share the table since runner v1.0.11).
 v1.0.7 · 17 Oct 2026 · Merge: two sessions each shipped a "v1.0.5" (JD panel at 22:38 IST, Agents screen at 22:46 IST); the second deploy overwrote the first. This build has both, plus the JD Fetcher card (v1.0.6).
 v1.0.6 · 17 Oct 2026 · (Agents line) JD Fetcher agent card.

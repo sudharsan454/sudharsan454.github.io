@@ -1,5 +1,5 @@
 <!doctype html>
-<!-- Job Application Driver · app v1.0.10 · 18 Oct 2026 · v1.0.10: agent run log. Every agent card shows a health dot, last run, 24 h success rate and a late flag; each agent gets a Runs tab; the Runs screen lists all runs with health cards, errors by type, filters (date range with quick picks and custom from/to, agent, status, error type, model, backup AI, text) and a run detail (errors per item, leads created, GitHub link). Missed slots are computed from each agent's schedule. Needs runner v1.0.13. v1.0.9: Resume Decider. Inbox gets a Resume column (Generic / Tailor / not yet run / Failed, a ? when the agent is unsure, your override wins); click it for the per-criterion breakdown, override or re-run. Jev's shadow fit score shows under the fit score (J 72). Agents → Resume Decider gets a Criteria tab (same editor as Fitment: weights, descriptions, anchors, threshold = Tailored at or above) and Jev as its model (Gemini backup). Read by runner v1.0.11. v1.0.8: Fitment tab, prompt preview and eval selectors read only fitment rubrics (agent_key = fit); the same table now also holds Resume Decider criteria (runner v1.0.11). v1.0.7: merges two parallel v1.0.5 builds: the JD panel (commit ee35102) and the Agents screen (on/off, schedule, model, versioned prompts, per-stream fitment rubric, guardrails, evals; JD Fetcher card). v1.0.5 (JD): full job description on leads and applications (JD badge in Inbox and Applications, JD panel with source link, paste-by-hand box; runner v1.0.8 fills it). v1.0.4: #app=<id> deep link opens an application (used by Telegram replies from the runner). v1.0.3: login account switched to sudharsan454@gmail.com (all rows re-owned in Supabase, allowlist trigger updated). v1.0.2: boot deferred out of the auth callback (page froze on reload with a saved session). v1.0.1: application detail embed disambiguated (two FKs between applications and leads). v1.0 · 10 Oct 2026 · single-file web app on Supabase (Project Zero) · login: sudharsan454@gmail.com only · changelog at the foot of this file -->
+<!-- Job Application Driver · app v1.0.11 · 24 Oct 2026 · v1.0.11: Prep room per interview round (header with company, round, interviewer, countdown to the call, progress; sections Brief, Case files, Mock grill, Numbers, Demo checklist, Ask them), practice mode (question first, 90-second timer, reveal, rate Weak/OK/Strong, weakest first; ratings saved to the database), answer bank redesign (topic chips, search, collapsed answers), pipeline drag and drop plus a Move-to control that open the status dialog pre-set to the new column. Needs migration job_driver_prep_room_v1_0. v1.0.10: agent run log. Every agent card shows a health dot, last run, 24 h success rate and a late flag; each agent gets a Runs tab; the Runs screen lists all runs with health cards, errors by type, filters (date range with quick picks and custom from/to, agent, status, error type, model, backup AI, text) and a run detail (errors per item, leads created, GitHub link). Missed slots are computed from each agent's schedule. Needs runner v1.0.13. v1.0.9: Resume Decider. Inbox gets a Resume column (Generic / Tailor / not yet run / Failed, a ? when the agent is unsure, your override wins); click it for the per-criterion breakdown, override or re-run. Jev's shadow fit score shows under the fit score (J 72). Agents → Resume Decider gets a Criteria tab (same editor as Fitment: weights, descriptions, anchors, threshold = Tailored at or above) and Jev as its model (Gemini backup). Read by runner v1.0.11. v1.0.8: Fitment tab, prompt preview and eval selectors read only fitment rubrics (agent_key = fit); the same table now also holds Resume Decider criteria (runner v1.0.11). v1.0.7: merges two parallel v1.0.5 builds: the JD panel (commit ee35102) and the Agents screen (on/off, schedule, model, versioned prompts, per-stream fitment rubric, guardrails, evals; JD Fetcher card). v1.0.5 (JD): full job description on leads and applications (JD badge in Inbox and Applications, JD panel with source link, paste-by-hand box; runner v1.0.8 fills it). v1.0.4: #app=<id> deep link opens an application (used by Telegram replies from the runner). v1.0.3: login account switched to sudharsan454@gmail.com (all rows re-owned in Supabase, allowlist trigger updated). v1.0.2: boot deferred out of the auth callback (page froze on reload with a saved session). v1.0.1: application detail embed disambiguated (two FKs between applications and leads). v1.0 · 10 Oct 2026 · single-file web app on Supabase (Project Zero) · login: sudharsan454@gmail.com only · changelog at the foot of this file -->
 <html lang="en">
 <head>
 <meta charset="utf-8">
@@ -76,13 +76,42 @@ pre.text{white-space:pre-wrap;font-family:var(--body);font-size:13px;background:
 .ag-split{display:grid;grid-template-columns:3fr 2fr;gap:0 16px}.ag-split>*{min-width:0}
 .grid2.ag-3{grid-template-columns:1fr 1fr 1fr}
 @media(max-width:640px){.ag-split,.grid2.ag-3{grid-template-columns:1fr}}
+/* v1.0.11 prep room, practice, bank, drag and drop */
+.col.over{border-color:var(--accent);background:var(--accent-soft)}
+.kcard[draggable=true]{cursor:grab}.kcard.dragging{opacity:.45}
+.kcard select{margin-top:6px;font-size:12.5px;padding:3px 6px}
+.room-head{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:6px 16px;align-items:end;padding-bottom:12px;border-bottom:1px solid var(--line)}
+.room-head h2{margin:2px 0 0}
+.count{font-size:1.6rem;font-weight:600;font-variant-numeric:tabular-nums;text-align:right;line-height:1.1}
+.count small{display:block;font-family:var(--mono);font-size:11px;font-weight:400;color:var(--muted);text-transform:uppercase;letter-spacing:.05em}
+.pbar{grid-column:1/-1;height:8px;background:var(--line);border-radius:4px;overflow:hidden}.pbar i{display:block;height:100%;background:var(--accent)}
+.room{display:grid;grid-template-columns:200px minmax(0,1fr);gap:16px;margin-top:14px}
+.rail{display:flex;flex-direction:column;gap:2px}
+.rail button{border:none;background:none;text-align:left;display:flex;justify-content:space-between;gap:10px;padding:7px 10px}
+.rail button span{font-family:var(--mono);font-size:12px;color:var(--muted)}
+.rail button.active{background:var(--accent-soft);color:var(--accent);font-weight:500}
+@media(max-width:760px){.room{grid-template-columns:1fr}.rail{flex-direction:row;flex-wrap:wrap}}
+.prow{border:1px solid var(--line);border-radius:6px;margin:8px 0;background:var(--surface);max-width:860px}
+.prow>button.pq2{width:100%;border:none;background:none;text-align:left;display:grid;grid-template-columns:1fr auto;gap:4px 12px;padding:10px 12px}
+.prow .pq2 b{font-weight:600}
+.prow .meta{font-family:var(--mono);font-size:11.5px;color:var(--muted);grid-column:1}
+.prow .pa{padding:0 12px 12px;max-width:72ch;font-size:14.5px;line-height:1.55}
+.dots{display:flex;gap:3px;align-items:center}.dots i{width:9px;height:9px;border-radius:50%;background:var(--line)}.dots i.on{background:var(--accent)}
+.practice{max-width:720px}.practice h3{font-size:1.15rem;line-height:1.4;margin:6px 0 12px}
+.timer{font-family:var(--mono);font-size:1.3rem;font-variant-numeric:tabular-nums}.timer.late{color:var(--bad)}
+.bank details{border:1px solid var(--line);border-radius:6px;margin:6px 0;background:var(--surface);max-width:860px}
+.bank summary{cursor:pointer;padding:10px 12px;font-weight:500;display:flex;gap:8px;align-items:baseline;flex-wrap:wrap}
+.bank details .body{padding:0 12px 12px;max-width:72ch;line-height:1.55;white-space:pre-wrap}
+.room-list{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:12px}
+.room-list .card{cursor:pointer}.room-list .card:hover{border-color:var(--accent)}
+button:focus-visible,select:focus-visible,summary:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
 </style>
 </head>
 <body>
 
 <div id="login" class="login">
   <h1>Job Application Driver</h1>
-  <div class="muted">v1.0.10 · one account only</div>
+  <div class="muted">v1.0.11 · one account only</div>
   <form id="loginForm">
     <label for="email">Email</label><input id="email" type="email" autocomplete="username" value="sudharsan454@gmail.com">
     <label for="password">Password</label><input id="password" type="password" autocomplete="current-password">
@@ -93,7 +122,7 @@ pre.text{white-space:pre-wrap;font-family:var(--body);font-size:13px;background:
 
 <div id="app" class="app">
   <div class="topbar">
-    <div class="brand">Job Application Driver<small>v1.0.10</small></div>
+    <div class="brand">Job Application Driver<small>v1.0.11</small></div>
     <nav id="nav"></nav>
     <div class="streams" id="streamChips"></div>
     <button class="small" id="logoutBtn">Sign out</button>
@@ -240,9 +269,9 @@ const F = {
   document: [streamFk, {k:'type',label:'Type',t:'select',opts:['resume','cover_letter']}, {k:'tag',label:'Tag',t:'select',opts:['generic','tailored']}, {k:'tailored_for_company',label:'Tailored for company',t:'text'}, {k:'version_label',label:'Version label',t:'text'}, {k:'status',label:'Status',t:'select',opts:['draft','final']}, {k:'storage_path',label:'File path / link',t:'text'}, {k:'derived_from_document_id',label:'Derived from',t:'fk',fk:{table:'documents',label:'version_label'}}, {k:'text',label:'Text',t:'textarea'}],
   contact: [{k:'name',label:'Name',t:'text'}, {k:'type',label:'Type',t:'select',opts:['hr','hiring_manager','consultant','interviewer','referral','founder','other']}, {k:'organization',label:'Organisation',t:'text'}, {k:'email',label:'Email',t:'text'}, {k:'phone',label:'Phone',t:'text'}, {k:'linkedin_url',label:'LinkedIn URL',t:'text'}, {k:'consultant_organization_id',label:'Agency',t:'fk',fk:{table:'consultant_organizations',label:'name'}}, {k:'target_company_id',label:'Target company',t:'fk',fk:{table:'target_companies',label:'name'}}, {k:'source',label:'Source',t:'select',opts:['email','linkedin','wispr','scout','manual']}, {k:'last_touch_at',label:'Last touch',t:'datetime'}, {k:'notes',label:'Notes',t:'textarea'}],
   agency: [{k:'name',label:'Agency name',t:'text'}, {k:'notes',label:'Notes',t:'textarea'}],
-  interview: [{k:'application_id',label:'Application',t:'fk',fk:{table:'applications',label:'title'}}, {k:'round_number',label:'Round',t:'number'}, {k:'stage_label',label:'Stage label',t:'text'}, {k:'interview_date',label:'Date',t:'date'}, {k:'interviewer_name',label:'Interviewer',t:'text'}, {k:'interviewer_linkedin_url',label:'Interviewer LinkedIn',t:'text'}, {k:'interviewer_contact_id',label:'Interviewer (contact)',t:'fk',fk:{table:'contacts',label:'name'}}, {k:'result',label:'Result',t:'select',opts:['pending','advanced','rejected']}, {k:'how_it_went',label:'How it went (1 to 5)',t:'number'}, {k:'how_it_went_note',label:'How it went (note)',t:'textarea'}, {k:'went_well',label:'Went well',t:'textarea'}, {k:'went_badly',label:'Went badly',t:'textarea'}, {k:'wispr_share_link',label:'Wispr Flow link',t:'text'}, {k:'wispr_meeting_id',label:'Wispr meeting id',t:'text'}, {k:'notes',label:'Notes',t:'textarea'}, {k:'transcript_text',label:'Transcript',t:'textarea'}],
+  interview: [{k:'application_id',label:'Application',t:'fk',fk:{table:'applications',label:'title'}}, {k:'round_number',label:'Round',t:'number'}, {k:'stage_label',label:'Stage label',t:'text'}, {k:'interview_date',label:'Date',t:'date'}, {k:'starts_at',label:'Call starts at',t:'datetime'}, {k:'interviewer_name',label:'Interviewer',t:'text'}, {k:'interviewer_linkedin_url',label:'Interviewer LinkedIn',t:'text'}, {k:'interviewer_contact_id',label:'Interviewer (contact)',t:'fk',fk:{table:'contacts',label:'name'}}, {k:'result',label:'Result',t:'select',opts:['pending','advanced','rejected']}, {k:'how_it_went',label:'How it went (1 to 5)',t:'number'}, {k:'how_it_went_note',label:'How it went (note)',t:'textarea'}, {k:'went_well',label:'Went well',t:'textarea'}, {k:'went_badly',label:'Went badly',t:'textarea'}, {k:'wispr_share_link',label:'Wispr Flow link',t:'text'}, {k:'wispr_meeting_id',label:'Wispr meeting id',t:'text'}, {k:'notes',label:'Notes',t:'textarea'}, {k:'transcript_text',label:'Transcript',t:'textarea'}],
   question: [{k:'question',label:'Question asked',t:'textarea'}, {k:'answer_given',label:'Answer you gave',t:'textarea'}, {k:'self_rating',label:'Self rating (1 to 5)',t:'number'}, {k:'topic',label:'Topic',t:'select',opts:['prioritisation','discovery','evals','pricing','conflict','failure','why_us','why_you','leadership','technical','other']}, {k:'transcript_ref',label:'Transcript reference',t:'text'}],
-  prep: [streamFk, {k:'question',label:'Question',t:'textarea'}, {k:'best_answer',label:'Best answer',t:'textarea'}, {k:'topic',label:'Topic',t:'select',opts:['prioritisation','discovery','evals','pricing','conflict','failure','why_us','why_you','leadership','technical','other']}, {k:'source',label:'Source',t:'select',opts:['hand_written','from_interview']}, {k:'status',label:'Status',t:'select',opts:['proposed','approved']}, {k:'last_reviewed_at',label:'Last reviewed',t:'datetime'}],
+  prep: [streamFk, {k:'kind',label:'Kind',t:'select',opts:['answer','mock','case_file','brief','number','checklist','ask_them']}, {k:'question',label:'Question',t:'textarea'}, {k:'best_answer',label:'Best answer',t:'textarea'}, {k:'follow_up',label:'Likely follow-up',t:'textarea'}, {k:'evidence',label:'Evidence / where it is',t:'textarea'}, {k:'topic',label:'Topic',t:'text'}, {k:'status',label:'Status',t:'select',opts:['proposed','approved']}, {k:'confidence',label:'Confidence (1 weak, 3 strong)',t:'number'}, {k:'sort_order',label:'Order',t:'number'}, {k:'source',label:'Source',t:'text',ro:true}, {k:'rehearse_count',label:'Times rehearsed',t:'number',ro:true}, {k:'last_rehearsed_at',label:'Last rehearsed',t:'datetime',ro:true}],
   outreach: [{k:'contact_id',label:'To (contact)',t:'fk',fk:{table:'contacts',label:'name'}}, {k:'channel',label:'Channel',t:'select',opts:['email','linkedin','whatsapp','call']}, {k:'status',label:'Status',t:'select',opts:['proposed','sent','replied','no_reply']}, {k:'sent_at',label:'Sent at',t:'datetime'}, {k:'replied_at',label:'Replied at',t:'datetime'}, {k:'plan_day',label:'Plan day (1/3/5)',t:'number'}, {k:'draft_text',label:'Message',t:'textarea'}],
   postmortem: [{k:'final_status',label:'Final status',t:'select',opts:['rejected','offer','withdrawn','ghosted']}, {k:'rounds_reached',label:'Rounds reached',t:'number'}, {k:'mistake',label:'What mistake did I make',t:'textarea'}, {k:'not_done_well',label:'What did I not do well',t:'textarea'}, {k:'change_next_time',label:'What to change next time',t:'textarea'}, {k:'written_by',label:'Written by',t:'select',opts:['you','agent_draft']}],
   appcontact: [{k:'contact_id',label:'Contact',t:'fk',fk:{table:'contacts',label:'name'}}, {k:'role_note',label:'Role on this application',t:'select',opts:['hr','consultant','interviewer','referral','hiring_manager']}],
@@ -346,8 +375,21 @@ const STATUSES = ['applied','screening','round_1','round_2','round_3','offer','r
 async function loadApps(){ return q(inStreams(sb.from('applications').select('*, job_boards(name), consultant_organizations(name)')).order('updated_at',{ascending:false})); }
 async function renderPipeline(el){
   const apps = await loadApps();
-  el.innerHTML = `<h2>Pipeline <span class="muted" style="font-weight:400;font-size:14px">${apps.length} applications</span></h2><div class="toolbar"><button id="newApp">+ Application</button></div><div class="kanban">${STATUSES.map(s=>`<div class="col"><h4>${s.replace('_',' ')} <span class="muted">${apps.filter(a=>a.status===s).length}</span></h4>${apps.filter(a=>a.status===s).map(a=>`<div class="kcard" data-id="${a.id}"><b>${esc(a.company)}</b><br>${esc(a.title)}<br><span class="muted mono">${esc(streamName(a.job_stream_id))}${a.resume_decision?' · '+a.resume_decision:''}</span>${a.next_action?`<br><span class="tag ${a.next_action_due&&new Date(a.next_action_due)<new Date()?'warn':''}">${esc(a.next_action)}${a.next_action_due?' · '+fmtD(a.next_action_due):''}</span>`:''}</div>`).join('')}</div>`).join('')}</div>`;
-  el.querySelectorAll('.kcard').forEach(c=>c.onclick=()=>openApplication(c.dataset.id));
+  const lbl = s => s.replace('_',' ');
+  el.innerHTML = `<h2>Pipeline <span class="muted" style="font-weight:400;font-size:14px">${apps.length} applications</span></h2><div class="toolbar"><button id="newApp">+ Application</button><span class="muted">Drag a card to another column, or use "Move to". Every move asks for the cause and the message, so the timeline and post-mortems keep working.</span></div><div class="kanban">${STATUSES.map(s=>`<div class="col" data-s="${s}"><h4>${lbl(s)} <span class="muted">${apps.filter(a=>a.status===s).length}</span></h4>${apps.filter(a=>a.status===s).map(a=>`<div class="kcard" draggable="true" data-id="${a.id}"><b>${esc(a.company)}</b><br>${esc(a.title)}<br><span class="muted mono">${esc(streamName(a.job_stream_id))}${a.resume_decision?' · '+a.resume_decision:''}</span>${a.next_action?`<br><span class="tag ${a.next_action_due&&new Date(a.next_action_due)<new Date()?'warn':''}">${esc(a.next_action)}${a.next_action_due?' · '+fmtD(a.next_action_due):''}</span>`:''}<select class="moveTo" aria-label="Move ${esc(a.company)} to"><option value="">Move to…</option>${STATUSES.filter(x=>x!==s).map(x=>`<option value="${x}">${lbl(x)}</option>`).join('')}</select></div>`).join('')}</div>`).join('')}</div>`;
+  const back = ()=>{ closeModal(); go('pipeline'); };
+  const move = (id, to) => { const a = apps.find(x=>x.id===id); if (!a || a.status===to) return; changeStatus(a, back, to); };
+  el.querySelectorAll('.kcard').forEach(c=>{
+    c.onclick=e=>{ if (e.target.closest('select')) return; openApplication(c.dataset.id); };
+    c.addEventListener('dragstart', e=>{ c.classList.add('dragging'); e.dataTransfer.effectAllowed='move'; e.dataTransfer.setData('text/plain', c.dataset.id); });
+    c.addEventListener('dragend', ()=>c.classList.remove('dragging'));
+    const sel=c.querySelector('select.moveTo'); sel.onclick=e=>e.stopPropagation(); sel.onchange=()=>{ if (sel.value) move(c.dataset.id, sel.value); };
+  });
+  el.querySelectorAll('.col').forEach(col=>{
+    col.addEventListener('dragover', e=>{ e.preventDefault(); e.dataTransfer.dropEffect='move'; col.classList.add('over'); });
+    col.addEventListener('dragleave', e=>{ if (!col.contains(e.relatedTarget)) col.classList.remove('over'); });
+    col.addEventListener('drop', e=>{ e.preventDefault(); col.classList.remove('over'); move(e.dataTransfer.getData('text/plain'), col.dataset.s); });
+  });
   $('#newApp').onclick=()=>editRecord({table:'applications',title:'New application',fields:F.application,row:null,defaults:{job_stream_id:selStreams()[0]||PM_STREAM,status:'applied',final_status:'open',applied_date:new Date().toISOString().slice(0,10)},after:s=>s?openApplication(s.id):go('pipeline')});
 }
 async function renderApplications(el){
@@ -413,14 +455,15 @@ async function openApplication(id, tab='overview'){
     if (tab==='rounds') openInterview(rounds.find(x=>x.id===rid).id, re);
   });
 }
-async function changeStatus(a, after){
-  openModal(`<h3>Change status: ${esc(a.company)}</h3><label>New status</label><select id="ns">${STATUSES.map(s=>`<option ${s===a.status?'selected':''}>${s}</option>`).join('')}</select><label>Cause</label><select id="cause"><option>manual</option><option>email</option><option>call</option><option>wispr</option></select><label>What they said (paste the message, verbatim)</label><textarea id="msg"></textarea><div class="actions"><button class="primary" id="ok">Save</button><button id="no">Cancel</button></div><div class="err" id="e"></div>`);
+async function changeStatus(a, after, preset){
+  const target = preset || a.status;
+  openModal(`<h3>Change status: ${esc(a.company)}</h3>${preset?`<p class="muted">${esc(a.status.replace('_',' '))} → <b>${esc(preset.replace('_',' '))}</b>${preset==='rejected'?' · a post-mortem will be created':''}</p>`:''}<label>New status</label><select id="ns">${STATUSES.map(s=>`<option ${s===target?'selected':''}>${s}</option>`).join('')}</select><label>Cause</label><select id="cause"><option>manual</option><option>email</option><option>call</option><option>wispr</option></select><label>What they said (paste the message, verbatim)</label><textarea id="msg"></textarea><div class="actions"><button class="primary" id="ok">Save</button><button id="no">Cancel</button></div><div class="err" id="e"></div>`);
   $('#no').onclick=after;
   $('#ok').onclick=async()=>{ try{ const ns=$('#ns').value, msg=$('#msg').value||null, now=new Date().toISOString(); const upd={status:ns, updated_at:now};
     if (['rejected','withdrawn','ghosted','offer'].includes(ns)) { upd.final_status=ns; upd.closed_at=now; if (ns==='rejected'&&msg){ upd.rejection_message=msg; upd.rejection_received_at=now; } }
     await q(sb.from('applications').update(upd).eq('id',a.id));
     await q(sb.from('status_history').insert({application_id:a.id, from_status:a.status, to_status:ns, changed_at:now, cause:$('#cause').value, message_text:msg}));
-    if (ns==='rejected'){ const pm = await q(sb.from('post_mortems').select('id').eq('application_id',a.id).maybeSingle()); if(!pm){ const n = await q(sb.from('interviews').select('id',{count:'exact',head:true}).eq('application_id',a.id)); await q(sb.from('post_mortems').insert({application_id:a.id, final_status:'rejected', rounds_reached:n?.length??0, written_by:'you'})); } }
+    if (ns==='rejected'){ const pm = await q(sb.from('post_mortems').select('id').eq('application_id',a.id).maybeSingle()); if(!pm){ const n = await q(sb.from('interviews').select('id').eq('application_id',a.id)); await q(sb.from('post_mortems').insert({application_id:a.id, final_status:'rejected', rounds_reached:n?.length??0, written_by:'you'})); } }
     toast('Status updated'); after(); }catch(e){ $('#e').textContent=e.message||e; } };
 }
 
@@ -508,24 +551,105 @@ async function openInterview(id, back){
   openModal(`<h3>${esc(r.applications?.company||'')} · round ${r.round_number} ${esc(r.stage_label||'')}</h3><div class="muted">${fmtD(r.interview_date)} · ${esc(r.interviewer_name||'')} · result ${esc(r.result||'pending')} · went ${r.how_it_went??'?'}/5 ${r.debriefed_at?'· debriefed '+fmtD(r.debriefed_at):''}</div>
     ${r.went_well?`<label>Went well</label><div>${esc(r.went_well)}</div>`:''}${r.went_badly?`<label>Went badly</label><div>${esc(r.went_badly)}</div>`:''}
     <h3>Questions asked</h3><table><thead><tr><th>Question</th><th>Topic</th><th>Self</th><th>Answer given</th><th></th></tr></thead><tbody>${qs.map(x=>`<tr class="row" data-id="${x.id}"><td>${esc(x.question)}</td><td>${esc(x.topic||'')}</td><td>${x.self_rating??''}</td><td class="muted">${esc((x.answer_given||'').slice(0,120))}</td><td>${x.prep_answer_id?'<span class="tag ok">in prep bank</span>':`<button class="small toPrep" data-id="${x.id}">→ Prep</button>`}</td></tr>`).join('')||'<tr><td colspan="5" class="muted">No questions logged. Add what was asked and how you answered.</td></tr>'}</tbody></table>
-    <div class="actions"><button id="addQ">+ Question</button><button id="editR">Edit round</button><button id="markDb">${r.debriefed_at?'Debriefed':'Mark debriefed'}</button><button id="back" class="right">Back</button></div>`);
+    <div class="actions"><button class="primary" id="openRoom">Prep room</button><button id="addQ">+ Question</button><button id="editR">Edit round</button><button id="markDb">${r.debriefed_at?'Debriefed':'Mark debriefed'}</button><button id="back" class="right">Back</button></div>`);
   const re=()=>openInterview(id, back);
-  $('#back').onclick=back; $('#editR').onclick=()=>editRecord({table:'interviews',title:'Round',fields:F.interview,row:r,after:s=>s?re():back()});
+  $('#back').onclick=back; $('#openRoom').onclick=()=>{ closeModal(); state.prepView={room:id}; go('prep'); }; $('#editR').onclick=()=>editRecord({table:'interviews',title:'Round',fields:F.interview,row:r,after:s=>s?re():back()});
   $('#addQ').onclick=()=>editRecord({table:'interview_questions',title:'Question asked',fields:F.question,row:null,defaults:{_force:{interview_id:id}},after:re});
   $('#markDb').onclick=async()=>{ await q(sb.from('interviews').update({debriefed_at:new Date().toISOString()}).eq('id',id)); re(); };
   $('#modal').querySelectorAll('tr.row').forEach(tr=>tr.onclick=e=>{ if(e.target.closest('button')) return; editRecord({table:'interview_questions',title:'Question',fields:F.question,row:qs.find(x=>x.id===tr.dataset.id),after:re}); });
   $('#modal').querySelectorAll('button.toPrep').forEach(b=>b.onclick=async()=>{ const x=qs.find(y=>y.id===b.dataset.id); const p=await q(sb.from('prep_answers').insert({job_stream_id:r.applications?.job_stream_id||PM_STREAM, question:x.question, best_answer:x.answer_given||'', topic:x.topic, source:'from_interview', source_interview_question_id:x.id, status:'proposed'}).select().single()); await q(sb.from('interview_questions').update({prep_answer_id:p.id}).eq('id',x.id)); toast('Added to prep bank as proposed'); re(); });
 }
 
-/* ===================== Prep ===================== */
+/* ===================== Prep (v1.0.11: prep rooms, practice mode, answer bank) ===================== */
+const PREP_KINDS = [['brief','Brief'],['case_file','Case files'],['mock','Mock grill'],['answer','Answers'],['number','Numbers'],['checklist','Demo checklist'],['ask_them','Ask them']];
+function roundLbl(i){ const st=i.stage_label||''; return /round/i.test(st) ? st : 'Round '+i.round_number+(st?' · '+st:''); }
+const PREP_TICK = ['checklist','ask_them']; // rows you tick off, not rate
+const RATE = ['Weak','OK','Strong'];
+state.prepView = state.prepView || {tab:'rooms'};
+function prepOrder(a,b){ return (a.sort_order??1e9)-(b.sort_order??1e9) || String(a.created_at).localeCompare(String(b.created_at)); }
+function dotsHtml(c){ return `<span class="dots" aria-label="confidence ${c||0} of 3">${[1,2,3].map(n=>`<i class="${(c||0)>=n?'on':''}"></i>`).join('')}</span>`; }
+function untilText(t){ const ms=t-Date.now(); if (ms<=0) return ['Done','call time passed']; const m=Math.round(ms/60000), d=Math.floor(m/1440), hh=Math.floor((m%1440)/60), mm=m%60; return d>=1?[d+(d===1?' day ':' days ')+hh+' h','to the call']:[hh?hh+' h '+mm+' min':mm+' min','to the call']; }
+function callTime(iv){ if (iv.starts_at) return new Date(iv.starts_at); if (iv.interview_date) return new Date(iv.interview_date+'T23:59:00'); return null; }
+async function ratePrep(row, n){
+  const now=new Date().toISOString(); const patch={confidence:n, rehearse_count:(row.rehearse_count||0)+1, last_rehearsed_at:now, last_reviewed_at:now};
+  await q(sb.from('prep_answers').update(patch).eq('id',row.id)); Object.assign(row, patch);
+}
 async function renderPrep(el){
-  const rows = await q(inStreams(sb.from('prep_answers').select('*')).order('topic').order('created_at'));
-  const topics=[...new Set(rows.map(r=>r.topic||'other'))];
-  el.innerHTML = `<h2>Prep: About Me bank</h2><div class="toolbar"><input class="grow" id="pf" placeholder="search questions"><button id="newP">+ Question & answer</button><span class="muted">${rows.filter(r=>r.status==='proposed').length} proposed, ${rows.filter(r=>r.status==='approved').length} approved</span></div>
-  ${topics.map(t=>`<h3>${esc(t)}</h3><div class="cards" data-topic="${esc(t)}">${rows.filter(r=>(r.topic||'other')===t).map(r=>`<div class="card pq" data-id="${r.id}"><h4>${esc(r.question)} ${r.status==='proposed'?'<span class="tag warn">proposed</span>':'<span class="tag ok">approved</span>'}</h4><div style="white-space:pre-wrap">${esc(r.best_answer)}</div><div class="muted mono" style="margin-top:6px">${esc(streamName(r.job_stream_id))} · ${esc(r.source||'')}${r.last_reviewed_at?' · reviewed '+fmtD(r.last_reviewed_at):''}</div></div>`).join('')}</div>`).join('')||'<p class="muted">Empty. Add the questions you want to answer well, or send questions here from an interview round.</p>'}`;
-  $('#newP').onclick=()=>editRecord({table:'prep_answers',title:'Prep answer',fields:F.prep,row:null,defaults:{job_stream_id:selStreams()[0]||PM_STREAM,source:'hand_written',status:'approved'},after:()=>go('prep')});
-  el.querySelectorAll('.pq').forEach(c=>c.onclick=()=>editRecord({table:'prep_answers',title:'Prep answer',fields:F.prep,row:rows.find(r=>r.id===c.dataset.id),after:()=>go('prep')}));
-  $('#pf').oninput=()=>{ const f=$('#pf').value.toLowerCase(); el.querySelectorAll('.pq').forEach(c=>{ const r=rows.find(x=>x.id===c.dataset.id); c.style.display=!f||(r.question+' '+r.best_answer).toLowerCase().includes(f)?'':'none'; }); };
+  const rows = await q(inStreams(sb.from('prep_answers').select('*')).order('sort_order',{ascending:true,nullsFirst:false}).order('created_at'));
+  const v = state.prepView;
+  if (v.room) return renderRoom(el, v.room, rows.filter(r=>r.interview_id===v.room).sort(prepOrder));
+  el.innerHTML = `<h2>Prep</h2><div class="tabs"><button data-t="rooms" class="${v.tab==='rooms'?'active':''}">Prep rooms</button><button data-t="bank" class="${v.tab==='bank'?'active':''}">Answer bank</button></div><div id="prepBody"></div>`;
+  el.querySelectorAll('.tabs button').forEach(b=>b.onclick=()=>{ state.prepView={tab:b.dataset.t}; go('prep'); });
+  if (v.tab==='bank') return renderBank($('#prepBody'), rows.filter(r=>!r.interview_id));
+  const ivs = await q(sb.from('interviews').select('*, applications(company,title,job_stream_id)').order('interview_date',{ascending:true}));
+  const today = new Date().toISOString().slice(0,10);
+  const withRows = new Set(rows.filter(r=>r.interview_id).map(r=>r.interview_id));
+  const list = ivs.filter(i=>withRows.has(i.id) || (i.interview_date && i.interview_date>=today))
+    .filter(i=>!i.applications||state.selected.size===state.streams.length||selStreams().includes(i.applications.job_stream_id))
+    .sort((a,b)=>{ const fa=(a.interview_date||'')>=today, fb=(b.interview_date||'')>=today; if (fa!==fb) return fa?-1:1; return fa ? String(a.interview_date).localeCompare(b.interview_date) : String(b.interview_date).localeCompare(a.interview_date); });
+  $('#prepBody').innerHTML = list.length ? `<p class="muted">One room per interview round. Upcoming rounds first.</p><div class="room-list">${list.map(i=>{ const rs=rows.filter(r=>r.interview_id===i.id), done=rs.filter(r=>r.confidence).length, t=callTime(i); return `<div class="card" data-id="${i.id}" tabindex="0" role="button"><h4>${esc(i.applications?.company||'')} · ${esc(roundLbl(i))}</h4><div class="muted">${esc(i.applications?.title||'')}</div><div style="margin-top:6px">${esc(i.interviewer_name||'interviewer not set')} · ${i.starts_at?fmtDT(i.starts_at):fmtD(i.interview_date)}</div><div class="mono muted" style="margin-top:6px">${rs.length} items · ${done} rated${t&&t>Date.now()?' · '+untilText(t)[0]+' to go':''}</div></div>`; }).join('')}</div>`
+    : `<p class="muted">No prep rooms yet. Open an interview round and press "Prep room" to start one.</p>`;
+  $('#prepBody').querySelectorAll('.card').forEach(c=>{ const open=()=>{ state.prepView={room:c.dataset.id, sec:null}; go('prep'); }; c.onclick=open; c.onkeydown=e=>{ if (e.key==='Enter'||e.key===' '){ e.preventDefault(); open(); } }; });
+}
+async function renderRoom(el, ivId, rows){
+  const iv = await q(sb.from('interviews').select('*, applications(id,company,title,job_stream_id)').eq('id',ivId).single());
+  const v = state.prepView; const secs = PREP_KINDS.filter(([k])=>rows.some(r=>(r.kind||'answer')===k));
+  if (!v.sec || !secs.some(([k])=>k===v.sec)) v.sec = (secs.find(([k])=>k==='mock')||secs[0]||['mock'])[0];
+  const t = callTime(iv), [big, small] = t ? untilText(t) : ['—','no date set'];
+  const done = rows.filter(r=>r.confidence).length, pct = rows.length?Math.round(100*done/rows.length):0;
+  const open = new Set();
+  el.innerHTML = `<div class="toolbar"><button id="backRooms">← Prep rooms</button><button class="primary" id="practice">Practice mode</button><button id="addItem">+ Item</button><button id="openIv">Round details</button></div>
+  <div class="room-head"><div><div class="mono muted">${esc(iv.applications?.company||'')} · ${esc(iv.applications?.title||'')} · ${esc(roundLbl(iv))}</div><h2>${esc(iv.interviewer_name||'Interviewer not set')} · ${iv.starts_at?fmtDT(iv.starts_at):fmtD(iv.interview_date)}</h2>${iv.notes?`<div class="muted">${esc(iv.notes)}</div>`:''}</div>
+  <div class="count">${esc(big)}<small>${esc(small)}</small></div><div class="pbar" aria-label="Prep progress ${pct}%"><i style="width:${pct}%"></i></div><div class="mono muted" style="grid-column:1/-1">${done} of ${rows.length} items rated or ticked</div></div>
+  <div class="room"><div class="rail" role="group" aria-label="Prep sections">${secs.map(([k,l])=>`<button data-k="${k}" class="${k===v.sec?'active':''}">${l}<span>${rows.filter(r=>(r.kind||'answer')===k).length}</span></button>`).join('')||'<span class="muted">No items yet.</span>'}</div><div id="roomPane"></div></div>`;
+  const pane = () => {
+    const items = rows.filter(r=>(r.kind||'answer')===v.sec);
+    const tick = PREP_TICK.includes(v.sec);
+    $('#roomPane').innerHTML = items.map(r=>`<div class="prow" data-id="${r.id}"><button class="pq2" aria-expanded="${open.has(r.id)}"><b>${esc(r.question)}</b>${tick?(r.confidence?'<span class="tag ok">done</span>':''):dotsHtml(r.confidence)}${r.follow_up?`<span class="meta">follow-up: ${esc(r.follow_up)}</span>`:''}</button><div class="pa" ${open.has(r.id)?'':'hidden'}>${r.best_answer?`<p style="margin-top:0;white-space:pre-wrap">${esc(r.best_answer)}</p>`:''}${r.evidence?`<p class="mono muted">evidence: ${esc(r.evidence)}</p>`:''}<div class="actions" style="margin-top:6px">${tick?`<button class="small tickBtn">${r.confidence?'Undo':'Mark done'}</button>`:`<span class="muted">How was yours?</span>${RATE.map((l,n)=>`<button class="small rateBtn" data-n="${n+1}" aria-pressed="${r.confidence===n+1}">${l}</button>`).join('')}`}<span class="muted mono">${r.rehearse_count?'rehearsed '+r.rehearse_count+'×':''}${r.last_rehearsed_at?' · '+fmtDT(r.last_rehearsed_at):''}</span><button class="small right editBtn">Edit</button></div></div></div>`).join('') || '<p class="muted">Nothing in this section.</p>';
+    $('#roomPane').querySelectorAll('.prow').forEach(p=>{ const r=rows.find(x=>x.id===p.dataset.id);
+      p.querySelector('.pq2').onclick=()=>{ open.has(r.id)?open.delete(r.id):open.add(r.id); pane(); };
+      p.querySelectorAll('.rateBtn').forEach(b=>b.onclick=async()=>{ try{ await ratePrep(r, +b.dataset.n); toast('Saved: '+RATE[b.dataset.n-1]); renderRoom(el, ivId, rows); }catch(e){ err(e); } });
+      const tb=p.querySelector('.tickBtn'); if (tb) tb.onclick=async()=>{ try{ if (r.confidence){ await q(sb.from('prep_answers').update({confidence:null}).eq('id',r.id)); r.confidence=null; } else await ratePrep(r,3); renderRoom(el, ivId, rows); }catch(e){ err(e); } };
+      p.querySelector('.editBtn').onclick=()=>editRecord({table:'prep_answers',title:'Prep item',fields:F.prep,row:r,after:()=>go('prep')});
+    });
+  };
+  pane();
+  el.querySelectorAll('.rail button').forEach(b=>b.onclick=()=>{ v.sec=b.dataset.k; renderRoom(el, ivId, rows); });
+  $('#backRooms').onclick=()=>{ state.prepView={tab:'rooms'}; go('prep'); };
+  $('#openIv').onclick=()=>openInterview(ivId, ()=>{ closeModal(); go('prep'); });
+  $('#addItem').onclick=()=>editRecord({table:'prep_answers',title:'New prep item',fields:F.prep,row:null,defaults:{job_stream_id:iv.applications?.job_stream_id||PM_STREAM,kind:v.sec||'mock',status:'approved',sort_order:(Math.max(0,...rows.map(r=>r.sort_order||0))+1),_force:{interview_id:ivId,application_id:iv.application_id,source:'hand_written'}},after:()=>go('prep')});
+  $('#practice').onclick=()=>practice(rows.filter(r=>['mock','answer'].includes(r.kind||'answer')), ()=>renderRoom(el, ivId, rows));
+}
+let practiceTimer=null;
+function practice(pool, onClose){
+  if (!pool.length){ toast('No questions to practise here.'); return; }
+  const order = [...pool].sort((a,b)=>(a.confidence||0)-(b.confidence||0) || (a.rehearse_count||0)-(b.rehearse_count||0) || prepOrder(a,b));
+  let i=0, rated=0;
+  const stop=()=>{ if (practiceTimer){ clearInterval(practiceTimer); practiceTimer=null; } };
+  const show=()=>{ stop(); const r=order[i];
+    openModal(`<div class="practice"><div class="toolbar"><span class="mono muted">Practice · ${i+1} of ${order.length} · ${esc(r.topic||'')}</span><span class="right timer" id="ptimer">1:30</span></div><h3>${esc(r.question)}</h3><p class="muted">Say your answer out loud first. Answer first, then the detail.</p><div class="actions"><button class="primary" id="pStart">Start 90s</button><button id="pReveal">Reveal answer</button><button id="pSkip">Skip</button><button id="pEnd" class="right">End</button></div><div id="pAns" hidden><div class="callout" style="white-space:pre-wrap">${esc(r.best_answer||'')}</div>${r.follow_up?`<p><b>Likely follow-up:</b> ${esc(r.follow_up)}</p>`:''}${r.evidence?`<p class="mono muted">evidence: ${esc(r.evidence)}</p>`:''}<div class="actions"><span class="muted">How was yours?</span>${RATE.map((l,n)=>`<button class="pRate" data-n="${n+1}">${l}</button>`).join('')}</div></div><div class="err" id="pErr"></div></div>`);
+    $('#pStart').onclick=()=>{ stop(); let s=90; const tick=()=>{ const el=$('#ptimer'); if(!el){ stop(); return; } el.textContent=(s<0?'-':'')+Math.floor(Math.abs(s)/60)+':'+String(Math.abs(s)%60).padStart(2,'0'); el.classList.toggle('late', s<0); s--; }; tick(); practiceTimer=setInterval(tick,1000); };
+    $('#pReveal').onclick=()=>{ $('#pAns').hidden=false; $('#pReveal').disabled=true; };
+    $('#pSkip').onclick=()=>next();
+    $('#pEnd').onclick=()=>finish();
+    $('#modal').querySelectorAll('.pRate').forEach(b=>b.onclick=async()=>{ try{ await ratePrep(r, +b.dataset.n); rated++; next(); }catch(e){ $('#pErr').textContent=e.message||e; } });
+  };
+  const next=()=>{ i++; if (i>=order.length) finish(); else show(); };
+  const finish=()=>{ stop(); openModal(`<h3>Practice done</h3><p>${rated} rated this run. Weak ones come back first next time.</p><div class="actions"><button class="primary" id="pClose">Close</button></div>`); $('#pClose').onclick=()=>{ closeModal(); onClose&&onClose(); }; };
+  show();
+}
+function renderBank(el, rows){
+  const v = state.prepView; v.topic = v.topic || 'all';
+  const topics = ['all', ...[...new Set(rows.map(r=>r.topic||'other'))].sort()];
+  el.innerHTML = `<div class="toolbar"><input class="grow" id="pf" placeholder="search questions and answers" value="${esc(v.q||'')}"><button id="practiceB">Practice</button><button id="newP">+ Question & answer</button><span class="muted">${rows.filter(r=>r.status==='proposed').length} proposed, ${rows.filter(r=>r.status==='approved').length} approved</span></div><div class="toolbar" role="group" aria-label="Topics">${topics.map(t=>`<button class="small topicBtn" data-t="${esc(t)}" aria-pressed="${t===v.topic}" style="${t===v.topic?'background:var(--accent-soft);border-color:var(--accent);color:var(--accent)':''}">${esc(t)} <span class="muted">${t==='all'?rows.length:rows.filter(r=>(r.topic||'other')===t).length}</span></button>`).join('')}</div><div class="bank" id="bankList"></div>`;
+  const draw=()=>{ const f=(v.q||'').toLowerCase(); const list=rows.filter(r=>(v.topic==='all'||(r.topic||'other')===v.topic) && (!f||(r.question+' '+r.best_answer).toLowerCase().includes(f)));
+    $('#bankList').innerHTML = list.map(r=>`<details data-id="${r.id}"><summary>${esc(r.question)} <span class="tag">${esc(r.topic||'other')}</span>${r.status==='proposed'?'<span class="tag warn">proposed</span>':''}${r.confidence?dotsHtml(r.confidence):''}</summary><div class="body">${esc(r.best_answer)}</div><div class="actions" style="padding:0 12px 12px;margin-top:0"><span class="muted mono">${esc(streamName(r.job_stream_id))} · ${esc(r.source||'')}${r.last_reviewed_at?' · reviewed '+fmtD(r.last_reviewed_at):''}</span><button class="small right editBtn">Edit</button></div></details>`).join('') || '<p class="muted">No questions match.</p>';
+    $('#bankList').querySelectorAll('details').forEach(d=>d.querySelector('.editBtn').onclick=()=>editRecord({table:'prep_answers',title:'Prep answer',fields:F.prep,row:rows.find(r=>r.id===d.dataset.id),after:()=>go('prep')})); };
+  draw();
+  $('#pf').oninput=()=>{ v.q=$('#pf').value; draw(); };
+  el.querySelectorAll('.topicBtn').forEach(b=>b.onclick=()=>{ v.topic=b.dataset.t; renderBank(el, rows); });
+  $('#practiceB').onclick=()=>practice(rows.filter(r=>(v.topic==='all'||(r.topic||'other')===v.topic)), ()=>go('prep'));
+  $('#newP').onclick=()=>editRecord({table:'prep_answers',title:'Prep answer',fields:F.prep,row:null,defaults:{job_stream_id:selStreams()[0]||PM_STREAM,kind:'answer',status:'approved',_force:{source:'hand_written'}},after:()=>go('prep')});
 }
 
 /* ===================== Numbers ===================== */
@@ -1107,7 +1231,7 @@ async function renderSettings(el){
     <label for="np">New password (12+ characters)</label><input id="np" type="password" autocomplete="new-password"><label for="np2">Repeat</label><input id="np2" type="password" autocomplete="new-password">
     <div class="actions"><button id="chPw">Change password</button></div><div class="err" id="pwErr"></div>
     <h3>Reference data</h3><p class="muted">Sources / portals and park reasons are editable here.</p><div class="actions"><button id="edBoards">Sources & portals</button><button id="edNoise">Park reasons</button><button id="edCrit">Filter criteria</button></div>
-    <h3>About</h3><p class="muted">Job Application Driver v1.0.10 · 18 Oct 2026 · data in Supabase Project Zero, row-level security by owner · design doc v1.7 in PMOS/JobTracker.</p>
+    <h3>About</h3><p class="muted">Job Application Driver v1.0.11 · 24 Oct 2026 · data in Supabase Project Zero, row-level security by owner · design doc v1.7 in PMOS/JobTracker.</p>
   </div></div>`;
   $('#saveS').onclick=async()=>{ try{ const ns={...s, fit_threshold:Number($('#s_fit').value), freshness_days:Number($('#s_fresh').value), daily_cap:Number($('#s_cap').value), quiet_hours:{from:$('#s_qf').value,to:$('#s_qt').value}, stale_days:Number($('#s_stale').value), ghost_days:Number($('#s_ghost').value), channel:$('#s_ch').value, telegram_chat_id:$('#s_tg').value||null}; await q(sb.from('user_settings').upsert({owner_id:state.user.id, settings:ns, updated_at:new Date().toISOString()})); state.settings=ns; toast('Settings saved'); }catch(e){ $('#sErr').textContent=e.message||e; } };
   $('#chPw').onclick=async()=>{ const a=$('#np').value,b=$('#np2').value; if (a.length<12) return $('#pwErr').textContent='Use at least 12 characters.'; if (a!==b) return $('#pwErr').textContent='Passwords do not match.'; const {error}=await sb.auth.updateUser({password:a}); if (error) return $('#pwErr').textContent=error.message; $('#np').value=$('#np2').value=''; $('#pwErr').textContent=''; toast('Password changed'); };
@@ -1125,6 +1249,7 @@ async function simpleList(table, fields, labelCol){
 }
 </script>
 <!-- CHANGELOG
+v1.0.11 · 24 Oct 2026 · Prep screen rebuilt. Prep rooms: one per interview round with prep rows (prep_answers.interview_id), header with company, title, round, interviewer, countdown to interviews.starts_at (or the date), progress = items rated; sections by kind (Brief, Case files, Mock grill, Numbers, Demo checklist, Ask them, Answers); each row collapses to the question, confidence dots and likely follow-up, opens to the answer, evidence and Weak/OK/Strong (writes confidence, rehearse_count, last_rehearsed_at, last_reviewed_at). Practice mode: question first, 90-second timer, reveal, rate, weakest and least-rehearsed first, mock and answer rows only. Answer bank: rows with no interview, topic chips, search, collapsed answers at reading width. Interview detail gets a Prep room button. Pipeline: cards drag between columns and have a Move-to control (keyboard, phone); both open the existing status dialog pre-set to the target, so status_history, rejection message and post-mortem still get written. Fix: auto post-mortem rounds_reached was always 0 (count query used head:true). Prep form: topic is free text and source read-only, so editing a row no longer blanks a topic or source that is not in the old pick list. Needs migration job_driver_prep_room_v1_0 (applied 24 Oct).
 v1.0.10 · 18 Oct 2026 · Agent run log: health dot + last run + 24 h success + late flag on every agent card; a Runs tab inside each agent (health line, filters, errors by type, run list, run detail) and the same list for all agents on the Runs screen (reached from the menu or the Agents header, deep link #runs). Statuses success / partial / failed / skipped / running / crashed from runner v1.0.13, plus missed (no row in an expected slot). Agent Overview no longer carries the recent-runs table.
 v1.0.9 · 17 Oct 2026 · v1.0.9: Resume Decider. Inbox gets a Resume column (Generic / Tailor / not yet run / Failed, a ? when the agent is unsure, your override wins); click it for the per-criterion breakdown, override or re-run. Jev's shadow fit score shows under the fit score (J 72). Agents → Resume Decider gets a Criteria tab (same editor as Fitment: weights, descriptions, anchors, threshold = Tailored at or above) and Jev as its model (Gemini backup). Read by runner v1.0.11.
 v1.0.8 · 17 Oct 2026 · Fitment screens filter fit_rubric_versions to agent_key = fit (Resume Decider criteria share the table since runner v1.0.11).

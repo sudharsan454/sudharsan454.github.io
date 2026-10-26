@@ -1,5 +1,5 @@
 <!doctype html>
-<!-- Job Application Driver · app v1.0.12 · 25 Oct 2026 · v1.0.12: calm redesign on one design system. Light / Dark / System theme switch (remembered per browser), warm paper and soft charcoal palettes, Inter type, sentence-case labels. Grouped sidebar (Work / Library / System), drawer on phone. Tables rebuilt: company and role in one cell with a quiet meta line (Inbox 12 → 4 columns, Applications 11 → 5), readable status pills, roomy rows, sticky headers. Closed applications (rejected, ghosted, withdrawn) hidden by default on Pipeline and Applications with a one-tap toggle. Lead detail view (fit breakdown as a table, JD, actions) instead of the raw form. Application overview as facts + fit table. Every form keeps every field, grouped into sections with readable option names; raw JSON under Advanced. Target companies as a searchable table. Gentle empty states. v1.0.11: Prep room per interview round (header with company, round, interviewer, countdown to the call, progress; sections Brief, Case files, Mock grill, Numbers, Demo checklist, Ask them), practice mode (question first, 90-second timer, reveal, rate Weak/OK/Strong, weakest first; ratings saved to the database), answer bank redesign (topic chips, search, collapsed answers), pipeline drag and drop plus a Move-to control that open the status dialog pre-set to the new column. Needs migration job_driver_prep_room_v1_0. v1.0.10: agent run log. Every agent card shows a health dot, last run, 24 h success rate and a late flag; each agent gets a Runs tab; the Runs screen lists all runs with health cards, errors by type, filters (date range with quick picks and custom from/to, agent, status, error type, model, backup AI, text) and a run detail (errors per item, leads created, GitHub link). Missed slots are computed from each agent's schedule. Needs runner v1.0.13. v1.0.9: Resume Decider. Inbox gets a Resume column (Generic / Tailor / not yet run / Failed, a ? when the agent is unsure, your override wins); click it for the per-criterion breakdown, override or re-run. Jev's shadow fit score shows under the fit score (J 72). Agents → Resume Decider gets a Criteria tab (same editor as Fitment: weights, descriptions, anchors, threshold = Tailored at or above) and Jev as its model (Gemini backup). Read by runner v1.0.11. v1.0.8: Fitment tab, prompt preview and eval selectors read only fitment rubrics (agent_key = fit); the same table now also holds Resume Decider criteria (runner v1.0.11). v1.0.7: merges two parallel v1.0.5 builds: the JD panel (commit ee35102) and the Agents screen (on/off, schedule, model, versioned prompts, per-stream fitment rubric, guardrails, evals; JD Fetcher card). v1.0.5 (JD): full job description on leads and applications (JD badge in Inbox and Applications, JD panel with source link, paste-by-hand box; runner v1.0.8 fills it). v1.0.4: #app=<id> deep link opens an application (used by Telegram replies from the runner). v1.0.3: login account switched to sudharsan454@gmail.com (all rows re-owned in Supabase, allowlist trigger updated). v1.0.2: boot deferred out of the auth callback (page froze on reload with a saved session). v1.0.1: application detail embed disambiguated (two FKs between applications and leads). v1.0 · 10 Oct 2026 · single-file web app on Supabase (Project Zero) · login: sudharsan454@gmail.com only · changelog at the foot of this file -->
+<!-- Job Application Driver · app v1.0.14 · 27 Oct 2026 · v1.0.14: mandatory gates editor on Fitment (location, years asked, product role or any yes/no question; a failed gate parks the job, not stated lets it through), weight 0 allowed, My calls screen (call fit then Generic/Tailored with the AI hidden until you call; Gemini and Jev agreement per agent; starter set; paste a JD), career notes in Settings (from the portfolio + your extra notes). Built on v1.0.12 · 25 Oct 2026 · v1.0.12: calm redesign on one design system. Light / Dark / System theme switch (remembered per browser), warm paper and soft charcoal palettes, Inter type, sentence-case labels. Grouped sidebar (Work / Library / System), drawer on phone. Tables rebuilt: company and role in one cell with a quiet meta line (Inbox 12 → 4 columns, Applications 11 → 5), readable status pills, roomy rows, sticky headers. Closed applications (rejected, ghosted, withdrawn) hidden by default on Pipeline and Applications with a one-tap toggle. Lead detail view (fit breakdown as a table, JD, actions) instead of the raw form. Application overview as facts + fit table. Every form keeps every field, grouped into sections with readable option names; raw JSON under Advanced. Target companies as a searchable table. Gentle empty states. v1.0.11: Prep room per interview round (header with company, round, interviewer, countdown to the call, progress; sections Brief, Case files, Mock grill, Numbers, Demo checklist, Ask them), practice mode (question first, 90-second timer, reveal, rate Weak/OK/Strong, weakest first; ratings saved to the database), answer bank redesign (topic chips, search, collapsed answers), pipeline drag and drop plus a Move-to control that open the status dialog pre-set to the new column. Needs migration job_driver_prep_room_v1_0. v1.0.10: agent run log. Every agent card shows a health dot, last run, 24 h success rate and a late flag; each agent gets a Runs tab; the Runs screen lists all runs with health cards, errors by type, filters (date range with quick picks and custom from/to, agent, status, error type, model, backup AI, text) and a run detail (errors per item, leads created, GitHub link). Missed slots are computed from each agent's schedule. Needs runner v1.0.13. v1.0.9: Resume Decider. Inbox gets a Resume column (Generic / Tailor / not yet run / Failed, a ? when the agent is unsure, your override wins); click it for the per-criterion breakdown, override or re-run. Jev's shadow fit score shows under the fit score (J 72). Agents → Resume Decider gets a Criteria tab (same editor as Fitment: weights, descriptions, anchors, threshold = Tailored at or above) and Jev as its model (Gemini backup). Read by runner v1.0.11. v1.0.8: Fitment tab, prompt preview and eval selectors read only fitment rubrics (agent_key = fit); the same table now also holds Resume Decider criteria (runner v1.0.11). v1.0.7: merges two parallel v1.0.5 builds: the JD panel (commit ee35102) and the Agents screen (on/off, schedule, model, versioned prompts, per-stream fitment rubric, guardrails, evals; JD Fetcher card). v1.0.5 (JD): full job description on leads and applications (JD badge in Inbox and Applications, JD panel with source link, paste-by-hand box; runner v1.0.8 fills it). v1.0.4: #app=<id> deep link opens an application (used by Telegram replies from the runner). v1.0.3: login account switched to sudharsan454@gmail.com (all rows re-owned in Supabase, allowlist trigger updated). v1.0.2: boot deferred out of the auth callback (page froze on reload with a saved session). v1.0.1: application detail embed disambiguated (two FKs between applications and leads). v1.0 · 10 Oct 2026 · single-file web app on Supabase (Project Zero) · login: sudharsan454@gmail.com only · changelog at the foot of this file -->
 <html lang="en">
 <head>
 <meta charset="utf-8">
@@ -281,7 +281,7 @@ pre.text{white-space:pre-wrap;font-family:var(--body);font-size:14px;line-height
 
 <div id="app" class="app">
   <aside class="side" id="side">
-    <div class="brand"><span class="logo">J</span><div>Job Driver<small>v1.0.12</small></div></div>
+    <div class="brand"><span class="logo">J</span><div>Job Driver<small>v1.0.14</small></div></div>
     <nav id="nav" aria-label="Screens"></nav>
     <div class="side-foot">
       <div class="side-label">Streams</div><div class="streams" id="streamChips"></div>
@@ -382,6 +382,7 @@ async function boot(){
 /* ===================== navigation ===================== */
 const SCREENS = {
   inbox:{label:'Inbox', g:'work', render:renderInbox},
+  calls:{label:'My calls', g:'work', render:renderCalls},
   pipeline:{label:'Pipeline', g:'work', render:renderPipeline},
   applications:{label:'Applications', g:'work', render:renderApplications},
   interviews:{label:'Interviews', g:'work', render:renderInterviews},
@@ -1330,13 +1331,13 @@ async function agRubric(a, el){
       ${sel && sel.id!==stream[AF]?`<button class="small" id="rbAct">Activate v${sel.version}</button>`:'<span class="tag ok">active</span>'}</div>
     <div class="callout">${RK==='fit'?'Fitment = a weighted average of these parameters. The AI scores each parameter 0–100 against the three anchors. The system does the maths, applies the caps, and parks anything below the threshold. Weights are relative; they do not need to add up to 100.':'Resume Decider = a weighted "need to tailor" score from these criteria. A higher score means more reason to tailor. Jev scores each criterion against the three anchors (about 10 / 50 / 90); the system does the maths. At or above the threshold the lead shows <b>Tailor</b>, below it <b>Generic</b>. It runs only on leads at or above the fit gate, and never changes your resume.'}</div>
     <div class="ag-split"><div>
-      <div id="rbParams"></div>
+      ${RK==='fit'?'<h3 style="margin-top:0">Mandatory gates</h3><p class="muted" style="font-size:13px">Checked first. A job that clearly fails any gate is parked with the reason. A job that does not state it passes with a ⚠ flag. Nothing can override a gate.</p><div id="rbGates"></div><div class="actions"><button id="rbGAdd">+ Add gate</button></div><h3>Weighted parameters</h3><p class="muted" style="font-size:13px">Only for jobs that pass every gate. Weight 0 keeps a parameter visible without counting it.</p>':''}<div id="rbParams"></div>
       <div class="actions"><button id="rbAdd">+ Add parameter</button></div>
       <div class="grid2"><div><label for="rbThr">${RK==='fit'?'Threshold: push at or above':'Threshold: Tailored at or above'}</label><input id="rbThr" type="number" min="0" max="100" value="${rub.threshold??60}"></div><div><label for="rbNotes">What changed</label><input id="rbNotes" placeholder="e.g. location cap raised to 60"></div></div>
       <div class="actions"><button class="primary" id="rbSave">Save as new version (draft)</button></div><div class="err" id="rbErr"></div>
       <h3>Try it</h3><p class="muted" style="font-size:13px">Type parameter scores to see the total this rubric gives, caps included. Leave a box empty for "cannot judge".</p><div id="rbTry"></div><div id="rbTryOut" class="mono" style="margin-top:6px"></div>
     </div><div><label>How this reaches the AI ({{rubric}} in the prompt)</label><pre class="text" id="rbPrev" style="max-height:640px;font-family:var(--mono);font-size:12px"></pre></div></div>`;
-  const prev = () => { $('#rbPrev').textContent = agRubricText(rub) + `\n\nThreshold: ${rub.threshold}`; };
+  const prev = () => { $('#rbPrev').textContent = (RK==='fit'?agGatesText(rub):'') + agRubricText(rub) + `\n\nThreshold: ${rub.threshold}`; };
   const tryDraw=()=>{ $('#rbTry').innerHTML = rub.params.filter(p=>p.enabled!==false).map(p=>`<span style="display:inline-flex;gap:4px;align-items:center;margin:0 10px 6px 0"><span class="mono muted">${esc(p.key)}</span><input class="rbT" data-k="${esc(p.key)}" type="number" min="0" max="100" placeholder="?" style="width:62px"></span>`).join('');
     const calc=()=>{ const ps={}; $('#rbTry').querySelectorAll('.rbT').forEach(x=>ps[x.dataset.k]={score:x.value===''?null:Number(x.value)}); const r=agComputeFit(rub, ps); $('#rbTryOut').innerHTML = `Total <b>${r.total??'—'}</b> · ${r.total!=null&&r.total>=Number(rub.threshold)?`<span class="tag ok">${RK==='fit'?'push':'tailor'}</span>`:`<span class="tag">${RK==='fit'?'park':'generic'}</span>`}${r.caps.length?` · capped by ${esc(r.caps.join(', '))}`:''}`; };
     $('#rbTry').querySelectorAll('.rbT').forEach(x=>x.oninput=calc); calc(); };
@@ -1362,7 +1363,7 @@ async function agRubric(a, el){
       c.querySelectorAll('.rbEn,.rbW,.rbUnk,.rbKey,.rbCb,.rbCm').forEach(x=>x.addEventListener('change',()=>{ rd(); draw(); tryDraw(); }));
       c.querySelector('.rbDel').onclick=()=>{ rub.params.splice(i,1); draw(); prev(); tryDraw(); }; });
   };
-  draw(); prev(); tryDraw();
+  draw(); prev(); tryDraw(); if (RK==='fit') agGatesEditor(rub, prev);
   $('#rbS').onchange=()=>{ agState.rs=$('#rbS').value; agState.rv=null; openAgent(a.id,'rubric'); };
   $('#rbV').onchange=()=>{ agState.rv=$('#rbV').value; openAgent(a.id,'rubric'); };
   $('#rbThr').oninput=()=>{ rub.threshold=Number($('#rbThr').value); prev(); tryDraw(); };
@@ -1371,8 +1372,9 @@ async function agRubric(a, el){
       const keys=rub.params.map(p=>p.key); if (!rub.params.filter(p=>p.enabled!==false).length) throw new Error('Turn on at least one parameter.');
       if (keys.some(k=>!/^[a-z][a-z0-9_]{1,30}$/.test(k))) throw new Error('Keys must be lowercase letters, digits or _ (e.g. role_level).');
       if (new Set(keys).size!==keys.length) throw new Error('Two parameters share a key.');
-      for (const p of rub.params) { if (p.enabled===false) continue; if (!(p.weight>0)) throw new Error(`${p.name}: weight must be above 0.`); if (!p.anchors.high||!p.anchors.mid||!p.anchors.low) throw new Error(`${p.name}: fill all three anchors. They are what the AI scores against.`);
+      for (const p of rub.params) { if (p.enabled===false) continue; if (!(p.weight>=0)) throw new Error(`${p.name}: weight cannot be negative.`); if (p.weight>0 && !p.rule && (!p.anchors.high||!p.anchors.mid||!p.anchors.low)) throw new Error(`${p.name}: fill all three anchors. They are what the AI scores against.`);
         if (p.cap && (p.cap.max<0||p.cap.max>100||p.cap.below<0||p.cap.below>100)) throw new Error(`${p.name}: cap numbers must be 0–100.`); }
+      if (RK==='fit') agGatesValidate(rub);
       if (!(rub.threshold>=0&&rub.threshold<=100)) throw new Error('Threshold must be 0–100.');
       if (sel && JSON.stringify(rub)===JSON.stringify(sel.rubric)) throw new Error('No change from v'+sel.version+'.');
       const next=(vs[0]?.version||0)+1; const v=await q(sb.from('fit_rubric_versions').insert({job_stream_id:sid, agent_key:RK, version:next, rubric:rub, notes:$('#rbNotes').value||null}).select().single());
@@ -1493,6 +1495,7 @@ async function renderSettings(el){
   </div></div>`;
   $('#saveS').onclick=async()=>{ try{ const ns={...s, fit_threshold:Number($('#s_fit').value), freshness_days:Number($('#s_fresh').value), daily_cap:Number($('#s_cap').value), quiet_hours:{from:$('#s_qf').value,to:$('#s_qt').value}, stale_days:Number($('#s_stale').value), ghost_days:Number($('#s_ghost').value), channel:$('#s_ch').value, telegram_chat_id:$('#s_tg').value||null}; await q(sb.from('user_settings').upsert({owner_id:state.user.id, settings:ns, updated_at:new Date().toISOString()})); state.settings=ns; toast('Settings saved'); }catch(e){ $('#sErr').textContent=e.message||e; } };
   renderThemeSeg();
+  { const ac=el.querySelector('.card'); const h=document.createElement('div'); h.style.maxWidth='760px'; if (ac) ac.after(h); else el.appendChild(h); renderCareerNotes(h); }
   $('#chPw').onclick=async()=>{ const a=$('#np').value,b=$('#np2').value; if (a.length<12) return $('#pwErr').textContent='Use at least 12 characters.'; if (a!==b) return $('#pwErr').textContent='Passwords do not match.'; const {error}=await sb.auth.updateUser({password:a}); if (error) return $('#pwErr').textContent=error.message; $('#np').value=$('#np2').value=''; $('#pwErr').textContent=''; toast('Password changed'); };
   $('#edBoards').onclick=()=>simpleList('job_boards',[{k:'name',label:'Name',t:'text'},{k:'kind',label:'Kind',t:'select',opts:['portal','agency','direct','referral','direct_outreach','career_page']},{k:'base_url',label:'URL',t:'text'},{k:'is_active',label:'Active',t:'bool'}],'name');
   $('#edNoise').onclick=()=>simpleList('noise_reasons',[{k:'reason',label:'Reason',t:'text'}],'reason');
@@ -1506,6 +1509,149 @@ async function simpleList(table, fields, labelCol){
   $('#add').onclick=()=>editRecord({table,title:'New',fields,row:null,defaults:{is_active:true,job_stream_id:selStreams()[0]||PM_STREAM},after:re});
   $('#modal').querySelectorAll('tr.row').forEach(tr=>tr.onclick=()=>editRecord({table,title:'Edit',fields,row:rows.find(r=>r.id===tr.dataset.id),after:re}));
 }
+/* ===================== app-calls-gates-module v1.1 · 27 Oct 2026 · v1.1: agreement rows wrap on phones · mandatory gates editor, "My calls" labelling, career notes ===================== */
+const GATE_TYPES = {location:'Location (city list)', years:'Years asked (range)', title:'Product role (title rule, then Jev if unclear)', question:'Yes/no question (Jev)'};
+function agGatesText(rub){
+  const gs=(rub.gates||[]).filter(g=>g.enabled!==false); if(!gs.length) return '';
+  return 'MANDATORY GATES (checked first by the system; a clear fail parks the job, not stated lets it through):\n' + gs.map(g=>{ const r=g.rule||{};
+    const how = r.type==='location' ? `allowed: ${(r.allow_cities||[]).join(', ')||'—'}${r.allow_remote?' + remote within India':''}` : r.type==='years' ? `years asked must overlap ${r.min}–${r.max}` : r.type==='title' ? 'title rule; Jev yes/no if unclear' : `Jev yes/no: ${g.ask||''}`;
+    return `- ${g.name} (${g.key}): ${how}. If not stated: ${g.if_unknown==='fail'?'throw out':'let through with a flag'}.`; }).join('\n') + '\n\nWEIGHTED PARAMETERS (only for jobs that pass every gate):\n';
+}
+function agGatesValidate(rub){
+  const ks=(rub.gates||[]).map(g=>g.key);
+  if (ks.some(k=>!/^[a-z][a-z0-9_]{1,30}$/.test(k))) throw new Error('Gate keys must be lowercase letters, digits or _ (e.g. location).');
+  if (new Set(ks).size!==ks.length) throw new Error('Two gates share a key.');
+  for (const g of rub.gates||[]) { if (g.enabled===false) continue; const r=g.rule||{};
+    if (!g.name) throw new Error('Every gate needs a name.');
+    if (r.type==='location' && !(r.allow_cities||[]).length && !r.allow_remote) throw new Error(`${g.name}: add at least one city or allow remote.`);
+    if (r.type==='years' && !(Number(r.min)>=0 && Number(r.max)>=Number(r.min))) throw new Error(`${g.name}: years need a min and a max (max ≥ min).`);
+    if ((r.type==='question'||!r.type) && !g.ask) throw new Error(`${g.name}: write the yes/no question.`); }
+}
+function agGatesEditor(rub, prev){
+  rub.gates = rub.gates || [];
+  const box=$('#rbGates'); if(!box) return;
+  const draw=()=>{
+    box.innerHTML = rub.gates.map((g,i)=>{ const r=g.rule||{}, t=r.type||'question';
+      return `<div class="card" style="margin-bottom:10px;border-left:3px solid var(--bad)" data-i="${i}">
+      <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap"><input type="checkbox" class="gEn" style="width:auto" ${g.enabled!==false?'checked':''} title="Use this gate">
+        <input class="gName" value="${esc(g.name||'')}" style="flex:2;min-width:140px" placeholder="Gate name">
+        <input class="gKey mono" value="${esc(g.key||'')}" style="flex:1;min-width:100px" placeholder="key">
+        <select class="gType" style="width:auto">${Object.entries(GATE_TYPES).map(([k,l])=>`<option value="${k}" ${k===t?'selected':''}>${l}</option>`).join('')}</select>
+        <span class="tag bad">mandatory</span><button class="small gDel" style="margin-left:auto;color:var(--bad)">Remove</button></div>
+      ${t==='location'?`<div class="grid2"><div><label>Allowed cities (comma separated)</label><input class="gCities" value="${esc((r.allow_cities||[]).join(', '))}"></div><div><label>Remote</label><select class="gRemote"><option value="india" ${r.allow_remote?'selected':''}>Remote within India passes</option><option value="" ${!r.allow_remote?'selected':''}>Remote does not pass</option></select></div></div>`:''}
+      ${t==='years'?`<div class="grid2"><div><label>Min years</label><input class="gMin" type="number" value="${r.min??''}"></div><div><label>Max years</label><input class="gMax" type="number" value="${r.max??''}"></div></div><p class="muted" style="font-size:12.5px;margin:4px 0 0">Passes when the years the job asks for overlap this range (e.g. 5–8, 8+ or 10–12 all overlap 6–11).</p>`:''}
+      ${t==='title'||t==='question'?`<label>${t==='title'?'Question for Jev when the title is unclear':'Yes/no question for Jev (about the job only)'}</label><textarea class="gAsk" style="min-height:40px">${esc(g.ask||'')}</textarea>`:''}
+      <div class="grid2"><div><label>Passes when</label><input class="gPass" value="${esc(g.pass||'')}"></div><div><label>Fails when</label><input class="gFail" value="${esc(g.fail||'')}"></div></div>
+      <label>If the job does not state it</label><select class="gUnk"><option value="pass" ${g.if_unknown!=='fail'?'selected':''}>Let it through with a ⚠ flag (recommended)</option><option value="fail" ${g.if_unknown==='fail'?'selected':''}>Throw it out</option></select>
+    </div>`; }).join('') || '<div class="muted" style="margin-bottom:8px">No mandatory gates. Every job goes straight to the weighted score.</div>';
+    box.querySelectorAll('.card').forEach(c=>{ const g=rub.gates[Number(c.dataset.i)];
+      const rd=()=>{ g.enabled=c.querySelector('.gEn').checked; g.name=c.querySelector('.gName').value; g.key=c.querySelector('.gKey').value.trim();
+        const t=c.querySelector('.gType').value; g.rule = g.rule && g.rule.type===t ? g.rule : {type:t};
+        if (t==='location'){ g.rule.allow_cities=c.querySelector('.gCities')?.value.split(',').map(s=>s.trim().toLowerCase()).filter(Boolean)||g.rule.allow_cities||[]; const rm=c.querySelector('.gRemote'); g.rule.allow_remote = rm ? (rm.value||null) : g.rule.allow_remote; }
+        if (t==='years'){ const a=c.querySelector('.gMin'), b=c.querySelector('.gMax'); if(a) g.rule.min=a.value===''?null:Number(a.value); if(b) g.rule.max=b.value===''?null:Number(b.value); }
+        const ask=c.querySelector('.gAsk'); if (ask) g.ask=ask.value;
+        g.pass=c.querySelector('.gPass').value; g.fail=c.querySelector('.gFail').value; g.if_unknown=c.querySelector('.gUnk').value; prev(); };
+      c.querySelectorAll('input,textarea').forEach(x=>x.addEventListener('input',rd));
+      c.querySelectorAll('select,.gEn').forEach(x=>x.addEventListener('change',()=>{ rd(); draw(); }));
+      c.querySelector('.gDel').onclick=()=>{ rub.gates.splice(Number(c.dataset.i),1); draw(); prev(); }; });
+  };
+  draw();
+  const add=$('#rbGAdd'); if (add) add.onclick=()=>{ rub.gates.push({key:'gate_'+(rub.gates.length+1), name:'New gate', enabled:true, rule:{type:'question'}, ask:'', pass:'', fail:'', if_unknown:'pass'}); draw(); prev(); };
+}
+
+/* ---------- My calls ---------- */
+const CALL_RES = {generic:'Generic', tailored:'Tailored'};
+async function renderCalls(el){
+  const ags = await q(sb.from('agents').select('id,key,eval_gate').in('key',['fit','resume_decider']));
+  const fitA = ags.find(a=>a.key==='fit'), resA = ags.find(a=>a.key==='resume_decider');
+  if (!fitA || !resA) { el.innerHTML = pageHead('My calls','')+'<div class="err">Agents table not found.</div>'; return; }
+  const cases = await q(sb.from('agent_evals').select('*').in('agent_id',[fitA.id,resA.id]).eq('is_active',true).order('created_at',{ascending:true}).limit(1000));
+  const keyOf = c => c.lead_id || c.application_id || ((c.input||{}).company+'|'+(c.input||{}).title);
+  const items = {}; for (const c of cases) { const k=keyOf(c); const it = items[k] = items[k] || {k, input:c.input||{}, stream:c.job_stream_id}; if (c.agent_id===fitA.id) it.fit=c; else it.res=c; }
+  let list = Object.values(items).filter(it=>it.fit && (!state.selected || !state.selected.size || state.selected.has(it.stream)));
+  const starterN = it => { const m=/Starter set #(\d+)/.exec(it.fit.note||''); return m?Number(m[1]):999; };
+  const stream = sid => state.streams.find(s=>s.id===sid)||{};
+  const curOk = (c, which) => c && c.ai_results && c.ai_results.rubric_version_id === stream(c.job_stream_id)[which];
+  const yourFit = it => it.fit.expected_band ? (AG_BANDS[it.fit.expected_band]?.push ? 'push' : 'park') : null;
+  const yourRes = it => it.res?.expected_band || null;
+  const done = it => it.fit.expected_band && (it.fit.expected_band==='no' || !AG_BANDS[it.fit.expected_band]?.push || yourRes(it));
+  const acc = (kind) => { const out={gemini:[0,0], jev:[0,0], waiting:0};
+    for (const it of list) { const c = kind==='fit'?it.fit:it.res; const you = kind==='fit'?yourFit(it):yourRes(it); if (!you || !c) continue;
+      if (kind==='res' && !AG_BANDS[it.fit.expected_band]?.push) continue;
+      if (!curOk(c, kind==='fit'?'fit_rubric_version_id':'resume_rubric_version_id')) { out.waiting++; continue; }
+      for (const e of ['gemini','jev']) { const d=c.ai_results[e]?.decision; if (!d) continue; out[e][1]++; if (d===you) out[e][0]++; } }
+    return out; };
+  const pct = ([a,b]) => b ? `<b>${Math.round(100*a/b)}%</b> <span class="muted">(${a}/${b})</span>` : '<span class="muted">—</span>';
+  const gate = fitA.eval_gate || {min_agreement:80, min_cases:10};
+  const verdict = ([a,b]) => b>=(gate.min_cases??10) && 100*a/b>=(gate.min_agreement??80) ? '<span class="tag ok">ready to take over</span>' : `<span class="tag">needs ${Math.max(0,(gate.min_cases??10)-b)} more or better agreement</span>`;
+  const accRow = (who, a) => `<div style="display:flex;flex-wrap:wrap;gap:4px 10px;align-items:baseline;padding:6px 0;border-bottom:1px solid var(--line)"><span style="min-width:9em">${who} agrees with you</span><span>${pct(a)}</span><span>${verdict(a)}</span></div>`;
+  const draw = () => {
+    const f = acc('fit'), r = acc('res');
+    const nDone = list.filter(done).length;
+    list.sort((a,b)=> (done(a)?1:0)-(done(b)?1:0) || starterN(a)-starterN(b));
+    el.innerHTML = pageHead('My calls', `${nDone} of ${list.length} jobs called. Make your call first; the AI's answers stay hidden until you do.`, '<button id="clAdd">+ Add recent leads</button>')
+    + `<div class="grid2" style="margin-bottom:16px">
+        <div class="card"><h4 style="margin-top:0">Fit: push or park</h4>${accRow('Gemini',f.gemini)}${accRow('Jev',f.jev)}${f.waiting?`<p class="muted" style="font-size:12.5px;margin:6px 0 0">${f.waiting} of your calls wait for the AI check (next runner pass, up to 2 h, 6 jobs a pass).</p>`:''}</div>
+        <div class="card"><h4 style="margin-top:0">Resume: Generic or Tailored</h4>${accRow('Gemini',r.gemini)}${accRow('Jev',r.jev)}${r.waiting?`<p class="muted" style="font-size:12.5px;margin:6px 0 0">${r.waiting} wait for the AI check.</p>`:''}</div></div>
+      <p class="muted" style="font-size:13px">Strong and Plausible mean "push to my phone"; Stretch and No mean "park". A model takes over an agent only at ${gate.min_agreement??80}% agreement on ${gate.min_cases??10}+ of your calls. Calls are checked against the active rubric; change the rubric and they are re-checked automatically.</p>
+      <div id="clList">${list.map((it,i)=>{ const inp=it.input, fb=it.fit.expected_band, rb=yourRes(it), fr=it.fit.ai_results, rr=it.res?.ai_results;
+        const showAI = done(it);
+        const fitAI = !showAI ? '' : !curOk(it.fit,'fit_rubric_version_id') ? '<span class="muted">AI check on the next runner pass</span>' :
+          (fr.failed_gate?`<span class="tag bad">gate: ${esc(fr.failed_gate)}</span> `:'') + ['gemini','jev'].map(e=>{ const x=fr[e]||{}; if (x.error) return `${e}: <span class="muted">error</span>`; const ok = x.decision===yourFit(it); return `${e==='jev'?'Jev':'Gemini'} ${x.score??'—'} ${x.decision||''} ${x.decision?(ok?'✓':'<b style="color:var(--bad)">✗</b>'):''}`; }).join(' · ');
+        const resAI = !showAI || !rb ? '' : !curOk(it.res,'resume_rubric_version_id') ? '<span class="muted">AI check on the next runner pass</span>' :
+          ['gemini','jev'].map(e=>{ const x=rr[e]||{}; if (x.error) return `${e}: <span class="muted">error</span>`; const ok=x.decision===rb; return `${e==='jev'?'Jev':'Gemini'} ${CALL_RES[x.decision]||'—'} (${x.score??'—'}) ${x.decision?(ok?'✓':'<b style="color:var(--bad)">✗</b>'):''}`; }).join(' · ');
+        const gates = showAI && fr && fr.gates ? Object.entries(fr.gates).map(([k,g])=>`<span class="tag ${g.result==='fail'?'bad':g.result==='pass'?'ok':'warn'}" title="${esc(g.why||'')}">${esc(k)}: ${g.result==='not_stated'?'⚠ not stated':g.result}</span>`).join(' ') : '';
+        return `<div class="card" style="margin-bottom:10px" data-i="${i}">
+          <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:baseline"><b>${esc(inp.title||'')}</b><span>· ${esc(inp.company||'')}</span><span class="muted">${esc(inp.location||'')}</span>${starterN(it)<999?`<span class="tag new">starter #${starterN(it)}</span>`:''}${done(it)?'<span class="tag ok">called</span>':''}
+            <span style="margin-left:auto" class="muted">${esc(streamName(it.stream)||'')}</span></div>
+          <div style="margin-top:6px"><button class="small clJD">Job description</button>${inp.url?` <a href="${esc(inp.url)}" target="_blank" rel="noopener">Posting ↗</a>`:''}</div>
+          <pre class="text clJDt" style="display:none;max-height:340px;white-space:pre-wrap;font-size:12.5px">${esc(inp.jd_text||inp.raw_snippet||'No job description saved. Paste it below.')}</pre>
+          <div style="margin-top:8px"><span class="muted" style="font-size:12.5px;margin-right:6px">1 · Fit</span>${Object.entries(AG_BANDS).map(([k,b])=>`<span class="chip clF ${fb===k?'on':''}" data-b="${k}" role="button" tabindex="0" title="${b.label}">${k[0].toUpperCase()+k.slice(1)}</span>`).join('')}</div>
+          ${fb && AG_BANDS[fb]?.push ? `<div style="margin-top:6px"><span class="muted" style="font-size:12.5px;margin-right:6px">2 · Resume</span>${Object.entries(CALL_RES).map(([k,l])=>`<span class="chip clR ${rb===k?'on':''}" data-b="${k}" role="button" tabindex="0">${l}</span>`).join('')}</div>`:''}
+          <input class="clNote" placeholder="Why (optional): the reason helps tune the parameters" value="${esc(inp.my_note||'')}" style="margin-top:8px">
+          ${!inp.jd_text||/Summary only/.test(inp.jd_text||'')?`<textarea class="clPaste" placeholder="Paste the full job description here to improve the AI check" style="margin-top:6px;min-height:40px"></textarea><button class="small clPasteSave" style="margin-top:4px">Save job description</button>`:''}
+          ${showAI?`<div style="margin-top:8px;font-size:13.5px"><div>AI on fit: ${fitAI}</div>${gates?`<div style="margin-top:4px">${gates}</div>`:''}${resAI?`<div style="margin-top:4px">AI on resume: ${resAI}</div>`:''}</div>`:'<div class="muted" style="margin-top:8px;font-size:12.5px">Make your call to see what the AI said.</div>'}
+        </div>`; }).join('') || '<div class="muted">No jobs yet. Use "+ Add recent leads".</div>'}</div>`;
+    el.querySelectorAll('#clList .card').forEach(c=>{ const it=list[Number(c.dataset.i)];
+      c.querySelector('.clJD').onclick=()=>{ const p=c.querySelector('.clJDt'); p.style.display=p.style.display==='none'?'block':'none'; };
+      c.querySelectorAll('.clF').forEach(b=>b.onclick=async()=>{ const v = it.fit.expected_band===b.dataset.b ? null : b.dataset.b;
+        await q(sb.from('agent_evals').update({expected_band:v}).eq('id',it.fit.id)); it.fit.expected_band=v;
+        if ((!v || !AG_BANDS[v]?.push) && it.res && it.res.expected_band) { await q(sb.from('agent_evals').update({expected_band:null}).eq('id',it.res.id)); it.res.expected_band=null; }
+        draw(); });
+      c.querySelectorAll('.clR').forEach(b=>b.onclick=async()=>{ if (!it.res) return; const v = it.res.expected_band===b.dataset.b ? null : b.dataset.b;
+        await q(sb.from('agent_evals').update({expected_band:v}).eq('id',it.res.id)); it.res.expected_band=v; draw(); });
+      c.querySelector('.clNote').onchange=async e=>{ const inp={...it.input, my_note:e.target.value||null}; await q(sb.from('agent_evals').update({input:inp}).eq('id',it.fit.id)); it.fit.input=it.input=inp; toast('Saved'); };
+      const ps=c.querySelector('.clPasteSave'); if (ps) ps.onclick=async()=>{ const t=c.querySelector('.clPaste').value.trim(); if (t.length<200) return toast('Paste the full job description (200+ characters).');
+        const inp={...it.input, jd_text:t.slice(0,12000)}; const ids=[it.fit.id, it.res?.id].filter(Boolean);
+        await q(sb.from('agent_evals').update({input:inp, ai_results:null}).in('id',ids)); it.input=it.fit.input=inp; if (it.res) it.res.input=inp; it.fit.ai_results=null; if (it.res) it.res.ai_results=null; toast('Saved; the AI re-checks it on the next pass'); draw(); };
+    });
+    $('#clAdd').onclick=async()=>{
+      const have = new Set(list.map(it=>it.fit.lead_id).filter(Boolean));
+      const leads = (await q(inStreams(sb.from('leads').select('id,title,company,location,raw_snippet,jd_text,url,job_stream_id').not('jd_text','is',null)).gte('created_at',new Date(Date.now()-30*864e5).toISOString()).order('created_at',{ascending:false}).limit(200))).filter(l=>!have.has(l.id));
+      if (!leads.length) return toast('Every recent lead with a job description is already here.');
+      if (!await confirmBox(`Add ${leads.length} recent leads (last 30 days, with a job description) to My calls?`)) return;
+      const rows = leads.flatMap(l=>{ const inp={title:l.title, company:l.company, location:l.location, raw_snippet:l.raw_snippet, jd_text:(l.jd_text||'').slice(0,12000), url:l.url, source:'lead', lead_id:l.id};
+        return [fitA.id,resA.id].map(aid=>({agent_id:aid, job_stream_id:l.job_stream_id, lead_id:l.id, input:inp, is_active:true, note:'Added from leads'})); });
+      for (let i=0;i<rows.length;i+=100) await q(sb.from('agent_evals').insert(rows.slice(i,i+100)));
+      toast(`Added ${leads.length} jobs`); renderCalls(el); };
+  };
+  draw();
+}
+
+/* ---------- career notes (Settings) ---------- */
+async function renderCareerNotes(host){
+  const st = (await q(sb.from('user_settings').select('settings').maybeSingle()))?.settings || {};
+  host.innerHTML = `<div class="card" style="margin-bottom:16px"><h4 style="margin-top:0">Career notes</h4>
+    <p class="muted" style="font-size:13px">Used by Fit and the Resume Decider (for "experience the resume underplays"). The runner rebuilds the first part from your portfolio (sudharsan454.github.io) once a day, so it stays current when you update the site.</p>
+    <label>From your portfolio ${st.career_notes_auto_date?`(refreshed ${esc(st.career_notes_auto_date)})`:'(not built yet: next runner pass)'}</label>
+    <pre class="text" style="max-height:260px;white-space:pre-wrap;font-size:12.5px">${esc(st.career_notes_auto||'—')}</pre>
+    <label for="cnExtra">Extra notes: anything the portfolio does not say</label><textarea id="cnExtra" style="min-height:90px">${esc(st.career_notes||'')}</textarea>
+    <div class="actions"><button class="primary" id="cnSave">Save extra notes</button></div></div>`;
+  $('#cnSave').onclick=async()=>{ const cur=(await q(sb.from('user_settings').select('settings').maybeSingle()))?.settings||{}; const ns={...cur, career_notes:$('#cnExtra').value.trim()||null};
+    await q(sb.from('user_settings').upsert({owner_id:state.user.id, settings:ns, updated_at:new Date().toISOString()})); state.settings={...state.settings, career_notes:ns.career_notes}; toast('Career notes saved'); };
+}
+/* ===================== end app-calls-gates-module v1.0 ===================== */
+
 </script>
 <!-- CHANGELOG
 v1.0.12 · 25 Oct 2026 · Calm redesign on one design system: Light / Dark / System theme (sidebar and Settings, saved per browser), warm paper and soft charcoal palettes, Inter, sentence-case labels, grouped sidebar (Work / Library / System) and a phone drawer. Tables: two-line company/role cells, status pills, roomy rows, sticky headers, fewer columns (Inbox 4, Applications 5, Interviews 5, People 4, Resumes 5, Runs 7). Closed applications hidden by default on Pipeline and Applications (toggle / Live·Closed·All tabs). New lead view with fit breakdown table and JD. Application overview as facts, fit table, rejection text and notes. Forms keep every field, grouped into sections with readable option names; raw JSON under Advanced. Target companies as a searchable table. Gentle empty states. No data or schema change.

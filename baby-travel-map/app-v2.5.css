@@ -1,4 +1,4 @@
-/* Baby Travel Map · styles · v2.4 · 13 Oct 2026 · v2.4: night layer sits inside the map under pins and the vehicle; vehicle windows glow on an overnight journey. v2.3 · 13 Oct 2026 · v2.3: night layer (stars, moon, dawn), stay icon with lit windows and Zzz, weather canvas and tints, stay badge on pins, stay/weather lines. v2.2 · 13 Oct 2026 · v2.2: people avatars, face picker, People tab, Who came along scene; bottom nav has 5 tabs. v2.1 · 13 Oct 2026 · v2.1: Back home block in the entry form, Back home row in the trip sheet. v2.0 · 13 Oct 2026 · v2.0: the rider (vehicle + his face), small pins, profile photo card, brand photo. v1.9 · 13 Oct 2026 · v1.9: no style change (version kept in step with the app). v1.8 · 13 Oct 2026 · v1.8: date fields outlined by class (not by picker limits); 'Extend the trip' dialog. v1.7 · 13 Oct 2026 · v1.7: trip cover banner, thumbnail Cover tag and Make cover button. v1.6 · 13 Oct 2026 · v1.6: previous-entry info line. v1.5 · 13 Oct 2026 · v1.5: invalid date fields outlined. v1.4 · 13 Oct 2026 · v1.4: reorder rows. v1.3 · 12 Oct 2026 · v1.3: add-place-by-hand panel with its own map. v1.0 · 10 Oct 2026
+/* Baby Travel Map · styles · v2.5 · 27 Oct 2026 · v2.5: activities: multi-select dropdown, activity tiles (card, sheet, pins, timeline), animated activity postcard in the story. v2.4 · 13 Oct 2026 · v2.4: night layer sits inside the map under pins and the vehicle; vehicle windows glow on an overnight journey. v2.3 · 13 Oct 2026 · v2.3: night layer (stars, moon, dawn), stay icon with lit windows and Zzz, weather canvas and tints, stay badge on pins, stay/weather lines. v2.2 · 13 Oct 2026 · v2.2: people avatars, face picker, People tab, Who came along scene; bottom nav has 5 tabs. v2.1 · 13 Oct 2026 · v2.1: Back home block in the entry form, Back home row in the trip sheet. v2.0 · 13 Oct 2026 · v2.0: the rider (vehicle + his face), small pins, profile photo card, brand photo. v1.9 · 13 Oct 2026 · v1.9: no style change (version kept in step with the app). v1.8 · 13 Oct 2026 · v1.8: date fields outlined by class (not by picker limits); 'Extend the trip' dialog. v1.7 · 13 Oct 2026 · v1.7: trip cover banner, thumbnail Cover tag and Make cover button. v1.6 · 13 Oct 2026 · v1.6: previous-entry info line. v1.5 · 13 Oct 2026 · v1.5: invalid date fields outlined. v1.4 · 13 Oct 2026 · v1.4: reorder rows. v1.3 · 12 Oct 2026 · v1.3: add-place-by-hand panel with its own map. v1.0 · 10 Oct 2026
    Layout: full-bleed map with a bottom nav; sheets slide up for detail; editor and story player are full-screen layers.
    Palette: night sky behind the map, warm saffron accent, parchment text. */
 :root{
@@ -292,3 +292,88 @@ input[type=date].bad-date{border-color:var(--danger)}
 .is-night .rider .rider-face{box-shadow:0 0 10px 3px rgba(255,214,107,.85)}
 .journey-night .rider .rider-body{filter:drop-shadow(0 0 10px rgba(255,214,107,.45)) drop-shadow(0 4px 8px rgba(0,0,0,.45))}
 .is-night .pin{box-shadow:0 0 0 3px rgba(255,214,107,.25),0 4px 14px rgba(0,0,0,.5)}
+
+/* ---------- v2.5 activities ---------- */
+.act-ico{display:inline-block;width:30px;height:22px;border-radius:5px;overflow:hidden;vertical-align:middle;flex:none;box-shadow:0 0 0 1px rgba(255,255,255,.18)}
+.act-ico svg{display:block;width:100%;height:100%}
+.act-item{display:inline-flex;align-items:center;gap:6px;margin:2px 10px 2px 0;white-space:nowrap}
+.act-line,.act-dd{line-height:1.9}
+.act-dd .act-ico{width:26px;height:19px}
+.tl-acts{display:flex;flex-wrap:wrap;gap:4px;margin-top:6px}.tl-acts .act-ico{width:24px;height:18px}
+.pin .act-badge{position:absolute;left:-9px;top:-8px;display:flex;align-items:center;gap:2px;background:var(--bg2);border:1px solid var(--accent);border-radius:7px;padding:1px;line-height:1}
+.pin .act-badge .act-ico{width:20px;height:15px;border-radius:4px;box-shadow:none}
+.pin .act-badge i{font:700 10px var(--body);font-style:normal;color:var(--accent);padding:0 3px 0 1px}
+/* dropdown */
+.ms{margin-bottom:4px}
+.ms-btn{width:100%;display:flex;justify-content:space-between;align-items:center;gap:8px;background:var(--surface);color:var(--fg);border:1px solid var(--line);border-radius:12px;padding:12px 14px;font:inherit;font-size:15px;cursor:pointer;text-align:left}
+.ms.open .ms-btn{border-color:var(--accent);border-bottom-left-radius:0;border-bottom-right-radius:0}
+.ms-btn .caret{transition:transform .2s;color:var(--muted)}.ms.open .ms-btn .caret{transform:rotate(180deg)}
+.ms-panel{border:1px solid var(--accent);border-top:0;border-radius:0 0 12px 12px;background:var(--bg2);padding:8px}
+.ms-panel input[type=search]{width:100%;margin:0 0 6px}
+.ms-list{max-height:320px;overflow-y:auto;overscroll-behavior:contain;-webkit-overflow-scrolling:touch}
+.ms-group{font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin:10px 4px 4px}
+.ms-group:first-child{margin-top:2px}
+.ms-opt{display:flex;align-items:center;gap:10px;padding:8px 6px;border-radius:9px;cursor:pointer;min-height:44px;font-size:15px;margin:0;color:var(--fg)}
+.ms-opt:hover{background:var(--surface)}
+.ms-opt.on{background:var(--accent-soft)}
+.ms-opt input{width:18px;height:18px;margin:0;accent-color:var(--accent);flex:none}
+.ms-opt .act-ico{width:36px;height:27px}
+.ms-none{padding:8px}
+.ms-foot{display:flex;justify-content:space-between;align-items:center;padding-top:8px;border-top:1px solid var(--line);margin-top:6px}
+#e-acts-chips{margin-top:8px}#e-acts-chips:empty{display:none}
+.act-chip{display:inline-flex;align-items:center;gap:6px;padding:4px 10px 4px 4px}
+.act-chip .act-ico{width:24px;height:18px}
+.act-chip b{font-weight:700;margin-left:2px}
+#e-act-other-wrap{margin-top:8px}
+/* story postcard */
+#player-act{position:absolute;z-index:6;width:168px;left:0;top:0;pointer-events:none;opacity:0;transform:scale(.4) translateY(20px);transform-origin:50% 100%;transition:transform .45s cubic-bezier(.3,1.5,.5,1),opacity .25s;filter:drop-shadow(0 8px 18px rgba(0,0,0,.55))}
+#player-act.pop{opacity:1;transform:none}
+#player-act .act-scene{width:168px;height:126px;border-radius:14px 14px 0 0;overflow:hidden;border:3px solid #fff;border-bottom:0;background:#fff}
+#player-act .act-scene svg{display:block;width:100%;height:100%}
+#player-act .act-cap{background:#fff;color:#1a1206;border-radius:0 0 14px 14px;padding:5px 10px 7px;font:700 14px var(--display);text-align:center;display:flex;justify-content:center;gap:8px;align-items:baseline}
+#player-act .act-cap span{font:600 11px var(--body);color:#7a6a50}
+@media (min-width:700px){#player-act,#player-act .act-scene{width:216px}#player-act .act-scene{height:162px}}
+/* animation parts, only inside the story postcard */
+.act-scene .a-flow{stroke-dasharray:6 5;animation:a-flow .5s linear infinite}.act-scene .a-flow.f2{stroke-dasharray:4 7;animation-duration:.42s}
+.act-scene .a-flowx{stroke-dasharray:10 8;animation:a-flowx .9s linear infinite}.act-scene .a-flowx.f2{animation-duration:1.2s}
+@keyframes a-flow{to{stroke-dashoffset:-22}}@keyframes a-flowx{to{stroke-dashoffset:-36}}
+.act-scene .a-bob{animation:a-bob 1.6s ease-in-out infinite}@keyframes a-bob{50%{transform:translateY(-3px)}}
+.act-scene .a-rock{animation:a-rock 1.8s ease-in-out infinite}.act-scene .a-rock.slow{animation-duration:3.2s}@keyframes a-rock{25%{transform:rotate(-4deg) translateY(-1px)}75%{transform:rotate(4deg) translateY(1px)}}
+.act-scene .a-sway{animation:a-sway 2.2s ease-in-out infinite}@keyframes a-sway{25%{transform:rotate(-6deg)}75%{transform:rotate(6deg)}}
+.act-scene .a-flag{animation:a-flag .6s ease-in-out infinite alternate}@keyframes a-flag{to{transform:scaleX(.75) skewY(8deg)}}
+.act-scene .a-spin{animation:a-spin 5s linear infinite}.act-scene .a-spin.slow{animation-duration:9s}@keyframes a-spin{to{transform:rotate(360deg)}}
+.act-scene .a-ripple{transform-box:fill-box;transform-origin:50% 50%;animation:a-ripple 1.4s ease-out infinite}@keyframes a-ripple{from{transform:scale(.3);opacity:1}to{transform:scale(1.6);opacity:0}}
+.act-scene .a-twinkle{animation:a-tw 1.2s ease-in-out infinite}@keyframes a-tw{50%{opacity:.15}}
+.act-scene .a-glow{transform-box:fill-box;transform-origin:50% 50%;animation:a-glow 2s ease-in-out infinite}@keyframes a-glow{50%{transform:scale(1.15)}}
+.act-scene .a-drift{animation:a-drift 3s linear infinite}@keyframes a-drift{from{transform:translateX(-10px)}to{transform:translateX(10px)}}
+.act-scene .a-walk{animation:a-walk 2.4s ease-in-out infinite alternate}@keyframes a-walk{from{transform:translateX(-14px)}to{transform:translateX(14px)}}
+.act-scene .a-flicker{animation:a-fl .3s ease-in-out infinite alternate}@keyframes a-fl{to{transform:scale(1.12,.82)}}
+.act-scene .a-smoke{transform-box:fill-box;transform-origin:50% 100%;animation:a-smoke 2s ease-out infinite}@keyframes a-smoke{from{transform:translateY(4px);opacity:0}30%{opacity:.9}to{transform:translateY(-10px);opacity:0}}
+.act-scene .a-bubble{animation:a-bubble 1.8s ease-in infinite}@keyframes a-bubble{from{transform:translateY(0);opacity:1}to{transform:translateY(-30px);opacity:0}}
+.act-scene .a-heart{transform-box:fill-box;transform-origin:50% 50%;animation:a-heart 2s ease-out infinite}@keyframes a-heart{from{transform:translateY(8px) scale(.5);opacity:0}30%{opacity:1}to{transform:translateY(-14px) scale(1.1);opacity:0}}
+.act-scene .a-burst{animation:a-burst 1.3s ease-out infinite}@keyframes a-burst{from{transform:scale(.2);opacity:1}to{transform:scale(1.4);opacity:0}}
+.act-scene .a-flash{animation:a-flash 1.2s ease-out infinite}@keyframes a-flash{0%,60%{opacity:0;transform:scale(.6)}70%{opacity:1;transform:scale(1.2)}100%{opacity:0;transform:scale(1.4)}}
+.act-scene .a-swing{animation:a-swing 1.6s ease-in-out infinite alternate}.act-scene .a-swing.big{animation-name:a-swingbig}@keyframes a-swing{from{transform:rotate(-18deg)}to{transform:rotate(18deg)}}@keyframes a-swingbig{from{transform:rotate(-30deg)}to{transform:rotate(30deg)}}
+.act-scene .a-nod{animation:a-nod 2s ease-in-out infinite}@keyframes a-nod{50%{transform:rotate(-8deg)}}
+.act-scene .a-trunk{animation:a-sway 1.4s ease-in-out infinite}
+.act-scene .a-peck{animation:a-peck .9s ease-in-out infinite}@keyframes a-peck{50%{transform:rotate(22deg)}}
+.act-scene .a-row{animation:a-row 1.2s ease-in-out infinite alternate}@keyframes a-row{to{transform:rotate(40deg)}}
+.act-scene .a-stroke{animation:a-stroke .8s linear infinite}@keyframes a-stroke{to{transform:rotate(-360deg)}}
+.act-scene .a-kick{transform-box:fill-box;transform-origin:100% 50%;animation:a-kick .5s ease-in-out infinite alternate}@keyframes a-kick{to{transform:scaleY(.6)}}
+.act-scene .a-climb{animation:a-climb 2.4s ease-in-out infinite}@keyframes a-climb{0%{transform:translate(0,0)}20%{transform:translate(12px,-10px)}40%{transform:translate(4px,-18px)}60%{transform:translate(14px,-28px)}80%,100%{transform:translate(17px,-42px)}}
+.act-scene .a-climbup{animation:a-climbup 2.4s ease-in-out infinite}@keyframes a-climbup{0%{transform:translateY(0)}25%{transform:translate(3px,-10px)}50%{transform:translate(-2px,-22px)}75%{transform:translate(3px,-32px)}100%{transform:translateY(-40px)}}
+.act-scene .a-rappel{animation:a-rappel 2.4s ease-in-out infinite}@keyframes a-rappel{0%{transform:translate(0,-24px)}18%{transform:translate(-8px,-16px)}32%{transform:translate(0,-8px)}50%{transform:translate(-8px,2px)}66%{transform:translate(0,10px)}100%{transform:translate(0,26px)}}
+.act-scene .a-sky{animation:a-sky 2.4s ease-out infinite}@keyframes a-sky{0%{transform:translate(-6px,-4px) rotate(-6deg)}50%{transform:translate(6px,4px) rotate(6deg)}100%{transform:translate(-2px,10px) rotate(-3deg)}}
+.act-scene .a-cloudup{animation:a-cloudup 2.4s linear infinite}@keyframes a-cloudup{from{transform:translateY(14px)}to{transform:translateY(-22px)}}
+.act-scene .a-glide{animation:a-glide 2.4s ease-in-out infinite}@keyframes a-glide{0%{transform:translate(-26px,4px)}50%{transform:translate(0,-4px)}100%{transform:translate(26px,4px)}}
+.act-scene .a-ski{animation:a-ski 2.2s ease-in infinite}@keyframes a-ski{from{transform:translate(-6px,-2px)}to{transform:translate(70px,26px)}}
+.act-scene .a-zip{animation:a-zip 2.2s ease-in infinite}@keyframes a-zip{from{transform:translate(0,0)}to{transform:translate(70px,29.5px)}}
+.act-scene .a-cable{animation:a-cable 2.4s linear infinite}@keyframes a-cable{from{transform:translate(0,0)}to{transform:translate(64px,16px)}}
+.act-scene .a-swim{animation:a-walk 2.4s linear infinite alternate}
+.act-scene .a-dip{animation:a-dip 1.6s ease-in-out infinite}@keyframes a-dip{0%,30%{transform:translateY(0)}55%{transform:translateY(12px)}80%,100%{transform:translateY(0)}}
+.act-scene .a-sunup{animation:a-sunup 2.4s ease-out both}@keyframes a-sunup{from{transform:translateY(20px)}to{transform:translateY(0)}}
+.act-scene .a-jeep{animation:a-jeep 2.4s linear infinite}@keyframes a-jeep{from{transform:translateX(-10px)}to{transform:translateX(52px)}}
+.act-scene .a-bump{animation:a-bob .35s ease-in-out infinite}
+.act-scene .a-plod{animation:a-plod 1s ease-in-out infinite}@keyframes a-plod{50%{transform:translate(2px,-2px)}}
+.act-scene .d2{animation-delay:-.5s}.act-scene .d3{animation-delay:-.9s}
+@media (prefers-reduced-motion: reduce){#player-act{transition:none}.act-scene *{animation:none!important}}

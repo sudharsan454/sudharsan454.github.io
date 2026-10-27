@@ -1,5 +1,5 @@
 <!doctype html>
-<!-- Job Application Driver · app v1.0.14 · 27 Oct 2026 · v1.0.14: mandatory gates editor on Fitment (location, years asked, product role or any yes/no question; a failed gate parks the job, not stated lets it through), weight 0 allowed, My calls screen (call fit then Generic/Tailored with the AI hidden until you call; Gemini and Jev agreement per agent; starter set; paste a JD), career notes in Settings (from the portfolio + your extra notes). Built on v1.0.12 · 25 Oct 2026 · v1.0.12: calm redesign on one design system. Light / Dark / System theme switch (remembered per browser), warm paper and soft charcoal palettes, Inter type, sentence-case labels. Grouped sidebar (Work / Library / System), drawer on phone. Tables rebuilt: company and role in one cell with a quiet meta line (Inbox 12 → 4 columns, Applications 11 → 5), readable status pills, roomy rows, sticky headers. Closed applications (rejected, ghosted, withdrawn) hidden by default on Pipeline and Applications with a one-tap toggle. Lead detail view (fit breakdown as a table, JD, actions) instead of the raw form. Application overview as facts + fit table. Every form keeps every field, grouped into sections with readable option names; raw JSON under Advanced. Target companies as a searchable table. Gentle empty states. v1.0.11: Prep room per interview round (header with company, round, interviewer, countdown to the call, progress; sections Brief, Case files, Mock grill, Numbers, Demo checklist, Ask them), practice mode (question first, 90-second timer, reveal, rate Weak/OK/Strong, weakest first; ratings saved to the database), answer bank redesign (topic chips, search, collapsed answers), pipeline drag and drop plus a Move-to control that open the status dialog pre-set to the new column. Needs migration job_driver_prep_room_v1_0. v1.0.10: agent run log. Every agent card shows a health dot, last run, 24 h success rate and a late flag; each agent gets a Runs tab; the Runs screen lists all runs with health cards, errors by type, filters (date range with quick picks and custom from/to, agent, status, error type, model, backup AI, text) and a run detail (errors per item, leads created, GitHub link). Missed slots are computed from each agent's schedule. Needs runner v1.0.13. v1.0.9: Resume Decider. Inbox gets a Resume column (Generic / Tailor / not yet run / Failed, a ? when the agent is unsure, your override wins); click it for the per-criterion breakdown, override or re-run. Jev's shadow fit score shows under the fit score (J 72). Agents → Resume Decider gets a Criteria tab (same editor as Fitment: weights, descriptions, anchors, threshold = Tailored at or above) and Jev as its model (Gemini backup). Read by runner v1.0.11. v1.0.8: Fitment tab, prompt preview and eval selectors read only fitment rubrics (agent_key = fit); the same table now also holds Resume Decider criteria (runner v1.0.11). v1.0.7: merges two parallel v1.0.5 builds: the JD panel (commit ee35102) and the Agents screen (on/off, schedule, model, versioned prompts, per-stream fitment rubric, guardrails, evals; JD Fetcher card). v1.0.5 (JD): full job description on leads and applications (JD badge in Inbox and Applications, JD panel with source link, paste-by-hand box; runner v1.0.8 fills it). v1.0.4: #app=<id> deep link opens an application (used by Telegram replies from the runner). v1.0.3: login account switched to sudharsan454@gmail.com (all rows re-owned in Supabase, allowlist trigger updated). v1.0.2: boot deferred out of the auth callback (page froze on reload with a saved session). v1.0.1: application detail embed disambiguated (two FKs between applications and leads). v1.0 · 10 Oct 2026 · single-file web app on Supabase (Project Zero) · login: sudharsan454@gmail.com only · changelog at the foot of this file -->
+<!-- Job Application Driver · app v1.0.16 · 27 Oct 2026 · v1.0.16: the redesigned app (v1.0.13 to v1.0.15, previewed at /jobs/next) is now the one live app at /jobs; /jobs/next redirects here. v1.0.15: mandatory gates editor on Fitment (location, years asked, product role or any yes/no question; a failed gate parks the job, not stated lets it through), weight 0 allowed, My calls screen (call fit then Generic/Tailored with the AI hidden until you call; Gemini and Jev agreement per agent; starter set; paste a JD), career notes in Settings (from the portfolio + your extra notes). Built on v1.0.13 · 25 Oct 2026 · v1.0.13: calm layer on the v1.0.12 design system. Today home (greeting, only the things that need you: upcoming interview with prep progress, due follow-ups, debriefs, new jobs, agent questions; pipeline flow; this week). Inbox "one at a time" focus mode (big card, fit ring, top reasons from the fit breakdown, Apply / Tailor / Park with Undo / Later, keys A T P →, inbox-zero screen) plus a list mode. Details open in a side sheet so the list stays in view. Applications grouped by stage with a progress track, company monograms and relative dates. Interviews as an upcoming timeline with countdowns. Command palette (Cmd/Ctrl+K or /) over screens, actions, applications and jobs. Phone bottom tab bar. Skeleton loading and soft motion. v1.0.12: calm redesign on one design system. Light / Dark / System theme switch (remembered per browser), warm paper and soft charcoal palettes, Inter type, sentence-case labels. Grouped sidebar (Work / Library / System), drawer on phone. Tables rebuilt: company and role in one cell with a quiet meta line (Inbox 12 → 4 columns, Applications 11 → 5), readable status pills, roomy rows, sticky headers. Closed applications (rejected, ghosted, withdrawn) hidden by default on Pipeline and Applications with a one-tap toggle. Lead detail view (fit breakdown as a table, JD, actions) instead of the raw form. Application overview as facts + fit table. Every form keeps every field, grouped into sections with readable option names; raw JSON under Advanced. Target companies as a searchable table. Gentle empty states. v1.0.11: Prep room per interview round (header with company, round, interviewer, countdown to the call, progress; sections Brief, Case files, Mock grill, Numbers, Demo checklist, Ask them), practice mode (question first, 90-second timer, reveal, rate Weak/OK/Strong, weakest first; ratings saved to the database), answer bank redesign (topic chips, search, collapsed answers), pipeline drag and drop plus a Move-to control that open the status dialog pre-set to the new column. Needs migration job_driver_prep_room_v1_0. v1.0.10: agent run log. Every agent card shows a health dot, last run, 24 h success rate and a late flag; each agent gets a Runs tab; the Runs screen lists all runs with health cards, errors by type, filters (date range with quick picks and custom from/to, agent, status, error type, model, backup AI, text) and a run detail (errors per item, leads created, GitHub link). Missed slots are computed from each agent's schedule. Needs runner v1.0.13. v1.0.9: Resume Decider. Inbox gets a Resume column (Generic / Tailor / not yet run / Failed, a ? when the agent is unsure, your override wins); click it for the per-criterion breakdown, override or re-run. Jev's shadow fit score shows under the fit score (J 72). Agents → Resume Decider gets a Criteria tab (same editor as Fitment: weights, descriptions, anchors, threshold = Tailored at or above) and Jev as its model (Gemini backup). Read by runner v1.0.11. v1.0.8: Fitment tab, prompt preview and eval selectors read only fitment rubrics (agent_key = fit); the same table now also holds Resume Decider criteria (runner v1.0.11). v1.0.7: merges two parallel v1.0.5 builds: the JD panel (commit ee35102) and the Agents screen (on/off, schedule, model, versioned prompts, per-stream fitment rubric, guardrails, evals; JD Fetcher card). v1.0.5 (JD): full job description on leads and applications (JD badge in Inbox and Applications, JD panel with source link, paste-by-hand box; runner v1.0.8 fills it). v1.0.4: #app=<id> deep link opens an application (used by Telegram replies from the runner). v1.0.3: login account switched to sudharsan454@gmail.com (all rows re-owned in Supabase, allowlist trigger updated). v1.0.2: boot deferred out of the auth callback (page froze on reload with a saved session). v1.0.1: application detail embed disambiguated (two FKs between applications and leads). v1.0 · 10 Oct 2026 · single-file web app on Supabase (Project Zero) · login: sudharsan454@gmail.com only · changelog at the foot of this file -->
 <html lang="en">
 <head>
 <meta charset="utf-8">
@@ -264,6 +264,157 @@ pre.text{white-space:pre-wrap;font-family:var(--body);font-size:14px;line-height
   .tablewrap tr.row:hover td{background:none}
   .cell-sub{font-size:12.5px}
 }
+
+/* ===== v1.0.13 calm layer: side sheet, monograms, rings, tracks, today, focus, lists, palette, tab bar ===== */
+:root{--av-s:42%;--av-bg:92%;--av-fg:32%}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--av-s:28%;--av-bg:22%;--av-fg:78%}}
+:root[data-theme="dark"]{--av-s:28%;--av-bg:22%;--av-fg:78%}
+@keyframes fadeUp{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+@keyframes slideIn{from{transform:translateX(24px);opacity:.4}to{transform:none;opacity:1}}
+@keyframes pop{0%{transform:scale(.96);opacity:0}100%{transform:none;opacity:1}}
+@keyframes shimmer{0%{background-position:-400px 0}100%{background-position:400px 0}}
+main>*{animation:fadeUp .28s ease both}
+main>*:nth-child(2){animation-delay:.03s}main>*:nth-child(3){animation-delay:.06s}main>*:nth-child(4){animation-delay:.09s}
+kbd{font-family:var(--mono);font-size:11px;padding:1px 5px;border-radius:5px;border:1px solid var(--line-strong);background:var(--surface-2);color:var(--muted);line-height:1.4}
+button.primary kbd{background:transparent;border-color:color-mix(in srgb,var(--accent-fg) 40%,transparent);color:var(--accent-fg)}
+
+/* skeleton */
+.skel{display:grid;gap:12px;padding-top:8px}
+.skel i{display:block;height:58px;border-radius:12px;background:linear-gradient(90deg,var(--surface-2) 0,var(--surface) 50%,var(--surface-2) 100%);background-size:800px 100%;animation:shimmer 1.3s infinite linear}
+.skel i:first-child{height:34px;width:40%}
+
+/* side sheet (details), centered dialogs (confirm, practice) */
+.modal-bg{justify-content:flex-end;align-items:stretch;padding:0;background:rgba(15,18,20,.24);backdrop-filter:none}
+.modal{max-width:660px;margin:0;height:100vh;overflow-y:auto;border-radius:18px 0 0 18px;border-right:none;animation:slideIn .22s cubic-bezier(.2,.8,.2,1);padding:26px 30px 28px}
+.modal-bg.center{justify-content:center;align-items:flex-start;padding:10vh 16px;background:rgba(15,18,20,.38)}
+.modal-bg.center .modal{height:auto;border-radius:var(--r-lg);border-right:1px solid var(--line);animation:pop .18s ease;max-width:560px}
+@media (max-width:640px){.modal{border-radius:0;max-width:100%!important}}
+
+/* monogram, ring, track */
+.mono-av{display:inline-grid;place-items:center;border-radius:11px;background:hsl(var(--h) var(--av-s) var(--av-bg));color:hsl(var(--h) 45% var(--av-fg));font-weight:650;letter-spacing:.02em;flex:none;line-height:1}
+.ring{position:relative;display:inline-grid;place-items:center;flex:none}
+.ring svg{position:absolute;inset:0;transform:rotate(-90deg)}
+.ring circle{fill:none;stroke-width:3.5;stroke-linecap:round}
+.ring .trk{stroke:var(--surface-2)}
+.ring.hi .val{stroke:var(--accent)}.ring.mid .val{stroke:var(--warn)}.ring.lo .val{stroke:var(--faint)}
+.ring b{position:relative;font-size:12.5px;font-weight:650;font-variant-numeric:tabular-nums;color:var(--fg-2)}
+.ring.big b{font-size:19px}
+.ring.empty{border-radius:50%;border:2px dashed var(--line-strong);color:var(--faint);font-size:12px}
+.track{display:inline-flex;gap:3px;align-items:center}
+.track i{width:16px;height:5px;border-radius:3px;background:var(--line)}
+.track i.on{background:var(--new);opacity:.55}.track i.cur{opacity:1}
+.track.offer i.on{background:var(--accent)}
+.stage-l{font-size:12.5px;color:var(--muted);margin-left:8px}
+
+/* modern list (Linear-like) */
+.list{background:var(--surface);border:1px solid var(--line);border-radius:14px;box-shadow:var(--shadow);overflow:hidden}
+.li{display:flex;align-items:center;gap:14px;padding:12px 16px;border-top:1px solid var(--line);cursor:pointer;transition:background .12s;position:relative}
+.li:first-child{border-top:none}
+.li:hover{background:var(--surface-2)}
+.li-main{flex:1;min-width:0}
+.li-title{font-weight:550;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.li-sub{font-size:13px;color:var(--muted);display:flex;gap:4px 8px;flex-wrap:wrap;margin-top:1px}
+.li-sub>.it:not(:last-child)::after{content:"·";margin-left:8px;color:var(--faint)}
+.li-meta{display:flex;align-items:center;gap:10px;flex:none;color:var(--muted);font-size:13px}
+.li-acts{display:flex;gap:6px;opacity:0;transition:opacity .12s;flex:none}
+.li:hover .li-acts,.li:focus-within .li-acts{opacity:1}
+.li .rel{width:64px;text-align:right;font-size:12.5px;color:var(--faint);flex:none}
+.group{margin-bottom:18px}
+.group-h{display:flex;align-items:center;gap:10px;padding:6px 4px 8px;cursor:pointer;user-select:none;color:var(--fg-2);font-weight:600;font-size:14px}
+.group-h .n{color:var(--muted);font-weight:450}
+.group-h .chev{color:var(--faint);transition:transform .15s;font-size:11px}
+.group.shut .chev{transform:rotate(-90deg)}
+.group.shut .list{display:none}
+.chipnext{font-size:12.5px;padding:3px 9px;border-radius:999px;background:var(--surface-2);color:var(--fg-2);white-space:nowrap;max-width:240px;overflow:hidden;text-overflow:ellipsis}
+.chipnext.od{background:var(--warn-soft);color:var(--warn)}
+@media (max-width:640px){.li{padding:12px 13px;gap:11px}.li-acts{display:none}.li .rel{display:none}.hide-sm{display:none!important}.li-meta .track{display:none}}
+
+/* today */
+.hello{font-size:1.75rem;font-weight:600;letter-spacing:-.02em;margin:4px 0 4px}
+.hello-sub{color:var(--muted);font-size:15.5px;margin-bottom:26px}
+.sec-t{font-size:13px;font-weight:600;color:var(--muted);margin:26px 0 10px;letter-spacing:.01em}
+.needs{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:14px}
+.ncard{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:18px 18px 16px;box-shadow:var(--shadow);display:flex;flex-direction:column;gap:10px;cursor:pointer;transition:transform .15s,border-color .15s,box-shadow .15s}
+.ncard:hover{transform:translateY(-2px);border-color:var(--accent-line);box-shadow:0 8px 28px rgba(30,25,15,.08)}
+.ncard .k{font-size:12.5px;font-weight:600;letter-spacing:.02em;display:flex;align-items:center;gap:7px}
+.ncard .k::before{content:"";width:8px;height:8px;border-radius:50%;background:var(--kc,var(--accent))}
+.ncard.iv{--kc:var(--new)}.ncard.due{--kc:var(--warn)}.ncard.lead{--kc:var(--accent)}.ncard.ask{--kc:var(--info)}.ncard.db{--kc:var(--warn)}
+.ncard .t{font-size:16.5px;font-weight:600;line-height:1.35}
+.ncard .d{font-size:13.5px;color:var(--muted)}
+.ncard .go{margin-top:auto;font-size:13.5px;font-weight:550;color:var(--accent)}
+.ncard .bar2{height:6px;border-radius:3px;background:var(--surface-2);overflow:hidden}.ncard .bar2 i{display:block;height:100%;background:var(--new);border-radius:3px}
+.calm{border:1px dashed var(--line-strong);border-radius:16px;padding:28px;text-align:center;color:var(--muted)}
+.calm b{display:block;color:var(--fg);font-size:17px;margin-bottom:4px;font-weight:600}
+.flow{display:flex;align-items:stretch;gap:0;background:var(--surface);border:1px solid var(--line);border-radius:16px;box-shadow:var(--shadow);overflow:hidden;flex-wrap:wrap}
+.flow>div{flex:1;min-width:110px;padding:14px 16px;border-left:1px solid var(--line);cursor:pointer;transition:background .12s}
+.flow>div:first-child{border-left:none}
+.flow>div:hover{background:var(--surface-2)}
+.flow b{display:block;font-size:1.5rem;font-weight:600;font-variant-numeric:tabular-nums;line-height:1.2}
+.flow span{font-size:13px;color:var(--muted)}
+.flow .z b{color:var(--faint)}
+.week{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:14px}
+.week .kpi b{font-size:1.4rem}
+
+/* inbox focus */
+.focus{max-width:720px;margin:0 auto}
+.focus-top{display:flex;align-items:center;gap:12px;margin-bottom:14px;color:var(--muted);font-size:13.5px}
+.focus-top .pbar{flex:1;height:5px;background:var(--surface-2);border-radius:3px;overflow:hidden}.focus-top .pbar i{display:block;height:100%;background:var(--accent);border-radius:3px;transition:width .3s}
+.fcard{background:var(--surface);border:1px solid var(--line);border-radius:20px;padding:26px 28px;box-shadow:0 2px 4px rgba(30,25,15,.04),0 18px 48px rgba(30,25,15,.08);animation:pop .22s ease}
+.fhead{display:flex;gap:16px;align-items:flex-start}
+.ftitle{font-size:1.35rem;font-weight:600;letter-spacing:-.01em;line-height:1.3}
+.fsub{color:var(--muted);margin-top:3px;display:flex;flex-wrap:wrap;gap:2px 8px}
+.fsub>.it:not(:last-child)::after{content:"·";margin-left:8px;color:var(--faint)}
+.why{list-style:none;padding:0;margin:18px 0 6px;display:grid;gap:9px}
+.why li{display:flex;gap:10px;align-items:flex-start;font-size:14.5px;line-height:1.5}
+.why li::before{content:"✓";flex:none;width:20px;height:20px;border-radius:50%;display:grid;place-items:center;font-size:11px;background:var(--accent-soft);color:var(--accent);margin-top:1px}
+.why li.neg::before{content:"!";background:var(--warn-soft);color:var(--warn)}
+.why li .p{color:var(--muted);font-size:12.5px;margin-left:4px}
+.factions{display:flex;gap:10px;justify-content:center;margin-top:18px;flex-wrap:wrap}
+.factions button{padding:11px 20px;font-size:15px;border-radius:12px}
+.zero{text-align:center;padding:9vh 16px;animation:pop .3s ease}
+.zero .sun{width:96px;height:96px;margin:0 auto 18px;border-radius:50%;background:radial-gradient(circle at 50% 50%,var(--accent-soft) 0 55%,transparent 56%),conic-gradient(from 0deg,var(--accent-line),transparent 20%,var(--accent-line) 40%,transparent 60%,var(--accent-line) 80%,transparent);display:grid;place-items:center;font-size:34px}
+.zero h2{font-size:1.6rem}
+@media (max-width:640px){.fcard{padding:20px 18px;border-radius:16px}.ftitle{font-size:1.15rem}.factions{position:sticky;bottom:72px;background:var(--bg);padding:10px 0}.factions button{flex:1;justify-content:center;padding:12px 8px}.factions kbd{display:none}}
+
+/* interviews timeline */
+.tl{display:grid;gap:12px}
+.tl-item{display:flex;gap:16px;align-items:center;background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:14px 18px;box-shadow:var(--shadow);cursor:pointer;transition:border-color .15s}
+.tl-item:hover{border-color:var(--accent-line)}
+.dateblk{width:54px;flex:none;text-align:center;border-radius:12px;background:var(--new-soft);color:var(--new);padding:6px 0}
+.dateblk b{display:block;font-size:1.35rem;line-height:1.1;font-weight:650}
+.dateblk span{font-size:11.5px;font-weight:600;letter-spacing:.06em;text-transform:uppercase}
+.tl-item.past .dateblk{background:var(--surface-2);color:var(--muted)}
+.count-chip{font-size:12.5px;font-weight:600;padding:4px 10px;border-radius:999px;background:var(--new-soft);color:var(--new);white-space:nowrap}
+
+/* command palette */
+.pal-bg{position:fixed;inset:0;background:rgba(15,18,20,.38);z-index:70;display:flex;justify-content:center;align-items:flex-start;padding:12vh 16px}
+.pal{width:100%;max-width:620px;background:var(--surface);border:1px solid var(--line);border-radius:16px;box-shadow:var(--shadow-lg);overflow:hidden;animation:pop .15s ease}
+.pal input{border:none;border-bottom:1px solid var(--line);border-radius:0;font-size:17px;padding:16px 18px;box-shadow:none!important}
+.pal-list{max-height:52vh;overflow:auto;padding:6px}
+.pal-it{display:flex;align-items:center;gap:12px;padding:9px 12px;border-radius:10px;cursor:pointer}
+.pal-it.on{background:var(--accent-soft)}
+.pal-it .lb{flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.pal-it .ty{font-size:12px;color:var(--faint)}
+.pal-sec{font-size:12px;color:var(--faint);padding:8px 12px 4px;font-weight:500}
+.pal-ic{width:28px;height:28px;border-radius:8px;display:grid;place-items:center;background:var(--surface-2);color:var(--muted);font-size:14px;flex:none}
+.pal-foot{display:flex;gap:14px;padding:9px 16px;border-top:1px solid var(--line);font-size:12px;color:var(--faint)}
+.searchbtn{display:flex;align-items:center;gap:8px;justify-content:flex-start;width:100%;color:var(--muted);background:var(--surface-2);border:1px solid transparent;font-weight:450;padding:7px 10px;border-radius:9px}
+.searchbtn kbd{margin-left:auto}
+
+/* toast with undo */
+.toast{display:none;align-items:center;gap:14px}
+.toast button{background:transparent;border:none;color:var(--accent-soft);padding:0;font-weight:600;text-decoration:underline;text-underline-offset:3px}
+
+/* phone tab bar */
+.tabbar{display:none}
+@media (max-width:900px){
+  .tabbar{display:flex;flex-direction:row;position:fixed;left:0;right:0;bottom:0;z-index:22;background:color-mix(in srgb,var(--surface) 88%,transparent);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border-top:1px solid var(--line);padding:6px 6px calc(6px + env(safe-area-inset-bottom))}
+  .tabbar button{flex:1;flex-direction:column;gap:2px;border:none;background:none;font-size:11px;color:var(--muted);padding:6px 2px;border-radius:10px}
+  .tabbar button svg{width:22px;height:22px}
+  .tabbar button.on{color:var(--accent)}
+  main{padding-bottom:96px}
+}
+
 </style>
 </head>
 <body>
@@ -281,7 +432,8 @@ pre.text{white-space:pre-wrap;font-family:var(--body);font-size:14px;line-height
 
 <div id="app" class="app">
   <aside class="side" id="side">
-    <div class="brand"><span class="logo">J</span><div>Job Driver<small>v1.0.14</small></div></div>
+    <div class="brand"><span class="logo">J</span><div>Job Driver<small>v1.0.16</small></div></div>
+    <button class="searchbtn" id="searchBtn" aria-label="Search (Cmd K)"><span>⌕</span>Search<kbd>⌘K</kbd></button>
     <nav id="nav" aria-label="Screens"></nav>
     <div class="side-foot">
       <div class="side-label">Streams</div><div class="streams" id="streamChips"></div>
@@ -290,7 +442,8 @@ pre.text{white-space:pre-wrap;font-family:var(--body);font-size:14px;line-height
     </div>
   </aside>
   <div class="scrim" id="scrim"></div>
-  <div class="content"><div class="mobilebar"><button class="ghost" id="menuBtn" aria-label="Open menu">☰</button><b id="mbTitle">Inbox</b></div><main id="main"></main></div>
+  <div class="content"><div class="mobilebar"><button class="ghost" id="menuBtn" aria-label="Open menu">☰</button><b id="mbTitle">Today</b><button class="ghost" id="mbSearch" aria-label="Search" style="margin-left:auto">⌕</button></div><main id="main"></main></div>
+  <nav class="tabbar" id="tabbar" aria-label="Main"></nav>
 </div>
 
 <div class="modal-bg" id="modalBg"><div class="modal" id="modal"></div></div>
@@ -374,13 +527,15 @@ async function boot(){
   state.noise = await q(sb.from('noise_reasons').select('*').order('reason'));
   const st = await q(sb.from('user_settings').select('*').maybeSingle()); state.settings = (st && st.settings) || {};
   renderNav(); renderChips();
-  const hash = location.hash.replace('#','') || 'inbox';
-  if (hash.startsWith('app=')) { await go('pipeline'); openApplication(hash.slice(4)); return; }
-  go(SCREENS[hash] ? hash : 'inbox');
+  const hash = location.hash.replace('#','') || 'today';
+  if (hash.startsWith('app=')) { await go('applications'); openApplication(hash.slice(4)); return; }
+  go(SCREENS[hash] ? hash : 'today');
+  $('#searchBtn').onclick=openPalette; $('#mbSearch').onclick=openPalette;
 }
 
 /* ===================== navigation ===================== */
 const SCREENS = {
+  today:{label:'Today', g:'work', render:renderToday},
   inbox:{label:'Inbox', g:'work', render:renderInbox},
   calls:{label:'My calls', g:'work', render:renderCalls},
   pipeline:{label:'Pipeline', g:'work', render:renderPipeline},
@@ -402,9 +557,10 @@ function renderNav(){
   $('#nav').innerHTML = NAV_GROUPS.map(([g,l])=>`<div class="navgroup">${l}</div>`+Object.entries(SCREENS).filter(([,v])=>v.g===g).map(([k,v])=>`<button data-s="${k}" class="${k===state.screen?'active':''}" ${k===state.screen?'aria-current="page"':''}>${v.label}${c[k]?`<span class="cnt">${c[k]}</span>`:''}</button>`).join('')).join('');
   $('#nav').querySelectorAll('button').forEach(b=>b.onclick=()=>{ $('#app').classList.remove('nav-open'); go(b.dataset.s); });
   const mt=$('#mbTitle'); if (mt) mt.textContent = SCREENS[state.screen]?.label || '';
+  renderTabbar();
 }
 function renderChips(){ $('#streamChips').innerHTML = state.streams.map(s=>`<span class="chip ${state.selected.has(s.id)?'on':''}" data-id="${s.id}" role="button" tabindex="0" aria-pressed="${state.selected.has(s.id)}">${esc(s.name)}</span>`).join(''); $('#streamChips').querySelectorAll('.chip').forEach(c=>c.onclick=()=>{ const id=c.dataset.id; if (state.selected.has(id)) { if (state.selected.size>1) state.selected.delete(id); } else state.selected.add(id); localStorage.setItem('jd.streams', JSON.stringify([...state.selected])); renderChips(); go(state.screen); }); }
-async function go(s){ state.screen=s; location.hash=s; renderNav(); if ($('#modalBg').style.display==='flex') closeModal(); $('#main').innerHTML='<div class="muted" style="padding:24px 0">Loading…</div>'; window.scrollTo(0,0); try { await SCREENS[s].render($('#main')); } catch(e){ err(e); $('#main').innerHTML='<div class="err">'+esc(e.message||e)+'</div>'; } }
+async function go(s){ state.screen=s; state.keys=null; location.hash=s; renderNav(); if ($('#modalBg').style.display==='flex') closeModal(); $('#main').innerHTML=SKELETON; window.scrollTo(0,0); try { await SCREENS[s].render($('#main')); } catch(e){ err(e); $('#main').innerHTML='<div class="err">'+esc(e.message||e)+'</div>'; } }
 window.addEventListener('hashchange', ()=>{ const h=location.hash.replace('#',''); if (h.startsWith('app=')) { openApplication(h.slice(4)); return; } if (SCREENS[h] && h!==state.screen) go(h); });
 
 /* ===================== generic form engine ===================== */
@@ -430,7 +586,7 @@ function readField(f){
   if (f.t==='datetime') return v===''?null:new Date(v).toISOString();
   return v===''?null:v;
 }
-function openModal(html){ $('#modal').innerHTML=html; $('#modalBg').style.display='flex'; }
+function openModal(html){ $('#modalBg').className = 'modal-bg' + (/class="practice"|<h3>Are you sure|<h3>Practice done|<h3>Park this lead/.test(html) ? ' center' : ''); $('#modal').innerHTML=html; $('#modalBg').style.display='flex'; $('#modal').scrollTop=0; }
 function closeModal(){ $('#modalBg').style.display='none'; $('#modal').innerHTML=''; }
 $('#modalBg').addEventListener('click', e=>{ if (e.target===$('#modalBg')) closeModal(); });
 document.addEventListener('keydown', e=>{ if (e.key==='Escape') closeModal(); });
@@ -545,7 +701,7 @@ async function renderInbox(el){
 // v1.0.12: a readable lead view (fit breakdown as a table, the JD, the actions); the full form is one click away
 function openLead(l){
   const thr = state.settings.fit_threshold ?? 60, age = daysAgo(l.posted_at||l.created_at);
-  openModal(`<div style="display:flex;gap:14px;align-items:flex-start"><div style="flex:1;min-width:0"><h3>${esc(l.title)}</h3><div class="muted">${esc(l.company)}${l.location?' · '+esc(l.location):''}</div></div>${scoreBadge(l.fit_score, thr)}</div>
+  openModal(`<div style="display:flex;gap:14px;align-items:flex-start">${mono(l.company,44)}<div style="flex:1;min-width:0"><h3>${esc(l.title)}</h3><div class="muted">${esc(l.company)}${l.location?' · '+esc(l.location):''}</div></div>${scoreBadge(l.fit_score, thr)}</div>
     <dl class="facts" style="margin-top:16px">
       <div><dt>Stream</dt><dd>${esc(streamName(l.job_stream_id))||'—'}</dd></div>
       <div><dt>Source</dt><dd>${esc(l.job_boards?.name||hum(l.source_platform)||'—')}</dd></div>
@@ -569,11 +725,11 @@ async function renderParked(el){
   el.querySelectorAll('tr.row').forEach(tr=>tr.onclick=e=>{ if (e.target.closest('button')) return; openLead(leads.find(x=>x.id===tr.dataset.id)); });
   el.querySelectorAll('button.un').forEach(b=>b.onclick=async()=>{ await q(sb.from('leads').update({status:'new',noise_reason_id:null}).eq('id',b.dataset.id)); toast('Back in the Inbox'); renderParked(el); });
 }
-async function leadAction(a, l){
+async function leadAction(a, l, onDone){
   if (a==='park'){
     const opts = state.noise.map(n=>`<option value="${n.id}">${esc(n.reason)}</option>`).join('');
     openModal(`<h3>Park this lead</h3><p class="muted">${esc(l.title)} · ${esc(l.company)}</p><label>Why</label><select id="parkReason">${opts}</select><div class="actions"><button class="primary" id="ok">Park</button><button id="no">Cancel</button></div>`);
-    $('#no').onclick=closeModal; $('#ok').onclick=async()=>{ await q(sb.from('leads').update({status:'parked',noise_reason_id:$('#parkReason').value}).eq('id',l.id)); closeModal(); toast('Parked'); go('inbox'); };
+    $('#no').onclick=closeModal; $('#ok').onclick=async()=>{ await q(sb.from('leads').update({status:'parked',noise_reason_id:$('#parkReason').value}).eq('id',l.id)); closeModal(); toast('Parked'); if (onDone) onDone(); else go('inbox'); };
     return;
   }
   // apply or tailor: create the application from the lead
@@ -595,7 +751,7 @@ async function leadAction(a, l){
     let docId = generic?generic.id:null;
     if (decision==='tailored' && generic){ const full = await q(sb.from('documents').select('text').eq('id',generic.id).single()); const d = await q(sb.from('documents').insert({job_stream_id:stream.id, type:'resume', tag:'tailored', tailored_for_company:l.company, derived_from_document_id:generic.id, version_label:`Tailored · ${l.company} · ${new Date().toISOString().slice(0,10)}`, text:full.text, status:'draft'}).select().single()); docId=d.id; }
     if (docId) await q(sb.from('application_documents').insert({application_id:app.id, document_id:docId, role:'resume', sent_at:decision==='generic'?new Date().toISOString():null}));
-    state.cache={}; closeModal(); toast('Application created'); openApplication(app.id);
+    state.cache={}; closeModal(); if (onDone) { toast(`Applied to ${l.company}. Nice work.`); onDone(); } else { toast('Application created'); openApplication(app.id); }
   }catch(e){ $('#e').textContent=e.message||e; } };
 }
 
@@ -609,7 +765,7 @@ async function renderPipeline(el){
   const multi = state.selected.size>1;
   el.innerHTML = pageHead('Pipeline', `${liveN} live application${liveN===1?'':'s'} · drag a card to move it`, `<button class="ghost" id="tgClosed">${state.showClosed?'Hide closed':'Show closed · '+closedN}</button><button id="newApp">+ Application</button>`)
   + `<div class="kanban">${cols.map(s=>{ const list=apps.filter(a=>a.status===s); return `<div class="col" data-s="${s}"><h4>${pill(s)}<span class="muted">${list.length}</span></h4>${list.map(a=>{ const od=a.next_action_due&&new Date(a.next_action_due)<new Date(new Date().toDateString());
-      return `<div class="kcard" draggable="true" data-id="${a.id}"><b>${esc(a.company)}</b><div class="t">${esc(a.title)}</div>${(multi||a.resume_decision)?`<div class="m">${sub([multi?esc(streamName(a.job_stream_id)):'', a.resume_decision?esc(hum(a.resume_decision))+' resume':''])}</div>`:''}${a.next_action?`<span class="tag ${od?'warn':''}">${esc(a.next_action)}${a.next_action_due?' · '+fmtD(a.next_action_due):''}</span>`:''}<select class="moveTo" aria-label="Move ${esc(a.company)} to"><option value="">Move to…</option>${STATUSES.filter(x=>x!==s).map(x=>`<option value="${x}">${hum(x)}</option>`).join('')}</select></div>`; }).join('')||'<div class="none">Nothing here</div>'}</div>`; }).join('')}</div>`;
+      return `<div class="kcard" draggable="true" data-id="${a.id}"><div style="display:flex;gap:9px;align-items:center">${mono(a.company,26)}<b>${esc(a.company)}</b></div><div class="t">${esc(a.title)}</div>${(multi||a.resume_decision)?`<div class="m">${sub([multi?esc(streamName(a.job_stream_id)):'', a.resume_decision?esc(hum(a.resume_decision))+' resume':''])}</div>`:''}${a.next_action?`<span class="tag ${od?'warn':''}">${esc(a.next_action)}${a.next_action_due?' · '+fmtD(a.next_action_due):''}</span>`:''}<select class="moveTo" aria-label="Move ${esc(a.company)} to"><option value="">Move to…</option>${STATUSES.filter(x=>x!==s).map(x=>`<option value="${x}">${hum(x)}</option>`).join('')}</select></div>`; }).join('')||'<div class="none">Nothing here</div>'}</div>`; }).join('')}</div>`;
   const back = ()=>{ closeModal(); go('pipeline'); };
   const move = (id, to) => { const a = apps.find(x=>x.id===id); if (!a || a.status===to) return; changeStatus(a, back, to); };
   el.querySelectorAll('.kcard').forEach(c=>{
@@ -667,7 +823,7 @@ async function openApplication(id, tab='overview'){
   const fb = a.fit_breakdown || a.leads?.fit_breakdown;
   let body='';
   if (tab==='overview') body = `<dl class="facts">
-      <div><dt>Status</dt><dd>${pill(a.status, a.final_status)}</dd></div>
+      <div><dt>Status</dt><dd>${pill(a.status, a.final_status)}${isClosedApp(a)?'':'<div style="margin-top:6px">'+track(a.status)+'</div>'}</dd></div>
       <div><dt>Applied</dt><dd>${fmtD(a.applied_date)||'—'}</dd></div>
       <div><dt>Fit</dt><dd>${scoreBadge(a.fit_score, state.settings.fit_threshold ?? 60)}</dd></div>
       <div><dt>Resume</dt><dd>${esc(hum(a.resume_decision))||'Not set'}</dd></div>
@@ -688,7 +844,7 @@ async function openApplication(id, tab='overview'){
   if (tab==='rounds') body = `<table><thead><tr><th>Round</th><th>Stage</th><th>Date</th><th>Interviewer</th><th>Result</th><th>Went</th><th>Debrief</th></tr></thead><tbody>${rounds.map(r=>`<tr class="row" data-id="${r.id}"><td>${r.round_number}</td><td>${esc(r.stage_label||'')}</td><td>${fmtD(r.interview_date)}</td><td>${esc(r.interviewer_name||'')}</td><td>${esc(hum(r.result))}</td><td>${r.how_it_went!=null?r.how_it_went+'/5':''}</td><td>${r.debriefed_at?'<span class="tag ok">Done</span>':'<span class="tag warn">Pending</span>'}</td></tr>`).join('')||emptyRow(7,'No rounds yet.','')}</tbody></table><div class="actions"><button id="addRound">+ Round</button></div>`;
   if (tab==='timeline') body = `<table><thead><tr><th>When</th><th>From</th><th>To</th><th>Cause</th><th>What they said</th></tr></thead><tbody>${hist.map(h=>`<tr><td class="nowrap">${fmtDT(h.changed_at)}</td><td>${h.from_status?pill(h.from_status):''}</td><td>${pill(h.to_status)}</td><td class="muted">${esc(hum(h.cause))}</td><td>${esc(h.message_text||'')}</td></tr>`).join('')||'<tr><td colspan="5" class="muted">No changes recorded.</td></tr>'}</tbody></table>`;
   if (tab==='post-mortem') body = pm ? `<dl class="facts"><div><dt>Outcome</dt><dd>${pill(pm.final_status)}</dd></div><div><dt>Rounds reached</dt><dd>${pm.rounds_reached??'—'}</dd></div><div><dt>Written by</dt><dd>${esc(hum(pm.written_by))||'—'}</dd></div></dl><div class="reading"><h3>What went wrong</h3><p>${esc(pm.mistake||'') || '<span class="faint">Not written yet.</span>'}</p><h3>What I did not do well</h3><p>${esc(pm.not_done_well||'') || '<span class="faint">Not written yet.</span>'}</p><h3>What I will change next time</h3><p>${esc(pm.change_next_time||'') || '<span class="faint">Not written yet.</span>'}</p></div><div class="actions"><button id="editPm">Edit</button></div>` : `<p class="muted reading">No post-mortem yet. When this one closes, a few honest lines here make the next interview easier.</p><div class="actions"><button id="editPm">+ Post-mortem</button></div>`;
-  openModal(`<div style="display:flex;gap:12px;align-items:flex-start"><div style="flex:1;min-width:0"><h3>${esc(a.company)}</h3><div class="muted">${esc(a.title)}</div></div><button id="closeApp" class="ghost small" aria-label="Close">Close</button></div><div class="tabs">${tabs.map(t=>`<button class="${t===tab?'active':''}" data-t="${t}">${TAB_L[t]}</button>`).join('')}</div>${body}`);
+  openModal(`<div style="display:flex;gap:12px;align-items:flex-start">${mono(a.company,44)}<div style="flex:1;min-width:0"><h3>${esc(a.company)}</h3><div class="muted">${esc(a.title)}</div></div><button id="closeApp" class="ghost small" aria-label="Close">Close</button></div><div class="tabs">${tabs.map(t=>`<button class="${t===tab?'active':''}" data-t="${t}">${TAB_L[t]}</button>`).join('')}</div>${body}`);
   $('#modal').querySelectorAll('.tabs button').forEach(b=>b.onclick=()=>openApplication(id,b.dataset.t));
   $('#closeApp').onclick=()=>{ closeModal(); go(state.screen); };
   const re=()=>openApplication(id,tab);
@@ -1491,7 +1647,7 @@ async function renderSettings(el){
     <label for="np">New password (12+ characters)</label><input id="np" type="password" autocomplete="new-password"><label for="np2">Repeat</label><input id="np2" type="password" autocomplete="new-password">
     <div class="actions"><button id="chPw">Change password</button></div><div class="err" id="pwErr"></div>
     <h3>Reference data</h3><p class="muted">Sources / portals and park reasons are editable here.</p><div class="actions"><button id="edBoards">Sources & portals</button><button id="edNoise">Park reasons</button><button id="edCrit">Filter criteria</button></div>
-    <h3>About</h3><p class="muted">Job Application Driver v1.0.12 · 25 Oct 2026 · data in Supabase Project Zero, row-level security by owner · design doc v1.7 in PMOS/JobTracker.</p>
+    <h3>About</h3><p class="muted">Job Application Driver v1.0.13 · 25 Oct 2026 · data in Supabase Project Zero, row-level security by owner · design doc v1.7 in PMOS/JobTracker.</p>
   </div></div>`;
   $('#saveS').onclick=async()=>{ try{ const ns={...s, fit_threshold:Number($('#s_fit').value), freshness_days:Number($('#s_fresh').value), daily_cap:Number($('#s_cap').value), quiet_hours:{from:$('#s_qf').value,to:$('#s_qt').value}, stale_days:Number($('#s_stale').value), ghost_days:Number($('#s_ghost').value), channel:$('#s_ch').value, telegram_chat_id:$('#s_tg').value||null}; await q(sb.from('user_settings').upsert({owner_id:state.user.id, settings:ns, updated_at:new Date().toISOString()})); state.settings=ns; toast('Settings saved'); }catch(e){ $('#sErr').textContent=e.message||e; } };
   renderThemeSeg();
@@ -1509,6 +1665,240 @@ async function simpleList(table, fields, labelCol){
   $('#add').onclick=()=>editRecord({table,title:'New',fields,row:null,defaults:{is_active:true,job_stream_id:selStreams()[0]||PM_STREAM},after:re});
   $('#modal').querySelectorAll('tr.row').forEach(tr=>tr.onclick=()=>editRecord({table,title:'Edit',fields,row:rows.find(r=>r.id===tr.dataset.id),after:re}));
 }
+
+/* ===================== v1.0.13 calm layer (overrides earlier function declarations of the same name) ===================== */
+const STAGES = ['applied','screening','round_1','round_2','round_3','offer'];
+function hueOf(s){ let h=7; for (const c of String(s||'')) h=(h*31+c.charCodeAt(0))%360; return h; }
+function mono(name, size=36){ const n=String(name||'?').trim(); const ini=(n.replace(/[^A-Za-z0-9 ]/g,' ').split(/\s+/).filter(Boolean).slice(0,2).map(w=>w[0]).join('')||'?').toUpperCase(); return `<span class="mono-av" aria-hidden="true" style="--h:${hueOf(n.toLowerCase())};width:${size}px;height:${size}px;font-size:${Math.round(size*0.38)}px;border-radius:${Math.round(size*0.3)}px">${esc(ini)}</span>`; }
+function ring(v, thr, size=38){
+  if (v==null) return `<span class="ring empty" style="width:${size}px;height:${size}px" title="Not scored yet">–</span>`;
+  const n=Math.round(v), r=(size-5)/2, c=2*Math.PI*r, off=c*(1-Math.max(0,Math.min(100,n))/100), cls=n>=thr?'hi':n>=thr-15?'mid':'lo';
+  return `<span class="ring ${cls} ${size>=56?'big':''}" style="width:${size}px;height:${size}px" title="Fit ${n} of 100"><svg viewBox="0 0 ${size} ${size}"><circle cx="${size/2}" cy="${size/2}" r="${r}" class="trk"/><circle cx="${size/2}" cy="${size/2}" r="${r}" class="val" stroke-dasharray="${c.toFixed(1)}" stroke-dashoffset="${off.toFixed(1)}"/></svg><b>${n}</b></span>`;
+}
+function track(st){ const i=STAGES.indexOf(st); if (i<0) return ''; return `<span class="track ${st==='offer'?'offer':''}" title="${esc(hum(st))}" aria-label="Stage ${i+1} of ${STAGES.length}: ${esc(hum(st))}">${STAGES.map((s,k)=>`<i class="${k<=i?'on':''} ${k===i?'cur':''}"></i>`).join('')}</span>`; }
+function rel(d){ if(!d) return ''; const ms=Date.now()-new Date(d).getTime(); const day=Math.floor(ms/864e5);
+  if (ms<0){ const f=Math.ceil(-ms/864e5); return f<=1?'tomorrow':'in '+f+'d'; }
+  if (day<1){ const h=Math.floor(ms/36e5); return h<1?'just now':h+'h ago'; } if (day===1) return 'yesterday'; if (day<7) return day+'d ago'; if (day<56) return Math.round(day/7)+'w ago'; return fmtD(d); }
+const todayStart = () => new Date(new Date().toDateString());
+function toastUndo(m, undo){ const t=$('#toast'); t.innerHTML=`<span>${esc(m)}</span>${undo?'<button id="undoBtn">Undo</button>':''}`; t.style.display='flex'; clearTimeout(toastT); toastT=setTimeout(()=>t.style.display='none', 6000);
+  if (undo) $('#undoBtn').onclick=async()=>{ t.style.display='none'; try{ await undo(); toast('Undone'); }catch(e){ err(e); } }; }
+const SKELETON = '<div class="skel" aria-label="Loading"><i></i><i></i><i></i><i></i></div>';
+
+/* ---------- keyboard + palette wiring ---------- */
+document.addEventListener('keydown', e=>{
+  if (!state.user) return;
+  const typing = e.target.closest && e.target.closest('input,textarea,select,[contenteditable]');
+  if ((e.metaKey||e.ctrlKey) && e.key.toLowerCase()==='k'){ e.preventDefault(); openPalette(); return; }
+  if (typing || $('#pal')) return;
+  if (e.key==='/' && !e.metaKey && !e.ctrlKey){ e.preventDefault(); openPalette(); return; }
+  if ($('#modalBg').style.display==='flex') return;
+  if (state.keys && !e.metaKey && !e.ctrlKey && !e.altKey && state.keys(e)) e.preventDefault();
+});
+
+/* ---------- Today ---------- */
+function greet(){ const h=new Date().getHours(); return h<5?'Still up':h<12?'Good morning':h<17?'Good afternoon':'Good evening'; }
+async function renderToday(el){
+  const thr = state.settings.fit_threshold ?? 60;
+  const [leads, apps, ivs, qs, preps] = await Promise.all([
+    q(inStreams(sb.from('leads').select('id,title,company,fit_score').in('status',['new','fit_checked'])).limit(300)),
+    loadApps(),
+    q(sb.from('interviews').select('*, applications(id,company,title,job_stream_id)').order('interview_date',{ascending:true})),
+    q(sb.from('agent_questions').select('id,question,created_at,status').order('created_at',{ascending:false}).limit(50)),
+    q(sb.from('prep_answers').select('interview_id,confidence').not('interview_id','is',null))]);
+  state.counts = {...(state.counts||{}), inbox: leads.length}; renderNav();
+  const now = Date.now(), t0 = todayStart();
+  const live = apps.filter(a=>!isClosedApp(a));
+  const liveIds = new Set(apps.map(a=>a.id));
+  const ivMine = ivs.filter(i=>!i.applications || liveIds.has(i.application_id));
+  const cards = [];
+  for (const iv of ivMine) { const t=callTime(iv); if (!t || t.getTime()<now || t.getTime()-now>8*864e5) continue;
+    const rs=preps.filter(p=>p.interview_id===iv.id), done=rs.filter(p=>p.confidence).length, pct=rs.length?Math.round(100*done/rs.length):0;
+    cards.push({w:0, cls:'iv', app:iv.application_id, k:'Interview', t:`${esc(iv.applications?.company||'')} · ${esc(roundLbl(iv))}`, d:`${esc(iv.interviewer_name||'Interviewer not set')} · ${iv.starts_at?fmtDT(iv.starts_at):fmtD(iv.interview_date)} · <b style="color:var(--new)">${esc(untilText(t)[0])} to go</b>`,
+      extra: rs.length?`<div class="bar2"><i style="width:${pct}%"></i></div><div class="d">Prep ${pct}% · ${done} of ${rs.length} items ready</div>`:'<div class="d">No prep items yet</div>', go:'Open prep room →', fn:()=>{ state.prepView={room:iv.id}; go('prep'); }}); }
+  const ivSoon = new Set(cards.filter(c=>c.cls==='iv').map(c=>c.app));
+  for (const a of live) { if (!a.next_action || !a.next_action_due || ivSoon.has(a.id)) continue; const due=new Date(a.next_action_due); const days=Math.round((due-t0)/864e5); if (days>1) continue;
+    cards.push({w:1, cls:'due', k: days<0?`Overdue ${-days} day${days===-1?'':'s'}`:days===0?'Due today':'Due tomorrow', t:esc(a.next_action), d:`${esc(a.company)} · ${esc(a.title)}`, go:'Open →', fn:()=>openApplication(a.id)}); }
+  for (const iv of ivMine) { const t=callTime(iv); if (!t || t.getTime()>now || iv.debriefed_at || now-t.getTime()>21*864e5) continue;
+    cards.push({w:2, cls:'db', k:'Debrief', t:`How did ${esc(iv.applications?.company||'it')} go?`, d:`${esc(roundLbl(iv))} · ${fmtD(iv.interview_date)}. Ten minutes now keeps the lesson.`, go:'Write it down →', fn:()=>openInterview(iv.id, ()=>{ closeModal(); go('today'); })}); }
+  if (leads.length) { const good=leads.filter(l=>l.fit_score!=null&&l.fit_score>=thr).length;
+    cards.push({w:0.5, cls:'lead', k:'New jobs', t:`${leads.length} job${leads.length===1?'':'s'} to look at`, d:`${good?good+' look like a strong fit. ':''}About ${Math.max(1,Math.round(leads.length*0.5))} min, one at a time.`, go:'Start →', fn:()=>{ state.inboxMode='focus'; go('inbox'); }}); }
+  const openQ = qs.filter(x=>x.status==='open');
+  if (openQ.length) cards.push({w:4, cls:'ask', k:'Question from your agents', t:esc(openQ[0].question.slice(0,110))+(openQ[0].question.length>110?'…':''), d: openQ.length>1?`and ${openQ.length-1} more`:'One quick answer', go:'Answer →', fn:()=>go('runs')});
+  cards.sort((a,b)=>a.w-b.w);
+  const n = cards.length;
+  const wk = d => d && (now-new Date(d).getTime()) < 7*864e5 && new Date(d).getTime()<=now;
+  const sentWk = apps.filter(a=>wk(a.applied_date)).length, ivWk = ivMine.filter(i=>{ const t=callTime(i); return t && Math.abs(now-t.getTime())<7*864e5; }).length;
+  const flow = STAGES.map(s=>[s, live.filter(a=>a.status===s).length]);
+  el.innerHTML = `<div class="hello">${greet()}, Sudharsan.</div>
+    <div class="hello-sub">${new Date().toLocaleDateString('en-IN',{weekday:'long', day:'numeric', month:'long'})} · ${n ? `${n} thing${n===1?' needs':'s need'} you. Everything else is moving on its own.` : 'Nothing needs you right now. Everything is moving on its own.'}</div>
+    ${n ? `<div class="needs">${cards.map((c,i)=>`<div class="ncard ${c.cls} ${i>=4&&!state.todayAll?'hidden':''}" data-i="${i}" tabindex="0" role="button"><div class="k">${c.k}</div><div class="t">${c.t}</div><div class="d">${c.d}</div>${c.extra||''}<div class="go">${c.go}</div></div>`).join('')}</div>${n>4&&!state.todayAll?`<div class="actions" style="margin-top:12px"><button class="ghost" id="moreNeeds">Show ${n-4} more</button><span class="faint" style="font-size:13px">One thing at a time is enough.</span></div>`:''}`
+        : `<div class="calm"><b>All clear.</b>The agents keep reading your mail every couple of hours. Take a breather.</div>`}
+    <div class="sec-t">In motion · ${live.length} live application${live.length===1?'':'s'}</div>
+    <div class="flow">${flow.map(([s,c])=>`<div class="${c?'':'z'}" data-s="${s}" role="button" tabindex="0"><b>${c}</b><span>${hum(s)}</span></div>`).join('')}</div>
+    <div class="sec-t">This week</div>
+    <div class="week"><div class="kpi"><b>${sentWk}</b><span>applications sent</span></div><div class="kpi"><b>${ivWk}</b><span>interviews this week</span></div><div class="kpi"><b>${live.filter(a=>STAGES.indexOf(a.status)>=2).length}</b><span>in interview rounds</span></div></div>`;
+  el.querySelectorAll('.ncard').forEach(c=>{ const fn=cards[+c.dataset.i].fn; c.onclick=fn; c.onkeydown=e=>{ if (e.key==='Enter'||e.key===' '){ e.preventDefault(); fn(); } }; });
+  const mn=$('#moreNeeds'); if (mn) mn.onclick=()=>{ state.todayAll=true; el.querySelectorAll('.ncard.hidden').forEach(x=>x.classList.remove('hidden')); mn.parentElement.remove(); };
+  el.querySelectorAll('.flow>div').forEach(d=>d.onclick=()=>{ state.appView='open'; state.appFocus=d.dataset.s; go('applications'); });
+}
+
+/* ---------- Inbox: focus (one at a time) or list ---------- */
+function reasons(l){
+  const ps = (l.fit_breakdown && l.fit_breakdown.params) || {};
+  const arr = Object.entries(ps).map(([k,p])=>({k, s:(p&&typeof p==='object')?p.score:p, why:(p&&p.why)||''})).filter(x=>x.s!=null && x.why);
+  const pos = arr.filter(x=>x.s>=60).sort((a,b)=>b.s-a.s).slice(0,3), neg = arr.filter(x=>x.s<50).sort((a,b)=>a.s-b.s).slice(0,1);
+  return [...pos.map(x=>`<li>${esc(x.why)}<span class="p">${esc(hum(x.k))}</span></li>`), ...neg.map(x=>`<li class="neg">${esc(x.why)}<span class="p">${esc(hum(x.k))}</span></li>`)].join('');
+}
+async function renderInbox(el){
+  const thr = state.settings.fit_threshold ?? 60;
+  let mode = state.inboxMode; if (!mode) { try { mode = localStorage.getItem('jd.inboxMode'); } catch(e){} } mode = state.inboxMode = mode || 'focus';
+  const leads = await q(inStreams(sb.from('leads').select('*, job_boards(name), target_companies(name)').in('status',['new','fit_checked'])).order('fit_score',{ascending:false,nullsFirst:false}).order('created_at',{ascending:false}).limit(300));
+  const { count: parkedN } = await inStreams(sb.from('leads').select('id',{count:'exact',head:true}).in('status',['parked','noise']));
+  state.counts = {...(state.counts||{}), inbox: leads.length}; renderNav();
+  const setMode = m => { state.inboxMode=m; try { localStorage.setItem('jd.inboxMode', m); } catch(e){} renderInbox(el); };
+  const head = pageHead('Inbox', leads.length ? `${leads.length} job${leads.length===1?'':'s'} waiting · best fit first` : 'Nothing waiting',
+    `<div class="segtabs"><button class="${mode==='focus'?'on':''}" data-m="focus">One at a time</button><button class="${mode==='list'?'on':''}" data-m="list">List</button></div><button class="ghost" id="showParked">Parked · ${parkedN||0}</button><button id="newLead">+ Lead</button>`);
+  const bindHead = () => { el.querySelectorAll('.segtabs button').forEach(b=>b.onclick=()=>setMode(b.dataset.m)); $('#showParked').onclick=()=>renderParked(el);
+    $('#newLead').onclick=()=>editRecord({table:'leads',title:'New lead',fields:F.lead,row:null,defaults:{job_stream_id:selStreams()[0]||PM_STREAM,status:'new',posted_at_basis:'listing'},after:()=>go('inbox')}); };
+  if (!leads.length) { el.innerHTML = head + `<div class="zero"><div class="sun">☼</div><h2>Inbox zero.</h2><p class="muted">Every job has a decision. New ones arrive with the next run, about every 2 hours.</p><div class="actions" style="justify-content:center"><button class="primary" id="toToday">Back to Today</button></div></div>`; bindHead(); $('#toToday').onclick=()=>go('today'); return; }
+  if (mode==='list') return inboxList(el, head, bindHead, leads, thr);
+  let i = Math.min(state.focusIdx||0, leads.length-1), decided = 0;
+  const total = leads.length;
+  const draw = () => {
+    if (!leads.length) { state.focusIdx=0; renderInbox(el); return; }
+    if (i>=leads.length) i=0;
+    const l = leads[i], age = daysAgo(l.posted_at||l.created_at);
+    const why = reasons(l);
+    el.innerHTML = head + `<div class="focus">
+      <div class="focus-top"><span>${i+1} of ${leads.length}</span><div class="pbar"><i style="width:${Math.round(100*(decided)/(total))}%"></i></div><span>${decided} decided</span></div>
+      <article class="fcard">
+        <div class="fhead">${mono(l.company,52)}<div style="flex:1;min-width:0"><div class="ftitle">${esc(l.title)}</div><div class="fsub">${sub([`<b style="color:var(--fg-2);font-weight:550">${esc(l.company)}</b>`, l.location?esc(l.location):'', esc(l.job_boards?.name||hum(l.source_platform)||''), age==null?'':(age===0?'posted today':age===1?'posted yesterday':'posted '+age+' days ago')])}</div></div>${ring(l.fit_score, thr, 64)}</div>
+        <div class="cell-sub" style="margin-top:14px;gap:6px">${[l.target_companies?'<span class="tag new">On your target list</span>':'', l.easy_apply?'<span class="tag info">Easy apply</span>':'', `<span>Resume: ${rdTag(l)}</span>`, jdTag(l.jd_text,l.jd_confidence)].filter(Boolean).join(' ')}</div>
+        ${why?`<ul class="why">${why}</ul>`:(l.fit_breakdown?.note?`<p class="muted" style="margin-top:14px">${esc(l.fit_breakdown.note)}</p>`:(l.raw_snippet?`<p class="muted" style="margin-top:14px">${esc(l.raw_snippet)}</p>`:'<p class="muted" style="margin-top:14px">Not scored yet. The next run reads the job page and scores it.</p>'))}
+        <div class="cell-sub" style="margin-top:10px;gap:14px"><a href="#" id="fDetails">Full details</a>${l.url?`<a href="${esc(l.url)}" target="_blank" rel="noopener">Open posting ↗</a>`:''}</div>
+      </article>
+      <div class="factions"><button class="primary" data-k="a">Apply <kbd>A</kbd></button><button data-k="t">Tailor <kbd>T</kbd></button><button data-k="p">Park <kbd>P</kbd></button><button class="ghost" data-k="s">Later <kbd>→</kbd></button></div>
+    </div>`;
+    bindHead();
+    el.querySelectorAll('.rd').forEach(x=>x.onclick=()=>rdOpen(l));
+    $('#fDetails').onclick=e=>{ e.preventDefault(); openLead(l); };
+    el.querySelectorAll('.factions button').forEach(b=>b.onclick=()=>act(b.dataset.k));
+  };
+  const done = () => { leads.splice(i,1); decided++; state.focusIdx=i; state.counts.inbox=leads.length; renderNav(); draw(); };
+  const act = async k => { const l = leads[i]; if (!l) return;
+    if (k==='s' || k==='ArrowRight') { i=(i+1)%leads.length; draw(); return; }
+    if (k==='ArrowLeft') { i=(i-1+leads.length)%leads.length; draw(); return; }
+    if (k==='p') { const nr = state.noise.find(n=>/by you/i.test(n.reason)) || state.noise[0];
+      try { await q(sb.from('leads').update({status:'parked', noise_reason_id:nr?.id||null}).eq('id',l.id)); } catch(e){ err(e); return; }
+      const prev = {status:l.status, noise_reason_id:l.noise_reason_id||null}; const at=i; done();
+      toastUndo(`Parked ${l.company}`, async()=>{ await q(sb.from('leads').update(prev).eq('id',l.id)); leads.splice(at,0,l); decided--; i=at; draw(); });
+      return; }
+    if (k==='a' || k==='t') leadAction(k==='a'?'apply':'tailor', l, done);
+  };
+  state.keys = e => { const k = e.key.length===1 ? e.key.toLowerCase() : e.key; if (['a','t','p','s','ArrowRight','ArrowLeft'].includes(k)) { act(k); return true; } return false; };
+  draw();
+}
+function inboxList(el, head, bindHead, leads, thr){
+  const multi = state.selected.size>1;
+  el.innerHTML = head + `<div class="toolbar"><input class="grow" id="inboxFilter" placeholder="Search title or company" aria-label="Search leads"></div><div class="list" id="inboxRows"></div>`;
+  bindHead();
+  const draw = () => { const f=($('#inboxFilter').value||'').toLowerCase(); const rows=leads.filter(l=>!f||(l.title+' '+l.company).toLowerCase().includes(f));
+    $('#inboxRows').innerHTML = rows.map(l=>{ const age=daysAgo(l.posted_at||l.created_at);
+      return `<div class="li" data-id="${l.id}" tabindex="0">${mono(l.company)}<div class="li-main"><div class="li-title">${esc(l.title)}</div><div class="li-sub">${sub([esc(l.company), l.location?esc(l.location):'', multi?esc(streamName(l.job_stream_id)):'', l.easy_apply?'Easy apply':''])}</div></div>
+      <div class="li-meta hide-sm">${rdTag(l)}</div><div class="li-acts"><button class="small act" data-a="apply">Apply</button><button class="small act" data-a="tailor">Tailor</button><button class="small ghost act" data-a="park">Park</button></div><span class="rel">${age==null?'':age===0?'today':age+'d'}</span>${ring(l.fit_score, thr)}</div>`; }).join('') || `<div class="li" style="cursor:default;justify-content:center;color:var(--muted)">No leads match.</div>`;
+    $('#inboxRows').querySelectorAll('.li[data-id]').forEach(r=>{ const l=leads.find(x=>x.id===r.dataset.id);
+      r.onclick=e=>{ if (e.target.closest('button,a,.rd')) return; openLead(l); }; r.onkeydown=e=>{ if (e.key==='Enter') openLead(l); };
+      r.querySelectorAll('.rd').forEach(x=>x.onclick=e=>{ e.stopPropagation(); rdOpen(l); });
+      r.querySelectorAll('button.act').forEach(b=>b.onclick=()=>leadAction(b.dataset.a, l)); }); };
+  draw(); $('#inboxFilter').oninput=draw;
+}
+
+/* ---------- Applications: grouped by stage, progress track ---------- */
+async function renderApplications(el){
+  const apps = await loadApps();
+  const v = state.appView = state.appView || 'open';
+  const open = apps.filter(a=>!isClosedApp(a)), closed = apps.filter(isClosedApp);
+  state.appShut = state.appShut || {};
+  const multi = state.selected.size>1;
+  el.innerHTML = pageHead('Applications', `${open.length} live · ${closed.length} closed`, '<button id="newApp">+ Application</button>')
+  + `<div class="toolbar"><div class="segtabs" role="tablist">${[['open','Live',open.length],['closed','Closed',closed.length]].map(([k,l,n])=>`<button class="${v===k?'on':''}" data-v="${k}" role="tab" aria-selected="${v===k}">${l}<span class="muted">${n}</span></button>`).join('')}</div><input class="grow" id="af" placeholder="Search company or role" aria-label="Search applications"></div><div id="groups"></div>`;
+  const t0 = todayStart();
+  const row = a => { const od=a.next_action_due&&new Date(a.next_action_due)<t0;
+    return `<div class="li" data-id="${a.id}" tabindex="0">${mono(a.company)}<div class="li-main"><div class="li-title">${esc(a.company)}</div><div class="li-sub">${sub([esc(a.title), multi?esc(streamName(a.job_stream_id)):'', a.consultant_organizations?'via '+esc(a.consultant_organizations.name):''])}</div></div>
+      <div class="li-meta">${v==='open'?track(a.status):pill(a.status,a.final_status)}${a.next_action?`<span class="chipnext hide-sm ${od?'od':''}" title="${esc(a.next_action)}${a.next_action_due?' · '+fmtD(a.next_action_due):''}">${od?'Overdue · ':''}${esc(a.next_action)}</span>`:''}</div><span class="rel" title="Applied ${fmtD(a.applied_date)}">${rel(a.applied_date)}</span></div>`; };
+  const draw = () => { const f=($('#af').value||'').toLowerCase(); const base=(v==='open'?open:closed).filter(a=>!f||(a.title+' '+a.company).toLowerCase().includes(f));
+    const groups = v==='open' ? [...STAGES].reverse().map(s=>[s, hum(s), base.filter(a=>a.status===s)]).concat([['other','Other', base.filter(a=>!STAGES.includes(a.status))]])
+      : [['rejected','Rejected', base.filter(a=>a.final_status==='rejected'||a.status==='rejected')], ['posting_closed','Posting closed', base.filter(a=>a.final_status==='posting_closed')], ['ghosted','No reply', base.filter(a=>a.status==='ghosted' && a.final_status!=='posting_closed')], ['withdrawn','Withdrawn', base.filter(a=>a.status==='withdrawn' || a.final_status==='withdrawn')]];
+    const html = groups.filter(g=>g[2].length).map(([k,l,list])=>`<div class="group ${state.appShut[v+k]?'shut':''}" data-k="${k}"><div class="group-h" role="button" tabindex="0"><span class="chev">▼</span>${v==='open'?pill(k):esc(l)}<span class="n">${list.length}</span></div><div class="list">${list.map(row).join('')}</div></div>`).join('');
+    $('#groups').innerHTML = html || `<div class="calm"><b>${f?'No applications match.':v==='open'?'No live applications right now.':'Nothing closed.'}</b>${!f&&v==='open'?'Apply from the Inbox and they show up here.':''}</div>`;
+    $('#groups').querySelectorAll('.group-h').forEach(h=>h.onclick=()=>{ const k=v+h.parentElement.dataset.k; state.appShut[k]=!state.appShut[k]; h.parentElement.classList.toggle('shut'); });
+    $('#groups').querySelectorAll('.li[data-id]').forEach(r=>{ r.onclick=()=>openApplication(r.dataset.id); r.onkeydown=e=>{ if (e.key==='Enter') openApplication(r.dataset.id); }; });
+    if (state.appFocus) { const g=$('#groups').querySelector(`.group[data-k="${state.appFocus}"]`); state.appFocus=null; if (g) g.scrollIntoView({behavior:'smooth', block:'start'}); } };
+  draw(); $('#af').oninput=draw;
+  el.querySelectorAll('.segtabs button').forEach(b=>b.onclick=()=>{ state.appView=b.dataset.v; renderApplications(el); });
+  $('#newApp').onclick=()=>editRecord({table:'applications',title:'New application',fields:F.application,row:null,defaults:{job_stream_id:selStreams()[0]||PM_STREAM,status:'applied',final_status:'open',applied_date:new Date().toISOString().slice(0,10)},after:s=>s?openApplication(s.id):go('applications')});
+}
+
+/* ---------- Interviews: upcoming timeline + past ---------- */
+async function renderInterviews(el){
+  const rounds = await q(sb.from('interviews').select('*, applications(company,title,job_stream_id)').order('interview_date',{ascending:true}));
+  const rows = rounds.filter(r=>!r.applications||state.selected.size===state.streams.length||selStreams().includes(r.applications.job_stream_id));
+  const preps = await q(sb.from('prep_answers').select('interview_id,confidence').not('interview_id','is',null));
+  const now = Date.now();
+  const up = rows.filter(r=>{ const t=callTime(r); return t && t.getTime()>=now; }).sort((a,b)=>callTime(a)-callTime(b));
+  const past = rows.filter(r=>!up.includes(r)).sort((a,b)=>(callTime(b)||0)-(callTime(a)||0));
+  const blk = r => { const t=callTime(r); return t?`<div class="dateblk"><b>${t.getDate()}</b><span>${t.toLocaleDateString('en-IN',{month:'short'})}</span></div>`:'<div class="dateblk"><b>?</b><span>date</span></div>'; };
+  const item = (r, isUp) => { const rs=preps.filter(p=>p.interview_id===r.id), done=rs.filter(p=>p.confidence).length;
+    return `<div class="tl-item ${isUp?'':'past'}" data-id="${r.id}" tabindex="0">${blk(r)}${mono(r.applications?.company||'',40)}<div class="li-main"><div class="li-title">${esc(r.applications?.company||'')} · ${esc(roundLbl(r))}</div><div class="li-sub">${sub([esc(r.interviewer_name||'Interviewer not set'), r.starts_at?new Date(r.starts_at).toLocaleTimeString('en-IN',{hour:'numeric',minute:'2-digit'}):'', esc(r.applications?.title||''), isUp&&rs.length?`prep ${done}/${rs.length}`:'', r.wispr_share_link?`<a href="${esc(r.wispr_share_link)}" target="_blank" rel="noopener">Wispr ↗</a>`:''])}</div></div>
+      ${isUp?`<span class="count-chip">${esc(untilText(callTime(r))[0])}</span>`:`<div class="li-meta">${r.result&&r.result!=='pending'?`<span class="pill ${r.result==='rejected'?'p-rejected':r.result==='advanced'||r.result==='passed'?'p-offer':'p-closed'}">${esc(hum(r.result))}</span>`:''}${r.debriefed_at?'':'<span class="tag warn">Debrief pending</span>'}</div>`}</div>`; };
+  el.innerHTML = pageHead('Interviews', up.length?`${up.length} coming up`:'Nothing scheduled right now', '<button id="newR">+ Round</button>')
+    + `<div class="sec-t" style="margin-top:0">Coming up</div>${up.length?`<div class="tl">${up.map(r=>item(r,true)).join('')}</div>`:'<div class="calm"><b>No interviews scheduled.</b>When one is booked, it shows here with a countdown and its prep room.</div>'}
+    <div class="sec-t">Past rounds · ${past.length}</div><div class="tl">${past.map(r=>item(r,false)).join('')||'<div class="muted">None yet.</div>'}</div>`;
+  $('#newR').onclick=()=>editRecord({table:'interviews',title:'New round',fields:F.interview,row:null,defaults:{round_number:1,result:'pending'},after:()=>go('interviews')});
+  el.querySelectorAll('.tl-item').forEach(r=>{ const open=()=>openInterview(r.dataset.id, ()=>{ closeModal(); go('interviews'); }); r.onclick=e=>{ if (e.target.closest('a')) return; open(); }; r.onkeydown=e=>{ if (e.key==='Enter') open(); }; });
+}
+
+/* ---------- Command palette ---------- */
+let palCache = null;
+async function openPalette(){
+  if ($('#pal')) return;
+  const bg = document.createElement('div'); bg.className='pal-bg'; bg.id='pal';
+  bg.innerHTML = `<div class="pal" role="dialog" aria-label="Search"><input id="palIn" placeholder="Search jobs, companies, screens, actions…" autocomplete="off"><div class="pal-list" id="palList"></div><div class="pal-foot"><span><kbd>↑</kbd> <kbd>↓</kbd> move</span><span><kbd>↵</kbd> open</span><span><kbd>esc</kbd> close</span></div></div>`;
+  document.body.appendChild(bg);
+  const close = () => bg.remove();
+  bg.onclick = e => { if (e.target===bg) close(); };
+  const base = [
+    ...Object.entries(SCREENS).map(([k,v])=>({sec:'Go to', ic:'→', label:v.label, run:()=>go(k)})),
+    {sec:'Actions', ic:'＋', label:'New application', run:()=>{ go('applications').then(()=>$('#newApp')&&$('#newApp').click()); }},
+    {sec:'Actions', ic:'＋', label:'New lead', run:()=>editRecord({table:'leads',title:'New lead',fields:F.lead,row:null,defaults:{job_stream_id:selStreams()[0]||PM_STREAM,status:'new',posted_at_basis:'listing'},after:()=>go('inbox')})},
+    {sec:'Actions', ic:'◎', label:'Look at new jobs, one at a time', run:()=>{ state.inboxMode='focus'; go('inbox'); }},
+    {sec:'Actions', ic:'☀', label:'Theme: Light', run:()=>themeSet('light')}, {sec:'Actions', ic:'☾', label:'Theme: Dark', run:()=>themeSet('dark')}, {sec:'Actions', ic:'◐', label:'Theme: System', run:()=>themeSet('system')}];
+  let items = base, sel = 0;
+  const draw = () => { const f=($('#palIn').value||'').toLowerCase().trim(); const words=f.split(/\s+/).filter(Boolean);
+    const all = [...base, ...(palCache||[])];
+    items = (words.length ? all.filter(x=>words.every(w=>(x.label+' '+(x.sub||'')).toLowerCase().includes(w))) : base).slice(0,40);
+    if (sel>=items.length) sel=0;
+    let last=''; $('#palList').innerHTML = items.map((x,i)=>{ const h = x.sec!==last ? `<div class="pal-sec">${esc(x.sec)}</div>` : ''; last=x.sec; return h+`<div class="pal-it ${i===sel?'on':''}" data-i="${i}">${x.av||`<span class="pal-ic">${x.ic||'•'}</span>`}<span class="lb">${esc(x.label)}${x.sub?` <span class="muted">· ${esc(x.sub)}</span>`:''}</span>${x.ty?`<span class="ty">${esc(x.ty)}</span>`:''}</div>`; }).join('') || '<div class="pal-sec">Nothing found</div>';
+    $('#palList').querySelectorAll('.pal-it').forEach(r=>{ r.onmousemove=()=>{ if (sel!==+r.dataset.i){ sel=+r.dataset.i; draw(); } }; r.onclick=()=>pick(+r.dataset.i); });
+    const on=$('#palList').querySelector('.pal-it.on'); if (on) on.scrollIntoView({block:'nearest'}); };
+  const pick = i => { const x=items[i]; if (!x) return; close(); x.run(); };
+  $('#palIn').oninput = () => { sel=0; draw(); };
+  $('#palIn').onkeydown = e => { if (e.key==='Escape'){ e.preventDefault(); close(); } else if (e.key==='ArrowDown'){ e.preventDefault(); sel=Math.min(items.length-1, sel+1); draw(); } else if (e.key==='ArrowUp'){ e.preventDefault(); sel=Math.max(0, sel-1); draw(); } else if (e.key==='Enter'){ e.preventDefault(); pick(sel); } };
+  draw(); $('#palIn').focus();
+  if (!palCache) { try {
+    const [apps, leads] = await Promise.all([q(sb.from('applications').select('id,company,title,status,final_status').order('updated_at',{ascending:false}).limit(500)), q(sb.from('leads').select('*, job_boards(name)').in('status',['new','fit_checked','parked']).order('created_at',{ascending:false}).limit(300))]);
+    palCache = [...apps.map(a=>({sec:'Applications', av:mono(a.company,28), label:a.company, sub:a.title, ty:hum(a.final_status&&a.final_status!=='open'?a.final_status:a.status), run:()=>openApplication(a.id)})),
+                ...leads.map(l=>({sec:'Jobs', av:mono(l.company,28), label:l.title, sub:l.company, ty:l.status==='parked'?'Parked':'In inbox', run:()=>openLead(l)}))];
+    setTimeout(()=>{ palCache=null; }, 120000);
+    if ($('#pal')) draw(); } catch(e){ console.error(e); } }
+}
+
+/* ---------- phone tab bar ---------- */
+const TB_IC = {today:'<path d="M12 3v2M12 19v2M4.2 4.2l1.4 1.4M18.4 18.4l1.4 1.4M3 12h2M19 12h2M4.2 19.8l1.4-1.4M18.4 5.6l1.4-1.4"/><circle cx="12" cy="12" r="4"/>', inbox:'<path d="M4 13h4l2 3h4l2-3h4"/><path d="M5 5h14l1 8v6H4v-6z"/>', applications:'<rect x="4" y="4" width="16" height="16" rx="3"/><path d="M8 9h8M8 13h8M8 17h5"/>', interviews:'<rect x="4" y="5" width="16" height="15" rx="3"/><path d="M8 3v4M16 3v4M4 10h16"/>', more:'<circle cx="6" cy="12" r="1.4"/><circle cx="12" cy="12" r="1.4"/><circle cx="18" cy="12" r="1.4"/>'};
+function renderTabbar(){ const tb=$('#tabbar'); if (!tb) return; const cur=state.screen;
+  tb.innerHTML = [['today','Today'],['inbox','Inbox'],['applications','Applications'],['interviews','Interviews'],['more','More']].map(([k,l])=>`<button data-s="${k}" class="${k===cur||(k==='more'&&!['today','inbox','applications','interviews'].includes(cur))?'on':''}"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">${TB_IC[k]}</svg>${l}</button>`).join('');
+  tb.querySelectorAll('button').forEach(b=>b.onclick=()=>{ if (b.dataset.s==='more') $('#app').classList.add('nav-open'); else go(b.dataset.s); }); }
+
 /* ===================== app-calls-gates-module v1.1 · 27 Oct 2026 · v1.1: agreement rows wrap on phones · mandatory gates editor, "My calls" labelling, career notes ===================== */
 const GATE_TYPES = {location:'Location (city list)', years:'Years asked (range)', title:'Product role (title rule, then Jev if unclear)', question:'Yes/no question (Jev)'};
 function agGatesText(rub){
@@ -1654,6 +2044,7 @@ async function renderCareerNotes(host){
 
 </script>
 <!-- CHANGELOG
+v1.0.13 · 25 Oct 2026 · Calm layer: Today home, Inbox focus mode with Undo and inbox zero, side sheet details, Applications grouped by stage with progress tracks and monograms, Interviews timeline, command palette (Cmd/Ctrl+K, /), phone tab bar, skeletons and soft motion. Same data, no schema change.
 v1.0.12 · 25 Oct 2026 · Calm redesign on one design system: Light / Dark / System theme (sidebar and Settings, saved per browser), warm paper and soft charcoal palettes, Inter, sentence-case labels, grouped sidebar (Work / Library / System) and a phone drawer. Tables: two-line company/role cells, status pills, roomy rows, sticky headers, fewer columns (Inbox 4, Applications 5, Interviews 5, People 4, Resumes 5, Runs 7). Closed applications hidden by default on Pipeline and Applications (toggle / Live·Closed·All tabs). New lead view with fit breakdown table and JD. Application overview as facts, fit table, rejection text and notes. Forms keep every field, grouped into sections with readable option names; raw JSON under Advanced. Target companies as a searchable table. Gentle empty states. No data or schema change.
 v1.0.11 · 24 Oct 2026 · Prep screen rebuilt. Prep rooms: one per interview round with prep rows (prep_answers.interview_id), header with company, title, round, interviewer, countdown to interviews.starts_at (or the date), progress = items rated; sections by kind (Brief, Case files, Mock grill, Numbers, Demo checklist, Ask them, Answers); each row collapses to the question, confidence dots and likely follow-up, opens to the answer, evidence and Weak/OK/Strong (writes confidence, rehearse_count, last_rehearsed_at, last_reviewed_at). Practice mode: question first, 90-second timer, reveal, rate, weakest and least-rehearsed first, mock and answer rows only. Answer bank: rows with no interview, topic chips, search, collapsed answers at reading width. Interview detail gets a Prep room button. Pipeline: cards drag between columns and have a Move-to control (keyboard, phone); both open the existing status dialog pre-set to the target, so status_history, rejection message and post-mortem still get written. Fix: auto post-mortem rounds_reached was always 0 (count query used head:true). Prep form: topic is free text and source read-only, so editing a row no longer blanks a topic or source that is not in the old pick list. Needs migration job_driver_prep_room_v1_0 (applied 24 Oct).
 v1.0.10 · 18 Oct 2026 · Agent run log: health dot + last run + 24 h success + late flag on every agent card; a Runs tab inside each agent (health line, filters, errors by type, run list, run detail) and the same list for all agents on the Runs screen (reached from the menu or the Agents header, deep link #runs). Statuses success / partial / failed / skipped / running / crashed from runner v1.0.13, plus missed (no row in an expected slot). Agent Overview no longer carries the recent-runs table.

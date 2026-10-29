@@ -4,8 +4,9 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <!--
-  Sudharsan R portfolio · work/connected · v4.2 · 29 Oct 2026
+  Sudharsan R portfolio · work/connected · v4.2.1 · 29 Oct 2026
   Author: Sudharsan R (built with Claude). Hosting: GitHub Pages (sudharsan454).
+  v4.2.1: real System Integrity Manager screen added (29 Oct 2026). REVERT: index-v4.2.html.
   v4.2: page created: Siemens UK connected buildings (29 Oct 2026).
   v3.8: Frontline web screens: a scored lead and the convert pre-flight (14 Oct 2026).
   v3.7: case pages tightened to their own story; Beyond the product role; one-call discovery story on the system page; Berkeley eval lessons (14 Oct 2026).
@@ -53,6 +54,7 @@
     <h3>Bad readings were reaching client reports.</h3>
     <p>Meters send spikes, negative values, duplicates and resets. One bad reading makes a whole month's report wrong.</p>
     <p>I built System Integrity Manager. It checks every reading against rules, fixes what it can, and alerts the team about what it can't. Live on Siemens meters by Aug 2024, over 1,000 fixes a week. Later released to every Facilio customer.</p>
+    <figure class="shot"><img src="/img/connected-sim-rule.jpg" width="1600" height="908" loading="lazy" data-zoom="/img/connected-sim-rule.jpg" alt="System Integrity Manager rule setup: missing value correction for a meter reading every 30 minutes, filled by moving average or time-of-day weekly average, with an alarm when data is missing."><figcaption><span>System Integrity Manager: a rule that fills missing meter readings and raises an alarm.</span><span class="real">Real screen</span></figcaption></figure>
     <h3>Missing readings broke the monthly totals.</h3>
     <p>When a meter goes quiet for a few hours, the gap shows up as zero use and then a big spike.</p>
     <p>I built gap filling that spreads the missing usage across the gap the way that meter normally uses energy at that time of day, so the totals still match the meter.</p>
@@ -100,7 +102,7 @@
         <span class="copied" id="copiedF" aria-live="polite"></span>
       </div>
     </div>
-    <p class="note">Product screens are real, with private details blurred. One customer is not named at their request. Every figure says where it comes from.<br>v4.2 · October 2026</p>
+    <p class="note">Product screens are real, with private details blurred. One customer is not named at their request. Every figure says where it comes from.<br>v4.2.1 · October 2026</p>
   </div>
 </footer>
 <script src="/assets/site-v3.0.js"></script>

@@ -4,8 +4,10 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <!--
-  Sudharsan R portfolio · index.html · v4.0 · 24 Oct 2026
+  Sudharsan R portfolio · index.html · v4.2 · 29 Oct 2026
   Author: Sudharsan R (built with Claude). Hosting: GitHub Pages (sudharsan454).
+  v4.2: Siemens UK connected-buildings case added (/work/connected/), Matt Howard quote, Customer success links to it (29 Oct 2026).
+        REVERT: portfolio-v4.1.html is the home page before this change.
   v4.0: work in three layers: At Facilio in AI, At Facilio before and beyond AI, Personal agents (24 Oct 2026).
         REVERT: the v3.8 home page is kept as portfolio-v3.8.html. Copy it over index.html to roll back.
   v3.8: Frontline web screens: a scored lead and the convert pre-flight (14 Oct 2026).
@@ -25,6 +27,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@800;900&family=Public+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap">
 <link rel="stylesheet" href="/assets/site-v3.7.css">
+<style>/* v4.2 */@media (min-width:761px){.voices.three{grid-template-columns:repeat(3,1fr)}}.thumb.typo{display:flex;flex-direction:column;justify-content:center;gap:6px;padding:var(--s3);font-family:var(--f-display);font-weight:900;font-size:30px;line-height:1.05;color:var(--ink)}.thumb.typo small{font-family:inherit;font-weight:600;font-size:var(--t-xs);color:var(--muted)}</style>
 </head>
 <body data-page="index.html">
 <nav class="nav" aria-label="Main">
@@ -66,9 +69,10 @@
       <figcaption>68 seconds: three problems I worked on, and when AI was the right fix. Captions are built in.</figcaption>
     </figure>
     <div class="stats"><div><b class="hi">94%</b><span>of helpdesk requests handled by the AI alone at Berkeley Services UAE, Q3 2026</span></div><div><b>$1.5M</b><span>TCV signed for a field service product I took from zero to live in 5 months</span></div><div><b>$200K</b><span>ARR for the AI product line, across 5 paying customers and running pilots</span></div></div>
-    <div class="voices">
+    <div class="voices three">
       <a class="voice" href="https://www.linkedin.com/posts/q3services_%F0%9D%97%A4%F0%9D%9F%AF-%F0%9D%97%B2%F0%9D%97%BB%F0%9D%97%B5%F0%9D%97%AE%F0%9D%97%BB%F0%9D%97%B0%F0%9D%97%B2%F0%9D%98%80-%F0%9D%97%99%F0%9D%97%AE%F0%9D%97%B0%F0%9D%97%B6%F0%9D%97%B9%F0%9D%97%B6%F0%9D%97%BC-%F0%9D%97%96%F0%9D%97%94-activity-7462780541243703298-4-2w" target="_blank" rel="noopener"><q>Frankly, it shifts CAFM up to a whole new level!</q><span>Lynne English, Operations Director, Q3 Services (UK), on the Bruce and Bernard agents · LinkedIn ↗</span></a>
       <a class="voice" href="https://www.linkedin.com/posts/berkeley-ai-powered-facilities-ugcPost-7490285729252753408-W6aO/" target="_blank" rel="noopener"><q>Al Najah takes on the repetitive work so our people can focus on judgement.</q><span>Berkeley Services UAE, on their AI helpdesk agent · LinkedIn ↗</span></a>
+      <a class="voice" href="/work/connected/"><q>We've turned this over, it's fantastic, genuinely is.</q><span>Matt Howard, Siemens UK, on switching off their old energy platform</span></a>
     </div>
   </div>
 </header>
@@ -140,12 +144,18 @@
     </div>
 
     <div class="more" id="more" data-group="more">
-      <div class="group-head"><h3>At Facilio · before and beyond AI</h3><p>0→1 in 5 months · 3→1 approval screens · 2nd prize, company hackathon · ~$4.5M ARR platform</p></div>
+      <div class="group-head"><h3>At Facilio · before and beyond AI</h3><p>0→1 in 5 months · 44K+ meters on clean data · 3→1 approval screens · 2nd prize, company hackathon · ~$4.5M ARR platform</p></div>
       <div class="grid-cards">
 <a class="card" href="/work/field-service/" data-tags="0-to-1 leadership customer-facing">
   <div class="thumb"><img src="/img/tour-dispatch-poster.jpg" width="1280" height="832" loading="lazy" alt=""></div>
   <div class="body"><h3>From zero to a live dispatch board in five months</h3><p>Led a team of 15 to build field service with our anchor customer, in their operations.</p>
     <div class="k"><b>$1.5M</b><span>TCV signed</span></div>
+    <span class="go">Read case study →</span></div>
+</a>
+<a class="card" href="/work/connected/" data-tags="platform customer-facing">
+  <div class="thumb typo" aria-hidden="true"><span>44,324 meters</span><span>41,714 sites</span><span>866 clients</span><small>Running through the data engine I built, Jun 2026</small></div>
+  <div class="body"><h3>Meter data a bureau can bill on</h3><p>Siemens' energy bureau sends usage reports to hundreds of clients. Bad meter readings meant wrong reports, and the move off their old platform kept slipping. I fixed the data first, then built everything else on top.</p>
+    <div class="k"><b>44K+</b><span>meters run through it, Siemens UK, Jun 2026</span></div>
     <span class="go">Read case study →</span></div>
 </a>
 <a class="card" href="/work/contractor/" data-tags="discovery customer-facing">
@@ -168,7 +178,7 @@
       <div class="also three">
         <div data-tags="customer-facing"><h3>Pre-sales</h3><p>50+ product demos and RFP responses, from field service to AI agents. I also shaped the demo flow for our AI Demo Day, which drew about 100 registrants.</p></div>
         <div data-tags="customer-facing"><h3>Outbound</h3><p>New this year, as part of selling AI: about 10 cold calls, plus email and LinkedIn outreach. I also put together a small AI-assisted outreach setup with our Australia sales head.</p></div>
-        <div data-tags="customer-facing leadership"><h3>Customer success</h3><p>My CPO pulled me into a UK account that was close to pulling out. I spent six months with them, stabilised it, and the account went from red to expansion.</p></div>
+        <div data-tags="customer-facing leadership"><h3>Customer success</h3><p>My CPO pulled me into Siemens UK when the account was close to pulling out. Six months later the old platform was off and the account was growing. <a href="/work/connected/">Read the case →</a></p></div>
       </div>
     </div>
 
@@ -246,7 +256,7 @@
         <span class="copied" id="copiedF" aria-live="polite"></span>
       </div>
     </div>
-    <p class="note">Product screens are real, with private details blurred. One customer is not named at their request. Every figure says where it comes from.<br>v4.0 · October 2026</p>
+    <p class="note">Product screens are real, with private details blurred. One customer is not named at their request. Every figure says where it comes from.<br>v4.2 · October 2026</p>
   </div>
 </footer>
 <script src="/assets/site-v3.0.js"></script>
